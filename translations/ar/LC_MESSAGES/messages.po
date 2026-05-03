@@ -1,0 +1,683 @@
+# Arabic translations for PROJECT.
+# Copyright (C) 2026 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2026-05-03 13:31+0300\n"
+"PO-Revision-Date: 2026-05-03 13:33+0300\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ar\n"
+"Language-Team: ar <LL@li.org>\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : "
+"n%100>=3 && n%100<=10 ? 3 : n%100>=0 && n%100<=2 ? 4 : 5);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: app/forms.py:9 app/forms.py:41
+msgid "Full name"
+msgstr "الاسم الكامل"
+
+#: app/forms.py:10 app/forms.py:17 app/forms.py:42
+#: app/templates/admin/users.html:11
+msgid "Email"
+msgstr "البريد الإلكتروني"
+
+#: app/forms.py:11 app/forms.py:18
+msgid "Password"
+msgstr "كلمة المرور"
+
+#: app/forms.py:12
+msgid "Confirm password"
+msgstr "تأكيد كلمة المرور"
+
+#: app/forms.py:13
+msgid "Create account"
+msgstr "إنشاء حساب"
+
+#: app/forms.py:19
+msgid "Remember me"
+msgstr "تذكرني"
+
+#: app/forms.py:20 app/templates/auth/login.html:2
+#: app/templates/auth/register.html:33 app/templates/base.html:74
+msgid "Sign in"
+msgstr "تسجيل الدخول"
+
+#: app/forms.py:24 app/templates/projects/mine.html:8
+msgid "Title"
+msgstr "العنوان"
+
+#: app/forms.py:25 app/templates/projects/view.html:27
+msgid "Abstract"
+msgstr "الملخص"
+
+#: app/forms.py:26
+msgid "Keywords (comma-separated)"
+msgstr "الكلمات المفتاحية (مفصولة بفواصل)"
+
+#: app/forms.py:27 app/templates/admin/reports.html:46
+#: app/templates/projects/browse.html:14 app/templates/projects/mine.html:8
+msgid "Year"
+msgstr "السنة"
+
+#: app/forms.py:28 app/templates/admin/reports.html:39
+#: app/templates/projects/browse.html:21
+msgid "Department"
+msgstr "القسم"
+
+#: app/forms.py:29
+msgid "Categories"
+msgstr "الفئات"
+
+#: app/forms.py:30
+msgid "Project file (PDF or DOCX)"
+msgstr "ملف المشروع (PDF أو DOCX)"
+
+#: app/forms.py:31
+msgid "PDF or DOCX only"
+msgstr "PDF أو DOCX فقط"
+
+#: app/forms.py:32
+msgid "Submit for approval"
+msgstr "إرسال للموافقة"
+
+#: app/forms.py:36 app/templates/admin/approvals.html:22
+msgid "Reason"
+msgstr "السبب"
+
+#: app/forms.py:37
+msgid "Reject"
+msgstr "رفض"
+
+#: app/forms.py:43 app/templates/admin/users.html:11
+msgid "Role"
+msgstr "الدور"
+
+#: app/forms.py:45
+msgid "Password (leave blank to keep)"
+msgstr "كلمة المرور (اتركها فارغة للإبقاء عليها)"
+
+#: app/forms.py:46
+msgid "Save"
+msgstr "حفظ"
+
+#: app/blueprints/admin.py:47
+#, python-format
+msgid "Your project '%(t)s' was approved"
+msgstr "تمت الموافقة على مشروعك «%(t)s»"
+
+#: app/blueprints/admin.py:48
+msgid "Your submission is now publicly available in GPAS."
+msgstr "أصبح مشروعك متاحاً للعموم في GPAS."
+
+#: app/blueprints/admin.py:49
+msgid "Project approved."
+msgstr "تمت الموافقة على المشروع."
+
+#: app/blueprints/admin.py:64
+#, python-format
+msgid "Your project '%(t)s' was rejected"
+msgstr "تم رفض مشروعك «%(t)s»"
+
+#: app/blueprints/admin.py:65
+#, python-format
+msgid "Reason: %(r)s"
+msgstr "السبب: %(r)s"
+
+#: app/blueprints/admin.py:66
+msgid "Project rejected."
+msgstr "تم رفض المشروع."
+
+#: app/blueprints/admin.py:68
+msgid "A rejection reason is required."
+msgstr "سبب الرفض مطلوب."
+
+#: app/blueprints/admin.py:83
+msgid "Password is required for new users."
+msgstr "كلمة المرور مطلوبة للمستخدمين الجدد."
+
+#: app/blueprints/admin.py:86
+msgid "Email already in use."
+msgstr "البريد مستخدم بالفعل."
+
+#: app/blueprints/admin.py:97
+msgid "User created."
+msgstr "تم إنشاء المستخدم."
+
+#: app/blueprints/admin.py:115
+msgid "User updated."
+msgstr "تم تحديث المستخدم."
+
+#: app/blueprints/admin.py:126
+msgid "You cannot delete your own account."
+msgstr "لا يمكنك حذف حسابك الخاص."
+
+#: app/blueprints/admin.py:130
+msgid "User deleted."
+msgstr "تم حذف المستخدم."
+
+#: app/blueprints/auth.py:28
+msgid "An account with that email already exists."
+msgstr "يوجد حساب مسجَّل بهذا البريد بالفعل."
+
+#: app/blueprints/auth.py:41
+msgid "Verify your GPAS account"
+msgstr "فعّل حسابك في GPAS"
+
+#: app/blueprints/auth.py:42
+#, python-format
+msgid "Welcome to GPAS! Please verify your email by visiting: %(url)s"
+msgstr "مرحباً بك في GPAS! يرجى تفعيل بريدك بزيارة: %(url)s"
+
+#: app/blueprints/auth.py:43
+msgid "Account created. Check email.log to verify your account."
+msgstr "تم إنشاء الحساب. راجع ملف email.log لتفعيل حسابك."
+
+#: app/blueprints/auth.py:53
+msgid "Verification link expired."
+msgstr "انتهت صلاحية رابط التحقق."
+
+#: app/blueprints/auth.py:56
+msgid "Invalid verification link."
+msgstr "رابط تحقق غير صالح."
+
+#: app/blueprints/auth.py:62
+msgid "Email verified! You can now sign in."
+msgstr "تم تفعيل البريد! يمكنك الآن تسجيل الدخول."
+
+#: app/blueprints/auth.py:74
+msgid "Invalid email or password."
+msgstr "البريد الإلكتروني أو كلمة المرور غير صحيحة."
+
+#: app/blueprints/auth.py:77
+#, python-format
+msgid "Welcome back, %(name)s!"
+msgstr "أهلاً بعودتك يا %(name)s!"
+
+#: app/blueprints/auth.py:87
+msgid "You have been signed out."
+msgstr "تم تسجيل خروجك."
+
+#: app/blueprints/projects.py:153
+#, python-format
+msgid "New project pending approval: %(title)s"
+msgstr "مشروع جديد بانتظار الموافقة: %(title)s"
+
+#: app/blueprints/projects.py:154
+#, python-format
+msgid "Faculty member %(name)s submitted '%(title)s'. Review at /admin/approvals."
+msgstr "أرسل عضو هيئة التدريس %(name)s مشروع «%(title)s». راجعه على /admin/approvals."
+
+#: app/blueprints/projects.py:156
+msgid "Project submitted and is pending admin approval."
+msgstr "تم إرسال المشروع وهو بانتظار موافقة الإدارة."
+
+#: app/templates/about.html:2 app/templates/base.html:92
+msgid "About"
+msgstr "حول"
+
+#: app/templates/about.html:4
+msgid "About GPAS"
+msgstr "حول النظام"
+
+#: app/templates/about.html:6
+msgid ""
+"The Graduation Project Archival System (GPAS) is a web-based digital "
+"repository developed for the Arab Open University — Kuwait Branch. It "
+"centralises the storage, discovery, and dissemination of graduation "
+"projects produced by the Faculty of Computer Studies."
+msgstr ""
+
+#: app/templates/about.html:8
+msgid "Goals"
+msgstr "الأهداف"
+
+#: app/templates/about.html:10
+msgid "Preserve student work that would otherwise be lost."
+msgstr "الحفاظ على أعمال الطلاب التي قد تُفقد لولا ذلك."
+
+#: app/templates/about.html:11
+msgid "Help current students learn from past projects."
+msgstr "مساعدة الطلاب الحاليين على التعلم من مشاريع سابقة."
+
+#: app/templates/about.html:12
+msgid "Support faculty in advising and ensuring originality."
+msgstr "دعم أعضاء هيئة التدريس في الإشراف والتحقق من الأصالة."
+
+#: app/templates/about.html:13
+msgid "Provide administrators with reporting and oversight."
+msgstr "تزويد الإدارة بتقارير وأدوات إشراف."
+
+#: app/templates/about.html:15
+msgid "Accessibility"
+msgstr "إمكانية الوصول"
+
+#: app/templates/about.html:16
+msgid ""
+"The system is designed to conform to WCAG 2.1 Level AA, with full "
+"keyboard navigation, descriptive alt text, sufficient colour contrast, "
+"and bilingual English/Arabic support including right-to-left layouts."
+msgstr ""
+
+#: app/templates/base.html:7 app/templates/base.html:24
+#: app/templates/index.html:7
+msgid "Graduation Project Archival System"
+msgstr "نظام أرشفة مشاريع التخرج"
+
+#: app/templates/base.html:18
+msgid "Skip to main content"
+msgstr "الانتقال إلى المحتوى الرئيسي"
+
+#: app/templates/base.html:21
+msgid "Primary navigation"
+msgstr "التنقل الرئيسي"
+
+#: app/templates/base.html:27
+msgid "Toggle navigation"
+msgstr "تبديل التنقل"
+
+#: app/templates/base.html:32 app/templates/projects/view.html:6
+msgid "Browse"
+msgstr "تصفح"
+
+#: app/templates/base.html:33 app/templates/index.html:15
+#: app/templates/projects/browse.html:3
+msgid "Search"
+msgstr "بحث"
+
+#: app/templates/base.html:35
+msgid "Upload"
+msgstr "رفع"
+
+#: app/templates/base.html:38 app/templates/projects/mine.html:2
+#: app/templates/projects/mine.html:4
+msgid "My submissions"
+msgstr "مشاريعي"
+
+#: app/templates/base.html:42
+msgid "Admin"
+msgstr "الإدارة"
+
+#: app/templates/base.html:44
+msgid "Dashboard"
+msgstr "لوحة التحكم"
+
+#: app/templates/admin/approvals.html:2 app/templates/base.html:45
+msgid "Approvals"
+msgstr "الموافقات"
+
+#: app/templates/admin/reports.html:10 app/templates/admin/users.html:2
+#: app/templates/admin/users.html:5 app/templates/base.html:46
+msgid "Users"
+msgstr "المستخدمون"
+
+#: app/templates/admin/reports.html:2 app/templates/base.html:47
+msgid "Reports"
+msgstr "التقارير"
+
+#: app/templates/base.html:55
+msgid "Language switcher"
+msgstr "تبديل اللغة"
+
+#: app/templates/base.html:70
+msgid "Sign out"
+msgstr "تسجيل الخروج"
+
+#: app/templates/auth/register.html:2 app/templates/base.html:75
+msgid "Register"
+msgstr "تسجيل"
+
+#: app/templates/base.html:90
+msgid "Arab Open University — Kuwait Branch"
+msgstr "الجامعة العربية المفتوحة — فرع الكويت"
+
+#: app/templates/base.html:93 app/templates/privacy.html:2
+msgid "Privacy"
+msgstr "الخصوصية"
+
+#: app/templates/index.html:3
+msgid "Home"
+msgstr "الرئيسية"
+
+#: app/templates/index.html:9
+msgid ""
+"A centralized digital repository preserving graduation projects from the "
+"Faculty of Computer Studies — searchable, accessible, and bilingual."
+msgstr ""
+
+#: app/templates/index.html:12
+msgid "Search query"
+msgstr "نص البحث"
+
+#: app/templates/index.html:14
+msgid "Search by title, abstract, keyword…"
+msgstr "ابحث عن طريق العنوان أو الملخص أو الكلمات المفتاحية…"
+
+#: app/templates/index.html:22
+msgid "Repository statistics"
+msgstr "إحصاءات المستودع"
+
+#: app/templates/admin/dashboard.html:17 app/templates/index.html:26
+msgid "Approved projects"
+msgstr "المشاريع المعتمدة"
+
+#: app/templates/index.html:32
+msgid "Departments represented"
+msgstr "الأقسام الممثَّلة"
+
+#: app/templates/index.html:38
+msgid "Recently added"
+msgstr "أُضيف مؤخراً"
+
+#: app/templates/index.html:46
+msgid "No projects yet — admins, please approve some submissions."
+msgstr "لا توجد مشاريع بعد — على المسؤولين الموافقة على بعض الطلبات."
+
+#: app/templates/privacy.html:4
+msgid "Privacy notice"
+msgstr "إشعار الخصوصية"
+
+#: app/templates/privacy.html:5
+msgid ""
+"GPAS stores only the personal data needed to operate the repository: your"
+" name, university email, role, language preference, and a record of the "
+"projects you upload, view, or download."
+msgstr ""
+
+#: app/templates/privacy.html:6
+msgid ""
+"Passwords are never stored in plain text — they are hashed using the "
+"bcrypt algorithm. All session activity is restricted to the GPAS "
+"application and is automatically expired after 30 minutes of inactivity."
+msgstr ""
+
+#: app/templates/privacy.html:7
+msgid ""
+"Access logs are retained for usage statistics and security auditing. They"
+" contain a timestamp, IP address, browser identifier, the project "
+"accessed, and your account ID where applicable."
+msgstr ""
+
+#: app/templates/privacy.html:8
+msgid ""
+"You may request the deletion of your account by contacting an "
+"administrator."
+msgstr ""
+
+#: app/templates/admin/approvals.html:4 app/templates/admin/dashboard.html:10
+msgid "Pending approvals"
+msgstr "الموافقات المعلَّقة"
+
+#: app/templates/admin/approvals.html:10
+msgid "by"
+msgstr "بواسطة"
+
+#: app/templates/admin/approvals.html:15
+msgid "Approve"
+msgstr "موافقة"
+
+#: app/templates/admin/approvals.html:17
+msgid "Reject…"
+msgstr "رفض…"
+
+#: app/templates/admin/approvals.html:24
+msgid "Confirm rejection"
+msgstr "تأكيد الرفض"
+
+#: app/templates/admin/approvals.html:31
+msgid "Nothing pending. Good job!"
+msgstr "لا توجد طلبات معلَّقة. أحسنت!"
+
+#: app/templates/admin/dashboard.html:2 app/templates/admin/dashboard.html:4
+msgid "Admin dashboard"
+msgstr "لوحة الإدارة"
+
+#: app/templates/admin/dashboard.html:24
+msgid "Registered users"
+msgstr "المستخدمون المسجَّلون"
+
+#: app/templates/admin/dashboard.html:29
+msgid "View reports"
+msgstr "عرض التقارير"
+
+#: app/templates/admin/reports.html:4
+msgid "Usage reports"
+msgstr "تقارير الاستخدام"
+
+#: app/templates/admin/reports.html:7 app/templates/projects/mine.html:16
+msgid "Approved"
+msgstr "معتمَد"
+
+#: app/templates/admin/reports.html:8 app/templates/projects/mine.html:17
+msgid "Pending"
+msgstr "قيد الانتظار"
+
+#: app/templates/admin/reports.html:9 app/templates/projects/mine.html:18
+msgid "Rejected"
+msgstr "مرفوض"
+
+#: app/templates/admin/reports.html:11
+msgid "Views (30d)"
+msgstr "المشاهدات (30 يوماً)"
+
+#: app/templates/admin/reports.html:12
+msgid "Downloads (30d)"
+msgstr "التنزيلات (30 يوماً)"
+
+#: app/templates/admin/reports.html:17
+msgid "Most viewed projects"
+msgstr "أكثر المشاريع مشاهدةً"
+
+#: app/templates/admin/reports.html:22 app/templates/admin/reports.html:32
+msgid "No data yet."
+msgstr "لا توجد بيانات بعد."
+
+#: app/templates/admin/reports.html:27
+msgid "Most downloaded projects"
+msgstr "أكثر المشاريع تنزيلاً"
+
+#: app/templates/admin/reports.html:37
+msgid "Approved projects by department"
+msgstr "المشاريع المعتمدة حسب القسم"
+
+#: app/templates/admin/reports.html:39 app/templates/admin/reports.html:46
+msgid "Count"
+msgstr "العدد"
+
+#: app/templates/admin/reports.html:44
+msgid "Approved projects by year"
+msgstr "المشاريع المعتمدة حسب السنة"
+
+#: app/templates/admin/user_form.html:2 app/templates/admin/user_form.html:4
+#: app/templates/admin/users.html:6
+msgid "New user"
+msgstr "مستخدم جديد"
+
+#: app/templates/admin/user_form.html:2 app/templates/admin/user_form.html:4
+msgid "Edit user"
+msgstr "تعديل مستخدم"
+
+#: app/templates/admin/user_form.html:12
+msgid "Cancel"
+msgstr "إلغاء"
+
+#: app/templates/admin/users.html:11
+msgid "Name"
+msgstr "الاسم"
+
+#: app/templates/admin/users.html:11
+msgid "Verified"
+msgstr "موثَّق"
+
+#: app/templates/admin/users.html:11
+msgid "Created"
+msgstr "أُنشئ"
+
+#: app/templates/admin/users.html:22
+msgid "Edit"
+msgstr "تعديل"
+
+#: app/templates/admin/users.html:24
+msgid "Delete this user?"
+msgstr "حذف هذا المستخدم؟"
+
+#: app/templates/admin/users.html:26
+msgid "Delete"
+msgstr "حذف"
+
+#: app/templates/auth/login.html:6
+msgid "Sign in to GPAS"
+msgstr "تسجيل الدخول إلى GPAS"
+
+#: app/templates/auth/login.html:26
+msgid "No account?"
+msgstr "ليس لديك حساب؟"
+
+#: app/templates/auth/login.html:26
+msgid "Register here"
+msgstr "سجّل هنا"
+
+#: app/templates/auth/register.html:6
+msgid "Create your GPAS account"
+msgstr "أنشئ حسابك في GPAS"
+
+#: app/templates/auth/register.html:22
+msgid "At least 8 characters."
+msgstr "8 أحرف على الأقل."
+
+#: app/templates/auth/register.html:33
+msgid "Already have an account?"
+msgstr "هل لديك حساب بالفعل؟"
+
+#: app/templates/errors/401.html:1
+msgid "Please sign in to continue."
+msgstr "يرجى تسجيل الدخول للمتابعة."
+
+#: app/templates/errors/403.html:1
+msgid "You do not have permission to access this resource."
+msgstr "ليست لديك صلاحية الوصول إلى هذا المورد."
+
+#: app/templates/errors/404.html:1
+msgid "Page not found."
+msgstr "الصفحة غير موجودة."
+
+#: app/templates/errors/404.html:1
+msgid "Go home"
+msgstr "العودة إلى الرئيسية"
+
+#: app/templates/errors/500.html:1
+msgid "Something went wrong on our side. Please try again."
+msgstr "حدث خطأ من جانبنا. يرجى المحاولة مرة أخرى."
+
+#: app/templates/projects/browse.html:3 app/templates/projects/browse.html:5
+msgid "Browse projects"
+msgstr "تصفح المشاريع"
+
+#: app/templates/projects/browse.html:5
+msgid "Search results"
+msgstr "نتائج البحث"
+
+#: app/templates/projects/browse.html:10 app/templates/projects/view.html:31
+msgid "Keywords"
+msgstr "الكلمات المفتاحية"
+
+#: app/templates/projects/browse.html:11
+msgid "e.g. accessibility"
+msgstr "مثال: إمكانية الوصول"
+
+#: app/templates/projects/browse.html:16 app/templates/projects/browse.html:23
+#: app/templates/projects/browse.html:30
+msgid "Any"
+msgstr "الكل"
+
+#: app/templates/projects/browse.html:28
+msgid "Category"
+msgstr "فئة"
+
+#: app/templates/projects/browse.html:35
+msgid "Apply"
+msgstr "تطبيق"
+
+#: app/templates/projects/browse.html:36
+msgid "Reset"
+msgstr "إعادة تعيين"
+
+#: app/templates/projects/browse.html:41
+#, python-format
+msgid "%(num)s result"
+msgid_plural "%(num)s results"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: app/templates/projects/browse.html:55
+msgid "No matching projects."
+msgstr "لا توجد مشاريع مطابقة."
+
+#: app/templates/projects/mine.html:8
+msgid "Status"
+msgstr "الحالة"
+
+#: app/templates/projects/mine.html:8
+msgid "Submitted"
+msgstr "مُرسَل"
+
+#: app/templates/projects/mine.html:27
+msgid "You have not submitted any projects yet."
+msgstr "لم تُرسل أي مشاريع بعد."
+
+#: app/templates/projects/upload.html:2
+msgid "Upload project"
+msgstr "رفع مشروع"
+
+#: app/templates/projects/upload.html:4
+msgid "Submit a graduation project"
+msgstr "إرسال مشروع تخرج"
+
+#: app/templates/projects/upload.html:5
+msgid ""
+"Faculty submissions enter a pending queue and are published once an "
+"administrator approves them."
+msgstr ""
+
+#: app/templates/projects/upload.html:38
+msgid "Hold Ctrl/Cmd to select multiple."
+msgstr "اضغط Ctrl/Cmd لاختيار عدة عناصر."
+
+#: app/templates/projects/view.html:13
+msgid "This project is currently"
+msgstr "هذا المشروع حالياً"
+
+#: app/templates/projects/view.html:13
+msgid "and is not publicly visible."
+msgstr "وغير ظاهر للعموم."
+
+#: app/templates/projects/view.html:21
+msgid "Uploaded by"
+msgstr "رُفع بواسطة"
+
+#: app/templates/projects/view.html:35
+msgid "Files"
+msgstr "الملفات"
+
+#: app/templates/projects/view.html:42
+msgid "Download"
+msgstr "تنزيل"
+
+#: app/templates/projects/view.html:44
+msgid "Sign in to download"
+msgstr "سجّل الدخول للتنزيل"
+
+#: app/templates/projects/view.html:50
+msgid "No files attached."
+msgstr "لا توجد ملفات مرفقة."
+

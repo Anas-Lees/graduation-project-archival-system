@@ -1,0 +1,165 @@
+from datetime import datetime
+from flask import Blueprint, render_template, request, abort, send_file, flash, redirect, url_for, current_app
+from flask_login import login_required, current_user
+from sqlalchemy import text, func, distinct
+from flask_babel import gettext as _
+from ..extensions import db
+from ..models import Project, ProjectFile, Category, AccessLog
+from ..forms import ProjectForm
+from ..utils.security import role_required
+from ..utils.files import save_upload
+from ..utils.search import build_fts_query
+from ..utils.mailer import send_email
+
+bp = Blueprint("projects", __name__)
+
+
+def _filter_choices():
+    years = [y[0] for y in db.session.query(distinct(Project.year)).filter(Project.status == "approved").order_by(Project.year.desc()).all()]
+    departments = [d[0] for d in db.session.query(distinct(Project.department)).filter(Project.status == "approved").order_by(Project.department).all()]
+    categories = db.session.query(Category).order_by(Category.name_en).all()
+    return years, departments, categories
+
+
+@bp.route("/")
+def browse():
+    page = max(1, request.args.get("page", 1, type=int))
+    per_page = current_app.config["PROJECTS_PER_PAGE"]
+    year = request.args.get("year", type=int)
+    department = (request.args.get("department") or "").strip() or None
+    category_id = request.args.get("category", type=int)
+
+    q = db.session.query(Project).filter(Project.status == "approved")
+    if year:
+        q = q.filter(Project.year == year)
+    if department:
+        q = q.filter(Project.department == department)
+    if category_id:
+        q = q.filter(Project.categories.any(Category.id == category_id))
+    q = q.order_by(Project.year.desc(), Project.created_at.desc())
+
+    total = q.count()
+    items = q.offset((page - 1) * per_page).limit(per_page).all()
+    years, departments, categories = _filter_choices()
+    return render_template("projects/browse.html", items=items, total=total, page=page, per_page=per_page,
+                           years=years, departments=departments, categories=categories,
+                           q="", year=year, department=department, category_id=category_id, mode="browse")
+
+
+@bp.route("/search")
+def search():
+    q_raw = (request.args.get("q") or "").strip()
+    page = max(1, request.args.get("page", 1, type=int))
+    per_page = current_app.config["PROJECTS_PER_PAGE"]
+    year = request.args.get("year", type=int)
+    department = (request.args.get("department") or "").strip() or None
+    category_id = request.args.get("category", type=int)
+
+    items, total = [], 0
+    if q_raw:
+        match = build_fts_query(q_raw)
+        if match:
+            sql = text("SELECT rowid FROM projects_fts WHERE projects_fts MATCH :m ORDER BY rank")
+            ids = [row[0] for row in db.session.execute(sql, {"m": match}).fetchall()]
+            if ids:
+                base = db.session.query(Project).filter(Project.id.in_(ids), Project.status == "approved")
+                if year:
+                    base = base.filter(Project.year == year)
+                if department:
+                    base = base.filter(Project.department == department)
+                if category_id:
+                    base = base.filter(Project.categories.any(Category.id == category_id))
+                # Preserve FTS rank order
+                rank = {pid: i for i, pid in enumerate(ids)}
+                rows = base.all()
+                rows.sort(key=lambda p: rank.get(p.id, 1e9))
+                total = len(rows)
+                items = rows[(page - 1) * per_page: page * per_page]
+
+    years, departments, categories = _filter_choices()
+    return render_template("projects/browse.html", items=items, total=total, page=page, per_page=per_page,
+                           years=years, departments=departments, categories=categories,
+                           q=q_raw, year=year, department=department, category_id=category_id, mode="search")
+
+
+@bp.route("/<int:pid>")
+def view(pid):
+    project = db.session.get(Project, pid)
+    if not project or project.status != "approved":
+        # Allow uploader/admin to preview pending
+        if not project or not current_user.is_authenticated or not (
+            current_user.has_role("admin", "sysadmin") or project.uploader_id == current_user.id
+        ):
+            abort(404)
+    log = AccessLog(
+        user_id=current_user.id if current_user.is_authenticated else None,
+        project_id=project.id, action="view",
+        ip=request.remote_addr, user_agent=(request.user_agent.string or "")[:255],
+    )
+    db.session.add(log)
+    db.session.commit()
+    return render_template("projects/view.html", project=project)
+
+
+@bp.route("/<int:pid>/files/<int:fid>")
+@login_required
+def download(pid, fid):
+    f = db.session.get(ProjectFile, fid)
+    if not f or f.project_id != pid:
+        abort(404)
+    project = f.project
+    if project.status != "approved" and not (
+        current_user.has_role("admin", "sysadmin") or project.uploader_id == current_user.id
+    ):
+        abort(403)
+    log = AccessLog(user_id=current_user.id, project_id=pid, action="download",
+                    ip=request.remote_addr, user_agent=(request.user_agent.string or "")[:255])
+    db.session.add(log)
+    db.session.commit()
+    return send_file(f.stored_path, as_attachment=True, download_name=f.filename)
+
+
+@bp.route("/upload", methods=["GET", "POST"])
+@login_required
+@role_required("faculty", "admin", "sysadmin")
+def upload():
+    form = ProjectForm()
+    cats = db.session.query(Category).order_by(Category.name_en).all()
+    form.categories.choices = [(c.id, c.name_en) for c in cats]
+
+    if form.validate_on_submit():
+        stored, original, mime, size = save_upload(form.file.data)
+        project = Project(
+            title=form.title.data.strip(),
+            abstract=form.abstract.data.strip(),
+            keywords=(form.keywords.data or "").strip(),
+            year=form.year.data,
+            department=form.department.data.strip(),
+            status="pending",
+            uploader_id=current_user.id,
+        )
+        if form.categories.data:
+            project.categories = db.session.query(Category).filter(Category.id.in_(form.categories.data)).all()
+        db.session.add(project)
+        db.session.flush()
+        pf = ProjectFile(project_id=project.id, filename=original, stored_path=stored, mimetype=mime, size=size)
+        db.session.add(pf)
+        db.session.commit()
+
+        # Notify all admins
+        from ..models import User
+        admins = db.session.query(User).filter(User.role.in_(("admin", "sysadmin"))).all()
+        for a in admins:
+            send_email(a.email, _("New project pending approval: %(title)s", title=project.title),
+                       _("Faculty member %(name)s submitted '%(title)s'. Review at /admin/approvals.",
+                         name=current_user.full_name, title=project.title))
+        flash(_("Project submitted and is pending admin approval."), "success")
+        return redirect(url_for("projects.view", pid=project.id))
+    return render_template("projects/upload.html", form=form)
+
+
+@bp.route("/mine")
+@login_required
+def mine():
+    items = db.session.query(Project).filter(Project.uploader_id == current_user.id).order_by(Project.created_at.desc()).all()
+    return render_template("projects/mine.html", items=items)

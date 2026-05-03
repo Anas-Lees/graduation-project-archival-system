@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% from "_macros.html" import project_card, pagination %}
+{% block title %}{% if mode == 'search' %}{{ _('Search') }}{% else %}{{ _('Browse projects') }}{% endif %}{% endblock %}
+{% block content %}
+<h1 class="h3 mb-3">{% if mode == 'search' %}{{ _('Search results') }}{% else %}{{ _('Browse projects') }}{% endif %}</h1>
+
+<form action="{{ url_for('projects.search' if mode == 'search' else 'projects.browse') }}" method="get" class="card card-body bg-light mb-4" role="search">
+  <div class="row g-2 align-items-end">
+    <div class="col-md-4">
+      <label for="q" class="form-label">{{ _('Keywords') }}</label>
+      <input id="q" name="q" type="search" value="{{ q or '' }}" class="form-control" placeholder="{{ _('e.g. accessibility') }}">
+    </div>
+    <div class="col-md-2">
+      <label for="year" class="form-label">{{ _('Year') }}</label>
+      <select id="year" name="year" class="form-select">
+        <option value="">{{ _('Any') }}</option>
+        {% for y in years %}<option value="{{ y }}" {% if year == y %}selected{% endif %}>{{ y }}</option>{% endfor %}
+      </select>
+    </div>
+    <div class="col-md-3">
+      <label for="department" class="form-label">{{ _('Department') }}</label>
+      <select id="department" name="department" class="form-select">
+        <option value="">{{ _('Any') }}</option>
+        {% for d in departments %}<option value="{{ d }}" {% if department == d %}selected{% endif %}>{{ d }}</option>{% endfor %}
+      </select>
+    </div>
+    <div class="col-md-3">
+      <label for="category" class="form-label">{{ _('Category') }}</label>
+      <select id="category" name="category" class="form-select">
+        <option value="">{{ _('Any') }}</option>
+        {% for c in categories %}<option value="{{ c.id }}" {% if category_id == c.id %}selected{% endif %}>{{ c.localized(lang) }}</option>{% endfor %}
+      </select>
+    </div>
+    <div class="col-12 d-flex gap-2">
+      <button class="btn btn-primary" type="submit">{{ _('Apply') }}</button>
+      <a class="btn btn-outline-secondary" href="{{ url_for('projects.browse') }}">{{ _('Reset') }}</a>
+    </div>
+  </div>
+</form>
+
+<p class="text-muted">{{ ngettext('%(num)s result', '%(num)s results', total) }}</p>
+
+{% if items %}
+  <div class="row g-3">
+    {% for p in items %}
+      <div class="col-md-6 col-lg-4">{{ project_card(p) }}</div>
+    {% endfor %}
+  </div>
+  {% if mode == 'search' %}
+    {{ pagination(total, page, per_page, 'projects.search', params={'q': q, 'year': year, 'department': department, 'category': category_id}) }}
+  {% else %}
+    {{ pagination(total, page, per_page, 'projects.browse', params={'year': year, 'department': department, 'category': category_id}) }}
+  {% endif %}
+{% else %}
+  <p class="text-muted mt-4">{{ _('No matching projects.') }}</p>
+{% endif %}
+{% endblock %}

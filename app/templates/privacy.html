@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}{{ _('Privacy') }}{% endblock %}
+{% block content %}
+<h1>{{ _('Privacy notice') }}</h1>
+<p>{{ _('GPAS stores only the personal data needed to operate the repository: your name, university email, role, language preference, and a record of the projects you upload, view, or download.') }}</p>
+<p>{{ _('Passwords are never stored in plain text — they are hashed using the bcrypt algorithm. All session activity is restricted to the GPAS application and is automatically expired after 30 minutes of inactivity.') }}</p>
+<p>{{ _('Access logs are retained for usage statistics and security auditing. They contain a timestamp, IP address, browser identifier, the project accessed, and your account ID where applicable.') }}</p>
+<p>{{ _('You may request the deletion of your account by contacting an administrator.') }}</p>
+{% endblock %}

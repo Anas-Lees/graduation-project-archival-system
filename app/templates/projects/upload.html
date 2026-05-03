@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}{{ _('Upload project') }}{% endblock %}
+{% block content %}
+<h1 class="h3 mb-3">{{ _('Submit a graduation project') }}</h1>
+<p class="text-muted">{{ _('Faculty submissions enter a pending queue and are published once an administrator approves them.') }}</p>
+
+<form method="post" enctype="multipart/form-data" novalidate class="mt-3">
+  {{ form.hidden_tag() }}
+  <div class="mb-3">
+    {{ form.title.label(class="form-label") }}
+    {{ form.title(class="form-control") }}
+    {% for e in form.title.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+  </div>
+  <div class="row g-3 mb-3">
+    <div class="col-md-3">
+      {{ form.year.label(class="form-label") }}
+      {{ form.year(class="form-control") }}
+      {% for e in form.year.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+    </div>
+    <div class="col-md-9">
+      {{ form.department.label(class="form-label") }}
+      {{ form.department(class="form-control") }}
+      {% for e in form.department.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+    </div>
+  </div>
+  <div class="mb-3">
+    {{ form.abstract.label(class="form-label") }}
+    {{ form.abstract(class="form-control", rows=6) }}
+    {% for e in form.abstract.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+  </div>
+  <div class="mb-3">
+    {{ form.keywords.label(class="form-label") }}
+    {{ form.keywords(class="form-control") }}
+  </div>
+  <div class="mb-3">
+    {{ form.categories.label(class="form-label") }}
+    {{ form.categories(class="form-select", size=5) }}
+    <div class="form-text">{{ _('Hold Ctrl/Cmd to select multiple.') }}</div>
+  </div>
+  <div class="mb-3">
+    {{ form.file.label(class="form-label") }}
+    {{ form.file(class="form-control") }}
+    {% for e in form.file.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+  </div>
+  {{ form.submit(class="btn btn-primary") }}
+</form>
+{% endblock %}

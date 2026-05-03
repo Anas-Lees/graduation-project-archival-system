@@ -1,0 +1,49 @@
+{% macro flash_messages() %}
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div role="status" aria-live="polite">
+      {% for cat, msg in messages %}
+        <div class="alert alert-{{ {'danger':'danger','warning':'warning','success':'success','info':'info'}.get(cat,'secondary') }} alert-dismissible fade show" role="alert">
+          {{ msg }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ _('Close') }}"></button>
+        </div>
+      {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+{% endmacro %}
+
+{% macro project_card(p) %}
+  <article class="card h-100 shadow-sm">
+    <div class="card-body">
+      <h3 class="h5 card-title"><a class="stretched-link text-decoration-none" href="{{ url_for('projects.view', pid=p.id) }}">{{ p.title }}</a></h3>
+      <p class="text-muted small mb-2">{{ p.year }} · {{ p.department }}</p>
+      <p class="card-text">{{ p.abstract[:160] }}{% if p.abstract|length > 160 %}…{% endif %}</p>
+    </div>
+    {% if p.categories %}
+      <div class="card-footer bg-white border-0 pt-0">
+        {% for c in p.categories %}<span class="badge bg-secondary me-1">{{ c.localized(lang) }}</span>{% endfor %}
+      </div>
+    {% endif %}
+  </article>
+{% endmacro %}
+
+{% macro pagination(total, page, per_page, endpoint, params=None) %}
+  {% set pages = ((total - 1) // per_page) + 1 if total else 1 %}
+  {% set params = params or {} %}
+  {% if pages > 1 %}
+  <nav aria-label="{{ _('Page navigation') }}" class="mt-4">
+    <ul class="pagination justify-content-center">
+      <li class="page-item {% if page <= 1 %}disabled{% endif %}">
+        <a class="page-link" href="{{ url_for(endpoint, page=page-1, **params) }}">«</a>
+      </li>
+      {% for p in range(1, pages + 1) %}
+        <li class="page-item {% if p == page %}active{% endif %}"><a class="page-link" href="{{ url_for(endpoint, page=p, **params) }}">{{ p }}</a></li>
+      {% endfor %}
+      <li class="page-item {% if page >= pages %}disabled{% endif %}">
+        <a class="page-link" href="{{ url_for(endpoint, page=page+1, **params) }}">»</a>
+      </li>
+    </ul>
+  </nav>
+  {% endif %}
+{% endmacro %}

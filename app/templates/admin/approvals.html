@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}{{ _('Approvals') }}{% endblock %}
+{% block content %}
+<h1 class="h3 mb-3">{{ _('Pending approvals') }}</h1>
+{% if pending %}
+  {% for p in pending %}
+    <article class="card mb-3">
+      <div class="card-body">
+        <h2 class="h5"><a href="{{ url_for('projects.view', pid=p.id) }}">{{ p.title }}</a></h2>
+        <p class="text-muted small mb-1">{{ p.year }} · {{ p.department }} · {{ _('by') }} {{ p.uploader.full_name }} ({{ p.uploader.email }})</p>
+        <p>{{ p.abstract[:300] }}{% if p.abstract|length > 300 %}…{% endif %}</p>
+        <div class="d-flex gap-2">
+          <form action="{{ url_for('admin.approve', pid=p.id) }}" method="post">
+            {{ reject_form.csrf_token() }}
+            <button type="submit" class="btn btn-success btn-sm">{{ _('Approve') }}</button>
+          </form>
+          <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="collapse" data-bs-target="#reject-{{ p.id }}">{{ _('Reject…') }}</button>
+        </div>
+        <div class="collapse mt-3" id="reject-{{ p.id }}">
+          <form action="{{ url_for('admin.reject', pid=p.id) }}" method="post">
+            {{ reject_form.csrf_token() }}
+            <label for="reason-{{ p.id }}" class="form-label">{{ _('Reason') }}</label>
+            <textarea id="reason-{{ p.id }}" name="reason" class="form-control mb-2" rows="3" required></textarea>
+            <button type="submit" class="btn btn-danger btn-sm">{{ _('Confirm rejection') }}</button>
+          </form>
+        </div>
+      </div>
+    </article>
+  {% endfor %}
+{% else %}
+  <p class="text-muted">{{ _('Nothing pending. Good job!') }}</p>
+{% endif %}
+{% endblock %}

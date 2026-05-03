@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}{{ _('My submissions') }}{% endblock %}
+{% block content %}
+<h1 class="h3 mb-3">{{ _('My submissions') }}</h1>
+{% if items %}
+<table class="table">
+  <thead>
+    <tr><th>{{ _('Title') }}</th><th>{{ _('Year') }}</th><th>{{ _('Status') }}</th><th>{{ _('Submitted') }}</th><th></th></tr>
+  </thead>
+  <tbody>
+  {% for p in items %}
+    <tr>
+      <td><a href="{{ url_for('projects.view', pid=p.id) }}">{{ p.title }}</a></td>
+      <td>{{ p.year }}</td>
+      <td>
+        {% if p.status == 'approved' %}<span class="badge bg-success">{{ _('Approved') }}</span>
+        {% elif p.status == 'pending' %}<span class="badge bg-warning text-dark">{{ _('Pending') }}</span>
+        {% else %}<span class="badge bg-danger">{{ _('Rejected') }}</span>{% endif %}
+      </td>
+      <td>{{ p.created_at.strftime('%Y-%m-%d') }}</td>
+      <td>{% if p.status == 'rejected' and p.rejection_reason %}<small class="text-muted">{{ p.rejection_reason }}</small>{% endif %}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% else %}
+  <p class="text-muted">{{ _('You have not submitted any projects yet.') }}</p>
+{% endif %}
+{% endblock %}
