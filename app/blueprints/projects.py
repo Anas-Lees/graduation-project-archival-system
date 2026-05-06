@@ -88,7 +88,7 @@ def view(pid):
     if not project or project.status != "approved":
         # Allow uploader/admin to preview pending
         if not project or not current_user.is_authenticated or not (
-            current_user.has_role("admin", "sysadmin") or project.uploader_id == current_user.id
+            current_user.has_role("doc") or project.uploader_id == current_user.id
         ):
             abort(404)
     log = AccessLog(
@@ -109,7 +109,7 @@ def download(pid, fid):
         abort(404)
     project = f.project
     if project.status != "approved" and not (
-        current_user.has_role("admin", "sysadmin") or project.uploader_id == current_user.id
+        current_user.has_role("doc") or project.uploader_id == current_user.id
     ):
         abort(403)
     log = AccessLog(user_id=current_user.id, project_id=pid, action="download",
@@ -121,7 +121,7 @@ def download(pid, fid):
 
 @bp.route("/upload", methods=["GET", "POST"])
 @login_required
-@role_required("faculty", "admin", "sysadmin")
+@role_required("student", "doc")
 def upload():
     form = ProjectForm()
     cats = db.session.query(Category).order_by(Category.name_en).all()
@@ -146,12 +146,12 @@ def upload():
         db.session.add(pf)
         db.session.commit()
 
-        # Notify all admins
+        # Notify all docs
         from ..models import User
-        admins = db.session.query(User).filter(User.role.in_(("admin", "sysadmin"))).all()
-        for a in admins:
-            send_email(a.email, _("New project pending approval: %(title)s", title=project.title),
-                       _("Faculty member %(name)s submitted '%(title)s'. Review at /admin/approvals.",
+        docs = db.session.query(User).filter(User.role == "doc").all()
+        for d in docs:
+            send_email(d.email, _("New project pending approval: %(title)s", title=project.title),
+                       _("%(name)s submitted '%(title)s'. Review at /admin/approvals.",
                          name=current_user.full_name, title=project.title))
         flash(_("Project submitted and is pending admin approval."), "success")
         return redirect(url_for("projects.view", pid=project.id))

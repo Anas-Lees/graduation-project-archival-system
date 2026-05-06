@@ -59,9 +59,9 @@ def main():
     assert "Blockchain" in r.text or "blockchain" in r.text
     ok("FTS5 search finds 'blockchain'")
 
-    # 5. Login as faculty + upload
+    # 5. Login as student + upload (students can submit in the simplified role model)
     sf = requests.Session()
-    login(sf, "faculty@aou.edu.kw", "Faculty123!")
+    login(sf, "student@aou.edu.kw", "Student123!")
     r = sf.get(f"{BASE}/projects/upload")
     assert r.status_code == 200
     token = csrf(r.text)
@@ -83,9 +83,9 @@ def main():
     pid = int(re.search(r"/projects/(\d+)", location).group(1))
     ok(f"faculty upload created project id={pid} (pending)")
 
-    # 6. Login as admin + approve the upload
+    # 6. Login as doc + approve the upload
     sa = requests.Session()
-    login(sa, "admin@aou.edu.kw", "Admin123!")
+    login(sa, "doc@aou.edu.kw", "Doctor123!")
     r = sa.get(f"{BASE}/admin/approvals")
     assert r.status_code == 200
     assert "Smoke Test Project" in r.text, "pending project not in queue"
@@ -102,7 +102,7 @@ def main():
     assert r.status_code == 200 and "Smoke Test Project" in r.text
     ok("approved project is publicly visible")
 
-    # 7. Public download (logged-in students can download approved files)
+    # 7. Logged-in student can download approved files
     ss = requests.Session()
     login(ss, "student@aou.edu.kw", "Student123!")
     r = ss.get(f"{BASE}/projects/")

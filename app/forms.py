@@ -40,7 +40,7 @@ class RejectForm(FlaskForm):
 class UserAdminForm(FlaskForm):
     full_name = StringField(_l("Full name"), validators=[DataRequired()])
     email = StringField(_l("Email"), validators=[DataRequired(), Email()])
-    role = SelectField(_l("Role"), choices=[("student", "Student"), ("faculty", "Faculty"),
-                                            ("admin", "Admin"), ("sysadmin", "System Admin")])
+    role = SelectField(_l("Role"), choices=[("student", _l("Student")),
+                                            ("doc", _l("Doctor"))])
     password = PasswordField(_l("Password (leave blank to keep)"), validators=[Optional(), Length(min=8)])
     submit = SubmitField(_l("Save"))

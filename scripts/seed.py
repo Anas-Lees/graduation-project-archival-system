@@ -35,10 +35,8 @@ MINIMAL_PDF = (
 
 
 USERS = [
-    {"email": "student@aou.edu.kw",  "name": "Salman Dawara",   "role": "student",  "password": "Student123!"},
-    {"email": "faculty@aou.edu.kw",  "name": "Dr. Aws Abu Eid", "role": "faculty",  "password": "Faculty123!"},
-    {"email": "admin@aou.edu.kw",    "name": "GPAS Admin",      "role": "admin",    "password": "Admin123!"},
-    {"email": "sysadmin@aou.edu.kw", "name": "System Admin",    "role": "sysadmin", "password": "SysAdmin123!"},
+    {"email": "student@aou.edu.kw", "name": "Salman Dawara",   "role": "student", "password": "Student123!"},
+    {"email": "doc@aou.edu.kw",     "name": "Dr. Aws Abu Eid", "role": "doc",     "password": "Doctor123!"},
 ]
 
 CATEGORIES = [
@@ -185,8 +183,8 @@ def write_pdf(filename: str, upload_folder: str) -> str:
 
 
 def upsert_projects(app):
-    faculty = db.session.query(User).filter_by(email="faculty@aou.edu.kw").one()
-    admin = db.session.query(User).filter_by(email="admin@aou.edu.kw").one()
+    student = db.session.query(User).filter_by(email="student@aou.edu.kw").one()
+    doc = db.session.query(User).filter_by(email="doc@aou.edu.kw").one()
     cat_by_name = {c.name_en: c for c in db.session.query(Category).all()}
     upload_folder = app.config["UPLOAD_FOLDER"]
     created = 0
@@ -198,11 +196,11 @@ def upsert_projects(app):
         project = Project(
             title=p["title"], abstract=p["abstract"], keywords=p["keywords"],
             year=p["year"], department=p["department"], status=p["status"],
-            uploader_id=faculty.id,
+            uploader_id=student.id,
             created_at=datetime.utcnow() - timedelta(days=180 - i * 14),
         )
         if p["status"] == "approved":
-            project.approver_id = admin.id
+            project.approver_id = doc.id
             project.approved_at = project.created_at + timedelta(days=2)
         project.categories = [cat_by_name[name] for name in p["categories"] if name in cat_by_name]
 

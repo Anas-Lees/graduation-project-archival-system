@@ -14,7 +14,7 @@ bp = Blueprint("admin", __name__)
 
 @bp.before_request
 @login_required
-@role_required("admin", "sysadmin")
+@role_required("doc")
 def _gate():
     pass
 

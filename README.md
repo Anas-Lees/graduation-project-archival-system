@@ -29,14 +29,14 @@ venv\Scripts\waitress-serve --listen=127.0.0.1:8000 run:app
 
 ## Demo accounts (seeded)
 
-| Role      | Email                     | Password       |
-|-----------|---------------------------|----------------|
-| Student   | student@aou.edu.kw        | Student123!    |
-| Faculty   | faculty@aou.edu.kw        | Faculty123!    |
-| Admin     | admin@aou.edu.kw          | Admin123!      |
-| SysAdmin  | sysadmin@aou.edu.kw       | SysAdmin123!   |
+| Role    | Email                | Password       |
+|---------|----------------------|----------------|
+| Student | student@aou.edu.kw   | Student123!    |
+| Doctor  | doc@aou.edu.kw       | Doctor123!     |
 
-Faculty can upload; Admin can approve/reject/manage users and view reports.
+Two roles only:
+- **Student** — register, browse, search, download approved projects, **submit** their own graduation projects (which enter the pending queue).
+- **Doctor** (Dr. — supervisor / professor) — everything a student can do, **plus** approve/reject submissions, manage users, and view usage reports.
 
 ---
 
@@ -46,8 +46,8 @@ Faculty can upload; Admin can approve/reject/manage users and view reports.
 |-------|---------------------------------------------|----------------|
 | FR01  | Register with email verification            | `/auth/register` + token link logged to `instance/email.log` |
 | FR02  | Login by email/password                     | `/auth/login` (bcrypt-verified) |
-| FR03  | Role-based access (student/faculty/admin/sysadmin) | `app/utils/security.py` `@role_required` |
-| FR04  | Faculty upload PDF/DOCX                     | `/projects/upload` (50 MB max) |
+| FR03  | Role-based access (student / doc)           | `app/utils/security.py` `@role_required` |
+| FR04  | Authenticated users upload PDF/DOCX         | `/projects/upload` (50 MB max) |
 | FR05  | Browse by year / department / category      | `/projects/` with filter UI |
 | FR06  | Full-text search                            | `/projects/search` via SQLite FTS5 with rank ordering |
 | FR07  | Detailed project view                       | `/projects/<id>` shows abstract, authors, files |
