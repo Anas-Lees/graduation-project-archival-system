@@ -6,7 +6,7 @@
 #   bash scripts/pa_bootstrap.sh
 #
 # It will:
-#   1. Create a Python 3.11 virtualenv called "gpas-venv" via mkvirtualenv (PA-provided)
+#   1. Create a Python 3.11 virtualenv at ~/.virtualenvs/gpas-venv
 #   2. Install requirements
 #   3. Compile translations
 #   4. Generate a strong SECRET_KEY and write it to .env
@@ -17,26 +17,37 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 PROJECT_ROOT="$(pwd)"
 VENV_NAME="gpas-venv"
+VENV_PATH="$HOME/.virtualenvs/$VENV_NAME"
 
 echo "GPAS — PythonAnywhere bootstrap"
 echo "  project root: $PROJECT_ROOT"
+echo "  venv path:    $VENV_PATH"
 echo
 
 # --- 1. virtualenv -----------------------------------------------------------
-if ! command -v mkvirtualenv >/dev/null 2>&1; then
-  echo "ERROR: mkvirtualenv not found. Are you running this on PythonAnywhere?"
-  echo "If running locally, replace this script with:"
-  echo "  python3.11 -m venv venv && source venv/bin/activate"
+# Pick the best available Python 3.11+ binary
+PY_BIN=""
+for cand in python3.11 python3.12 python3.10 python3; do
+  if command -v "$cand" >/dev/null 2>&1; then
+    PY_BIN="$(command -v $cand)"
+    break
+  fi
+done
+if [ -z "$PY_BIN" ]; then
+  echo "ERROR: no python3 binary found in PATH."
   exit 1
 fi
+echo "→ using $PY_BIN"
 
-if workon | grep -qx "$VENV_NAME"; then
-  echo "→ virtualenv '$VENV_NAME' already exists, activating"
+if [ -d "$VENV_PATH" ]; then
+  echo "→ virtualenv at $VENV_PATH already exists, reusing it"
 else
-  echo "→ creating virtualenv '$VENV_NAME' (python3.11)"
-  mkvirtualenv --python=/usr/bin/python3.11 "$VENV_NAME"
+  echo "→ creating virtualenv at $VENV_PATH"
+  mkdir -p "$HOME/.virtualenvs"
+  "$PY_BIN" -m venv "$VENV_PATH"
 fi
-source ~/.virtualenvs/"$VENV_NAME"/bin/activate
+# shellcheck source=/dev/null
+source "$VENV_PATH/bin/activate"
 
 # --- 2. dependencies ---------------------------------------------------------
 echo "→ installing requirements"
