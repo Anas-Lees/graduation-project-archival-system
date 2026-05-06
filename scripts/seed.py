@@ -62,6 +62,8 @@ PROJECTS = [
         "keywords": "accessibility, e-learning, WCAG, screen reader, education",
         "year": 2024, "department": DEPARTMENTS[0], "status": "approved",
         "categories": ["Web Development", "Software Engineering"],
+        "github": "https://github.com/aou-kuwait/accessible-elearning",
+        "slides": True,
     },
     {
         "title": "AI-Powered Plagiarism Detection in Arabic Academic Texts",
@@ -71,6 +73,8 @@ PROJECTS = [
         "keywords": "NLP, Arabic, plagiarism, AI, transformers",
         "year": 2024, "department": DEPARTMENTS[1], "status": "approved",
         "categories": ["AI / Machine Learning", "Software Engineering"],
+        "github": "https://github.com/aou-kuwait/arabic-plagiarism",
+        "slides": True,
     },
     {
         "title": "Smart Campus IoT Monitoring System",
@@ -80,6 +84,8 @@ PROJECTS = [
         "keywords": "IoT, MQTT, sensors, dashboard, smart campus",
         "year": 2023, "department": DEPARTMENTS[1], "status": "approved",
         "categories": ["Networks", "Web Development"],
+        "github": "https://github.com/aou-kuwait/smart-campus-iot",
+        "slides": True,
     },
     {
         "title": "Secure Online Voting System Using Blockchain",
@@ -89,6 +95,8 @@ PROJECTS = [
         "keywords": "blockchain, voting, security, zero-knowledge, ethereum",
         "year": 2023, "department": DEPARTMENTS[2], "status": "approved",
         "categories": ["Cybersecurity", "Web Development"],
+        "github": "https://github.com/aou-kuwait/blockchain-voting",
+        "slides": True,
     },
     {
         "title": "Bilingual Mobile Library Catalog Application",
@@ -98,6 +106,8 @@ PROJECTS = [
         "keywords": "mobile, flutter, RTL, Arabic, library",
         "year": 2023, "department": DEPARTMENTS[0], "status": "approved",
         "categories": ["Mobile Apps", "Databases"],
+        "github": "https://github.com/aou-kuwait/bilingual-library",
+        "slides": True,
     },
     {
         "title": "Data Warehouse for Student Performance Analytics",
@@ -107,6 +117,8 @@ PROJECTS = [
         "keywords": "data warehouse, ETL, analytics, education, BI",
         "year": 2022, "department": DEPARTMENTS[2], "status": "approved",
         "categories": ["Databases", "AI / Machine Learning"],
+        "github": "https://github.com/aou-kuwait/student-analytics-dwh",
+        "slides": True,
     },
     {
         "title": "Phishing-URL Detection Using Lightweight Machine Learning",
@@ -116,6 +128,8 @@ PROJECTS = [
         "keywords": "phishing, machine learning, browser extension, security",
         "year": 2022, "department": DEPARTMENTS[1], "status": "approved",
         "categories": ["Cybersecurity", "AI / Machine Learning"],
+        "github": "https://github.com/aou-kuwait/phishing-detector",
+        "slides": False,
     },
     {
         "title": "RESTful API for Multi-Tenant SaaS Inventory System",
@@ -125,6 +139,8 @@ PROJECTS = [
         "keywords": "REST, API, SaaS, multi-tenant, OAuth",
         "year": 2021, "department": DEPARTMENTS[0], "status": "approved",
         "categories": ["Software Engineering", "Web Development"],
+        "github": "https://github.com/aou-kuwait/multi-tenant-inventory-api",
+        "slides": False,
     },
     # Pending submissions (so admin queue isn't empty for the demo)
     {
@@ -196,6 +212,7 @@ def upsert_projects(app):
         project = Project(
             title=p["title"], abstract=p["abstract"], keywords=p["keywords"],
             year=p["year"], department=p["department"], status=p["status"],
+            github_url=p.get("github"),
             uploader_id=student.id,
             created_at=datetime.utcnow() - timedelta(days=180 - i * 14),
         )
@@ -205,16 +222,27 @@ def upsert_projects(app):
         project.categories = [cat_by_name[name] for name in p["categories"] if name in cat_by_name]
 
         slug = "".join(ch if ch.isalnum() else "_" for ch in p["title"].lower())[:40].strip("_")
-        unique = f"seed_{slug}_{uuid.uuid4().hex[:8]}.pdf"
-        stored = write_pdf(unique, upload_folder)
-        original = f"{slug}.pdf"
 
         db.session.add(project)
         db.session.flush()
+
+        # Main document
+        doc_unique = f"seed_{slug}_{uuid.uuid4().hex[:8]}.pdf"
+        doc_stored = write_pdf(doc_unique, upload_folder)
         db.session.add(ProjectFile(
-            project_id=project.id, filename=original, stored_path=stored,
-            mimetype="application/pdf", size=os.path.getsize(stored),
+            project_id=project.id, filename=f"{slug}.pdf", stored_path=doc_stored,
+            mimetype="application/pdf", size=os.path.getsize(doc_stored), kind="document",
         ))
+
+        # Optional slides
+        if p.get("slides"):
+            sl_unique = f"seed_{slug}_slides_{uuid.uuid4().hex[:8]}.pdf"
+            sl_stored = write_pdf(sl_unique, upload_folder)
+            db.session.add(ProjectFile(
+                project_id=project.id, filename=f"{slug}_slides.pdf", stored_path=sl_stored,
+                mimetype="application/pdf", size=os.path.getsize(sl_stored), kind="slides",
+            ))
+
         created += 1
 
     db.session.commit()

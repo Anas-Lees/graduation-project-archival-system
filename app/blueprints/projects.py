@@ -101,22 +101,37 @@ def view(pid):
     return render_template("projects/view.html", project=project)
 
 
-@bp.route("/<int:pid>/files/<int:fid>")
-@login_required
-def download(pid, fid):
+def _file_for_request(pid, fid):
     f = db.session.get(ProjectFile, fid)
     if not f or f.project_id != pid:
         abort(404)
     project = f.project
     if project.status != "approved" and not (
-        current_user.has_role("doc") or project.uploader_id == current_user.id
+        current_user.is_authenticated and (
+            current_user.has_role("doc") or project.uploader_id == current_user.id
+        )
     ):
         abort(403)
+    return f
+
+
+@bp.route("/<int:pid>/files/<int:fid>")
+@login_required
+def download(pid, fid):
+    f = _file_for_request(pid, fid)
     log = AccessLog(user_id=current_user.id, project_id=pid, action="download",
                     ip=request.remote_addr, user_agent=(request.user_agent.string or "")[:255])
     db.session.add(log)
     db.session.commit()
     return send_file(f.stored_path, as_attachment=True, download_name=f.filename)
+
+
+@bp.route("/<int:pid>/media/<int:fid>")
+def media(pid, fid):
+    """Inline media (video) — same RBAC as download but served for in-page playback."""
+    f = _file_for_request(pid, fid)
+    return send_file(f.stored_path, mimetype=f.mimetype or "application/octet-stream",
+                     as_attachment=False, conditional=True)
 
 
 @bp.route("/upload", methods=["GET", "POST"])
@@ -128,13 +143,13 @@ def upload():
     form.categories.choices = [(c.id, c.name_en) for c in cats]
 
     if form.validate_on_submit():
-        stored, original, mime, size = save_upload(form.file.data)
         project = Project(
             title=form.title.data.strip(),
             abstract=form.abstract.data.strip(),
             keywords=(form.keywords.data or "").strip(),
             year=form.year.data,
             department=form.department.data.strip(),
+            github_url=(form.github_url.data or "").strip() or None,
             status="pending",
             uploader_id=current_user.id,
         )
@@ -142,8 +157,24 @@ def upload():
             project.categories = db.session.query(Category).filter(Category.id.in_(form.categories.data)).all()
         db.session.add(project)
         db.session.flush()
-        pf = ProjectFile(project_id=project.id, filename=original, stored_path=stored, mimetype=mime, size=size)
-        db.session.add(pf)
+
+        # Main document (required)
+        stored, original, mime, size = save_upload(form.file.data)
+        db.session.add(ProjectFile(project_id=project.id, filename=original, stored_path=stored,
+                                   mimetype=mime, size=size, kind="document"))
+
+        # Optional video
+        if form.video.data and form.video.data.filename:
+            stored, original, mime, size = save_upload(form.video.data)
+            db.session.add(ProjectFile(project_id=project.id, filename=original, stored_path=stored,
+                                       mimetype=mime, size=size, kind="video"))
+
+        # Optional slides
+        if form.slides.data and form.slides.data.filename:
+            stored, original, mime, size = save_upload(form.slides.data)
+            db.session.add(ProjectFile(project_id=project.id, filename=original, stored_path=stored,
+                                       mimetype=mime, size=size, kind="slides"))
+
         db.session.commit()
 
         # Notify all docs

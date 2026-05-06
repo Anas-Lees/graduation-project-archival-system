@@ -49,6 +49,7 @@ class Project(db.Model):
     keywords = db.Column(db.String(500), default="")
     year = db.Column(db.Integer, nullable=False, index=True)
     department = db.Column(db.String(120), nullable=False, index=True)
+    github_url = db.Column(db.String(500))
     status = db.Column(db.String(20), default="pending", index=True)  # pending/approved/rejected
     uploader_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     approver_id = db.Column(db.Integer, db.ForeignKey("users.id"))
@@ -71,9 +72,19 @@ class ProjectFile(db.Model):
     stored_path = db.Column(db.String(500), nullable=False)
     mimetype = db.Column(db.String(100))
     size = db.Column(db.Integer)
+    kind = db.Column(db.String(20), nullable=False, default="document")  # document / video / slides
     uploaded_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     project = db.relationship("Project", back_populates="files")
+
+
+# Convenience accessors on Project for the three logical slots
+def _files_of_kind(self, kind):
+    return [f for f in self.files if f.kind == kind]
+
+Project.document_files = property(lambda self: _files_of_kind(self, "document"))
+Project.video_file = property(lambda self: (_files_of_kind(self, "video") or [None])[0])
+Project.slides_file = property(lambda self: (_files_of_kind(self, "slides") or [None])[0])
 
 
 class AccessLog(db.Model):

@@ -11,8 +11,14 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     UPLOAD_FOLDER = os.path.join(basedir, "app", "static", "uploads")
-    MAX_CONTENT_LENGTH = 50 * 1024 * 1024  # 50MB per upload
-    ALLOWED_EXTENSIONS = {"pdf", "docx", "doc"}
+    MAX_CONTENT_LENGTH = 200 * 1024 * 1024  # 200MB total per submission (doc + video + slides)
+    ALLOWED_DOC_EXTENSIONS = {"pdf", "docx", "doc"}
+    ALLOWED_VIDEO_EXTENSIONS = {"mp4", "webm", "mov", "m4v"}
+    ALLOWED_SLIDES_EXTENSIONS = {"pptx", "ppt", "pdf"}
+    # Combined for legacy callers that referenced ALLOWED_EXTENSIONS
+    ALLOWED_EXTENSIONS = (
+        ALLOWED_DOC_EXTENSIONS | ALLOWED_VIDEO_EXTENSIONS | ALLOWED_SLIDES_EXTENSIONS
+    )
 
     # NFR05: 30-min idle timeout
     PERMANENT_SESSION_LIFETIME = timedelta(minutes=30)

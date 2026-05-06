@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-05-03 13:31+0300\n"
+"POT-Creation-Date: 2026-05-06 16:13+0300\n"
 "PO-Revision-Date: 2026-05-03 13:33+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ar\n"
@@ -19,11 +19,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: app/forms.py:9 app/forms.py:41
+#: app/forms.py:9 app/forms.py:54
 msgid "Full name"
 msgstr "الاسم الكامل"
 
-#: app/forms.py:10 app/forms.py:17 app/forms.py:42
+#: app/forms.py:10 app/forms.py:17 app/forms.py:55
 #: app/templates/admin/users.html:11
 msgid "Email"
 msgstr "البريد الإلكتروني"
@@ -45,7 +45,7 @@ msgid "Remember me"
 msgstr "تذكرني"
 
 #: app/forms.py:20 app/templates/auth/login.html:2
-#: app/templates/auth/register.html:33 app/templates/base.html:74
+#: app/templates/auth/register.html:33 app/templates/base.html:72
 msgid "Sign in"
 msgstr "تسجيل الدخول"
 
@@ -53,7 +53,7 @@ msgstr "تسجيل الدخول"
 msgid "Title"
 msgstr "العنوان"
 
-#: app/forms.py:25 app/templates/projects/view.html:27
+#: app/forms.py:25 app/templates/projects/view.html:39
 msgid "Abstract"
 msgstr "الملخص"
 
@@ -76,34 +76,67 @@ msgid "Categories"
 msgstr "الفئات"
 
 #: app/forms.py:30
-msgid "Project file (PDF or DOCX)"
+#, fuzzy
+msgid "Project document (PDF or DOCX)"
 msgstr "ملف المشروع (PDF أو DOCX)"
 
-#: app/forms.py:31
+#: app/forms.py:32
 msgid "PDF or DOCX only"
 msgstr "PDF أو DOCX فقط"
 
-#: app/forms.py:32
+#: app/forms.py:33
+msgid "Demo video (optional, MP4 / WebM / MOV)"
+msgstr "فيديو توضيحي (اختياري، MP4 / WebM / MOV)"
+
+#: app/forms.py:36
+msgid "MP4, WebM, MOV, or M4V only"
+msgstr "MP4 أو WebM أو MOV أو M4V فقط"
+
+#: app/forms.py:37
+msgid "Slides (optional, PPTX / PPT / PDF)"
+msgstr "العرض التقديمي (اختياري، PPTX / PPT / PDF)"
+
+#: app/forms.py:40
+msgid "PPTX, PPT, or PDF only"
+msgstr "PPTX أو PPT أو PDF فقط"
+
+#: app/forms.py:41
+msgid "GitHub repository (optional)"
+msgstr "مستودع GitHub (اختياري)"
+
+#: app/forms.py:44
+msgid "Must be a github.com URL, e.g. https://github.com/user/repo"
+msgstr "يجب أن يكون رابط github.com، مثل https://github.com/user/repo"
+
+#: app/forms.py:45
 msgid "Submit for approval"
 msgstr "إرسال للموافقة"
 
-#: app/forms.py:36 app/templates/admin/approvals.html:22
+#: app/forms.py:49 app/templates/admin/approvals.html:22
 msgid "Reason"
 msgstr "السبب"
 
-#: app/forms.py:37
+#: app/forms.py:50
 msgid "Reject"
 msgstr "رفض"
 
-#: app/forms.py:43 app/templates/admin/users.html:11
+#: app/forms.py:56 app/templates/admin/users.html:11
 msgid "Role"
 msgstr "الدور"
 
-#: app/forms.py:45
+#: app/forms.py:56
+msgid "Student"
+msgstr "طالب"
+
+#: app/forms.py:57
+msgid "Doctor"
+msgstr "دكتور"
+
+#: app/forms.py:58
 msgid "Password (leave blank to keep)"
 msgstr "كلمة المرور (اتركها فارغة للإبقاء عليها)"
 
-#: app/forms.py:46
+#: app/forms.py:59
 msgid "Save"
 msgstr "حفظ"
 
@@ -204,21 +237,32 @@ msgstr "أهلاً بعودتك يا %(name)s!"
 msgid "You have been signed out."
 msgstr "تم تسجيل خروجك."
 
-#: app/blueprints/projects.py:153
+#: app/blueprints/projects.py:184
 #, python-format
 msgid "New project pending approval: %(title)s"
 msgstr "مشروع جديد بانتظار الموافقة: %(title)s"
 
-#: app/blueprints/projects.py:154
-#, python-format
-msgid "Faculty member %(name)s submitted '%(title)s'. Review at /admin/approvals."
-msgstr "أرسل عضو هيئة التدريس %(name)s مشروع «%(title)s». راجعه على /admin/approvals."
+#: app/blueprints/projects.py:185
+#, fuzzy, python-format
+msgid "%(name)s submitted '%(title)s'. Review at /admin/approvals."
+msgstr "أرسل %(name)s مشروع «%(title)s». راجعه على /admin/approvals."
+"أرسل عضو هيئة التدريس %(name)s مشروع «%(title)s». راجعه على "
+"/admin/approvals."
 
-#: app/blueprints/projects.py:156
+#: app/blueprints/projects.py:187
 msgid "Project submitted and is pending admin approval."
 msgstr "تم إرسال المشروع وهو بانتظار موافقة الإدارة."
 
-#: app/templates/about.html:2 app/templates/base.html:92
+#: app/templates/_macros.html:8
+msgid "Close"
+msgstr "إغلاق"
+
+#: app/templates/_macros.html:35
+#, fuzzy
+msgid "Page navigation"
+msgstr "تبديل التنقل"
+
+#: app/templates/about.html:2 app/templates/base.html:90
 msgid "About"
 msgstr "حول"
 
@@ -295,49 +339,49 @@ msgstr "بحث"
 msgid "Upload"
 msgstr "رفع"
 
-#: app/templates/base.html:38 app/templates/projects/mine.html:2
+#: app/templates/base.html:36 app/templates/projects/mine.html:2
 #: app/templates/projects/mine.html:4
 msgid "My submissions"
 msgstr "مشاريعي"
 
-#: app/templates/base.html:42
-msgid "Admin"
-msgstr "الإدارة"
+#: app/templates/base.html:40
+msgid "Doctor panel"
+msgstr "لوحة الدكتور"
 
-#: app/templates/base.html:44
+#: app/templates/base.html:42
 msgid "Dashboard"
 msgstr "لوحة التحكم"
 
-#: app/templates/admin/approvals.html:2 app/templates/base.html:45
+#: app/templates/admin/approvals.html:2 app/templates/base.html:43
 msgid "Approvals"
 msgstr "الموافقات"
 
 #: app/templates/admin/reports.html:10 app/templates/admin/users.html:2
-#: app/templates/admin/users.html:5 app/templates/base.html:46
+#: app/templates/admin/users.html:5 app/templates/base.html:44
 msgid "Users"
 msgstr "المستخدمون"
 
-#: app/templates/admin/reports.html:2 app/templates/base.html:47
+#: app/templates/admin/reports.html:2 app/templates/base.html:45
 msgid "Reports"
 msgstr "التقارير"
 
-#: app/templates/base.html:55
+#: app/templates/base.html:53
 msgid "Language switcher"
 msgstr "تبديل اللغة"
 
-#: app/templates/base.html:70
+#: app/templates/base.html:68
 msgid "Sign out"
 msgstr "تسجيل الخروج"
 
-#: app/templates/auth/register.html:2 app/templates/base.html:75
+#: app/templates/auth/register.html:2 app/templates/base.html:73
 msgid "Register"
 msgstr "تسجيل"
 
-#: app/templates/base.html:90
+#: app/templates/base.html:88
 msgid "Arab Open University — Kuwait Branch"
 msgstr "الجامعة العربية المفتوحة — فرع الكويت"
 
-#: app/templates/base.html:93 app/templates/privacy.html:2
+#: app/templates/base.html:91 app/templates/privacy.html:2
 msgid "Privacy"
 msgstr "الخصوصية"
 
@@ -583,7 +627,7 @@ msgstr "تصفح المشاريع"
 msgid "Search results"
 msgstr "نتائج البحث"
 
-#: app/templates/projects/browse.html:10 app/templates/projects/view.html:31
+#: app/templates/projects/browse.html:10 app/templates/projects/view.html:43
 msgid "Keywords"
 msgstr "الكلمات المفتاحية"
 
@@ -645,13 +689,21 @@ msgstr "إرسال مشروع تخرج"
 
 #: app/templates/projects/upload.html:5
 msgid ""
-"Faculty submissions enter a pending queue and are published once an "
-"administrator approves them."
+"Submissions enter a pending queue and are published once a doctor "
+"approves them."
 msgstr ""
 
 #: app/templates/projects/upload.html:38
 msgid "Hold Ctrl/Cmd to select multiple."
 msgstr "اضغط Ctrl/Cmd لاختيار عدة عناصر."
+
+#: app/templates/projects/upload.html:47
+msgid "The fields below are optional but recommended for richer demos."
+msgstr "الحقول التالية اختيارية لكنها موصى بها لعرض أكثر ثراءً."
+
+#: app/templates/projects/upload.html:52
+msgid "Will play directly on the project page. Up to ~150 MB recommended."
+msgstr "سيُشغَّل مباشرةً على صفحة المشروع. يُفضَّل ألا يتجاوز 150 ميغابايت تقريباً."
 
 #: app/templates/projects/view.html:13
 msgid "This project is currently"
@@ -665,19 +717,56 @@ msgstr "وغير ظاهر للعموم."
 msgid "Uploaded by"
 msgstr "رُفع بواسطة"
 
-#: app/templates/projects/view.html:35
+#: app/templates/projects/view.html:28
+msgid "Demo video"
+msgstr "فيديو توضيحي"
+
+#: app/templates/projects/view.html:30
+msgid "Demo video for"
+msgstr "فيديو توضيحي للمشروع"
+
+#: app/templates/projects/view.html:33
+msgid "Your browser does not support embedded video."
+msgstr "متصفحك لا يدعم تشغيل الفيديو مدمجاً."
+
+#: app/templates/projects/view.html:34
+msgid "Open video"
+msgstr "فتح الفيديو"
+
+#: app/templates/projects/view.html:48
+msgid "Source code"
+msgstr "الشيفرة المصدرية"
+
+#: app/templates/projects/view.html:52
+msgid "View on GitHub"
+msgstr "عرض على GitHub"
+
+#: app/templates/projects/view.html:59
 msgid "Files"
 msgstr "الملفات"
 
-#: app/templates/projects/view.html:42
+#: app/templates/projects/view.html:66
+msgid "Slides"
+msgstr "العرض التقديمي"
+
+#: app/templates/projects/view.html:70
 msgid "Download"
 msgstr "تنزيل"
 
-#: app/templates/projects/view.html:44
+#: app/templates/projects/view.html:72
 msgid "Sign in to download"
 msgstr "سجّل الدخول للتنزيل"
 
-#: app/templates/projects/view.html:50
+#: app/templates/projects/view.html:78
 msgid "No files attached."
 msgstr "لا توجد ملفات مرفقة."
+
+#~ msgid "Admin"
+#~ msgstr "الإدارة"
+
+#~ msgid ""
+#~ "Faculty submissions enter a pending "
+#~ "queue and are published once an "
+#~ "administrator approves them."
+#~ msgstr ""
 

@@ -47,7 +47,7 @@ Two roles only:
 | FR01  | Register with email verification            | `/auth/register` + token link logged to `instance/email.log` |
 | FR02  | Login by email/password                     | `/auth/login` (bcrypt-verified) |
 | FR03  | Role-based access (student / doc)           | `app/utils/security.py` `@role_required` |
-| FR04  | Authenticated users upload PDF/DOCX         | `/projects/upload` (50 MB max) |
+| FR04  | Authenticated users upload PDF/DOCX         | `/projects/upload` (200 MB total — main doc + optional video + optional slides + optional GitHub URL) |
 | FR05  | Browse by year / department / category      | `/projects/` with filter UI |
 | FR06  | Full-text search                            | `/projects/search` via SQLite FTS5 with rank ordering |
 | FR07  | Detailed project view                       | `/projects/<id>` shows abstract, authors, files |
@@ -79,6 +79,21 @@ Two roles only:
 | NFR13  | 10 000+ projects                  | SQLite + FTS5 handles this easily |
 | NFR14  | Coding standards                  | PEP 8 (Python equivalent of PSR-12) |
 | NFR15  | University data-protection policy | RBAC enforced; privacy notice at `/privacy` |
+
+---
+
+## Rich project pages
+
+Each project can include up to three media attachments and a source-code link:
+
+| Slot | Accepted formats | Where it appears |
+|---|---|---|
+| **Project document** (required) | PDF, DOCX, DOC | Listed in the Files section with a download button |
+| **Demo video** (optional) | MP4, WebM, MOV, M4V | Embedded as a `<video controls>` player at the top of the project page (16:9, streams inline via `/projects/<id>/media/<file_id>`) |
+| **Slides** (optional) | PPTX, PPT, PDF | Listed under Files with a "Slides" badge and download button |
+| **GitHub repository** (optional) | `https://github.com/...` URL | Rendered as a "View on GitHub →" button under the abstract |
+
+To see video playback in action, sign in as `student@aou.edu.kw`, click **Upload**, attach any MP4 (along with the required PDF), then sign in as `doc@aou.edu.kw` and approve it from **Doctor panel → Approvals**. Open the project page — the video plays in-page.
 
 ---
 

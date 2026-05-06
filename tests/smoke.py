@@ -66,7 +66,13 @@ def main():
     assert r.status_code == 200
     token = csrf(r.text)
     pdf = b"%PDF-1.4\n1 0 obj<<>>endobj\ntrailer<</Root 1 0 R>>\n%%EOF\n"
-    files = {"file": ("smoke_test.pdf", io.BytesIO(pdf), "application/pdf")}
+    fake_mp4 = b"\x00\x00\x00\x18ftypmp42" + b"\x00" * 80  # extension passes; bytes are placeholder
+    fake_pptx = b"PK\x03\x04" + b"\x00" * 60               # zip magic so it looks plausible
+    files = [
+        ("file",   ("smoke_test.pdf",   io.BytesIO(pdf),       "application/pdf")),
+        ("video",  ("smoke_test.mp4",   io.BytesIO(fake_mp4),  "video/mp4")),
+        ("slides", ("smoke_test.pptx",  io.BytesIO(fake_pptx), "application/vnd.openxmlformats-officedocument.presentationml.presentation")),
+    ]
     data = {
         "csrf_token": token,
         "title": "Smoke Test Project",
@@ -75,13 +81,14 @@ def main():
         "year": "2025",
         "department": "Information Technology and Computing",
         "categories": [],
+        "github_url": "https://github.com/aou-kuwait/smoke-test",
         "submit": "Submit for approval",
     }
     r = sf.post(f"{BASE}/projects/upload", data=data, files=files, allow_redirects=False)
     assert r.status_code in (302, 303), f"upload got {r.status_code}, body={r.text[:300]}"
     location = r.headers["Location"]
     pid = int(re.search(r"/projects/(\d+)", location).group(1))
-    ok(f"faculty upload created project id={pid} (pending)")
+    ok(f"upload created project id={pid} with doc + video + slides + github (pending)")
 
     # 6. Login as doc + approve the upload
     sa = requests.Session()
@@ -97,10 +104,27 @@ def main():
     assert r.status_code in (302, 303), f"approve got {r.status_code}"
     ok("admin approved project")
 
-    # Confirm it's now publicly visible
+    # Confirm it's now publicly visible AND renders the video + github link
     r = requests.get(f"{BASE}/projects/{pid}")
     assert r.status_code == 200 and "Smoke Test Project" in r.text
     ok("approved project is publicly visible")
+
+    assert "<video" in r.text and f"/projects/{pid}/media/" in r.text, "video player not rendered"
+    ok("project page embeds <video> with /media/ src")
+
+    assert "github.com/aou-kuwait/smoke-test" in r.text
+    ok("project page shows GitHub link")
+
+    assert "smoke_test.pptx" in r.text or "Slides" in r.text
+    ok("project page lists slides file")
+
+    # Inline media route returns the video bytes (not as attachment)
+    media_match = re.search(rf'src="(/projects/{pid}/media/\d+)"', r.text)
+    assert media_match, "no /media/ src found"
+    rm = requests.get(f"{BASE}{media_match.group(1)}")
+    assert rm.status_code == 200, f"media route got {rm.status_code}"
+    assert "attachment" not in (rm.headers.get("Content-Disposition") or ""), "video served as attachment"
+    ok("inline /media/ route serves video without attachment header")
 
     # 7. Logged-in student can download approved files
     ss = requests.Session()

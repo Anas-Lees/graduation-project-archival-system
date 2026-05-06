@@ -190,6 +190,41 @@ TRANSLATIONS = {
 
     # Accessibility / misc
     "Accessibility": "إمكانية الوصول",
+
+    # Roles + role panel
+    "Student": "طالب",
+    "Doctor": "دكتور",
+    "Doctor panel": "لوحة الدكتور",
+    "Close": "إغلاق",
+
+    # Project view: video / GitHub / slides
+    "Demo video": "فيديو توضيحي",
+    "Demo video for": "فيديو توضيحي للمشروع",
+    "Your browser does not support embedded video.": "متصفحك لا يدعم تشغيل الفيديو مدمجاً.",
+    "Open video": "فتح الفيديو",
+    "Source code": "الشيفرة المصدرية",
+    "View on GitHub": "عرض على GitHub",
+    "Slides": "العرض التقديمي",
+
+    # Upload form: optional fields
+    "Project document (PDF or DOCX)": "مستند المشروع (PDF أو DOCX)",
+    "Demo video (optional, MP4 / WebM / MOV)": "فيديو توضيحي (اختياري، MP4 / WebM / MOV)",
+    "Slides (optional, PPTX / PPT / PDF)": "العرض التقديمي (اختياري، PPTX / PPT / PDF)",
+    "GitHub repository (optional)": "مستودع GitHub (اختياري)",
+    "MP4, WebM, MOV, or M4V only": "MP4 أو WebM أو MOV أو M4V فقط",
+    "PPTX, PPT, or PDF only": "PPTX أو PPT أو PDF فقط",
+    "Must be a github.com URL, e.g. https://github.com/user/repo":
+        "يجب أن يكون رابط github.com، مثل https://github.com/user/repo",
+    "The fields below are optional but recommended for richer demos.":
+        "الحقول التالية اختيارية لكنها موصى بها لعرض أكثر ثراءً.",
+    "Will play directly on the project page. Up to ~150 MB recommended.":
+        "سيُشغَّل مباشرةً على صفحة المشروع. يُفضَّل ألا يتجاوز 150 ميغابايت تقريباً.",
+
+    # Updated workflow notification
+    "%(name)s submitted '%(title)s'. Review at /admin/approvals.":
+        "أرسل %(name)s مشروع «%(title)s». راجعه على /admin/approvals.",
+    "Submissions enter a pending queue and are published once a doctor approves them.":
+        "تدخل الطلبات قائمة الانتظار وتُنشَر بعد موافقة الدكتور.",
 }
 
 PO_HEADER_RX = re.compile(r'(?s)("Content-Transfer-Encoding: 8bit\\n"\n)')

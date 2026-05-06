@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-05-03 13:31+0300\n"
+"POT-Creation-Date: 2026-05-06 16:13+0300\n"
 "PO-Revision-Date: 2026-05-03 13:33+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: app/forms.py:9 app/forms.py:41
+#: app/forms.py:9 app/forms.py:54
 msgid "Full name"
 msgstr "Full name"
 
-#: app/forms.py:10 app/forms.py:17 app/forms.py:42
+#: app/forms.py:10 app/forms.py:17 app/forms.py:55
 #: app/templates/admin/users.html:11
 msgid "Email"
 msgstr "Email"
@@ -44,7 +44,7 @@ msgid "Remember me"
 msgstr "Remember me"
 
 #: app/forms.py:20 app/templates/auth/login.html:2
-#: app/templates/auth/register.html:33 app/templates/base.html:74
+#: app/templates/auth/register.html:33 app/templates/base.html:72
 msgid "Sign in"
 msgstr "Sign in"
 
@@ -52,7 +52,7 @@ msgstr "Sign in"
 msgid "Title"
 msgstr "Title"
 
-#: app/forms.py:25 app/templates/projects/view.html:27
+#: app/forms.py:25 app/templates/projects/view.html:39
 msgid "Abstract"
 msgstr "Abstract"
 
@@ -75,34 +75,67 @@ msgid "Categories"
 msgstr "Categories"
 
 #: app/forms.py:30
-msgid "Project file (PDF or DOCX)"
+#, fuzzy
+msgid "Project document (PDF or DOCX)"
 msgstr "Project file (PDF or DOCX)"
 
-#: app/forms.py:31
+#: app/forms.py:32
 msgid "PDF or DOCX only"
 msgstr "PDF or DOCX only"
 
-#: app/forms.py:32
+#: app/forms.py:33
+msgid "Demo video (optional, MP4 / WebM / MOV)"
+msgstr "Demo video (optional, MP4 / WebM / MOV)"
+
+#: app/forms.py:36
+msgid "MP4, WebM, MOV, or M4V only"
+msgstr "MP4, WebM, MOV, or M4V only"
+
+#: app/forms.py:37
+msgid "Slides (optional, PPTX / PPT / PDF)"
+msgstr "Slides (optional, PPTX / PPT / PDF)"
+
+#: app/forms.py:40
+msgid "PPTX, PPT, or PDF only"
+msgstr "PPTX, PPT, or PDF only"
+
+#: app/forms.py:41
+msgid "GitHub repository (optional)"
+msgstr "GitHub repository (optional)"
+
+#: app/forms.py:44
+msgid "Must be a github.com URL, e.g. https://github.com/user/repo"
+msgstr "Must be a github.com URL, e.g. https://github.com/user/repo"
+
+#: app/forms.py:45
 msgid "Submit for approval"
 msgstr "Submit for approval"
 
-#: app/forms.py:36 app/templates/admin/approvals.html:22
+#: app/forms.py:49 app/templates/admin/approvals.html:22
 msgid "Reason"
 msgstr "Reason"
 
-#: app/forms.py:37
+#: app/forms.py:50
 msgid "Reject"
 msgstr "Reject"
 
-#: app/forms.py:43 app/templates/admin/users.html:11
+#: app/forms.py:56 app/templates/admin/users.html:11
 msgid "Role"
 msgstr "Role"
 
-#: app/forms.py:45
+#: app/forms.py:56
+msgid "Student"
+msgstr "Student"
+
+#: app/forms.py:57
+msgid "Doctor"
+msgstr "Doctor"
+
+#: app/forms.py:58
 msgid "Password (leave blank to keep)"
 msgstr "Password (leave blank to keep)"
 
-#: app/forms.py:46
+#: app/forms.py:59
 msgid "Save"
 msgstr "Save"
 
@@ -203,21 +236,30 @@ msgstr "Welcome back, %(name)s!"
 msgid "You have been signed out."
 msgstr "You have been signed out."
 
-#: app/blueprints/projects.py:153
+#: app/blueprints/projects.py:184
 #, python-format
 msgid "New project pending approval: %(title)s"
 msgstr "New project pending approval: %(title)s"
 
-#: app/blueprints/projects.py:154
-#, python-format
-msgid "Faculty member %(name)s submitted '%(title)s'. Review at /admin/approvals."
+#: app/blueprints/projects.py:185
+#, fuzzy, python-format
+msgid "%(name)s submitted '%(title)s'. Review at /admin/approvals."
 msgstr "Faculty member %(name)s submitted '%(title)s'. Review at /admin/approvals."
 
-#: app/blueprints/projects.py:156
+#: app/blueprints/projects.py:187
 msgid "Project submitted and is pending admin approval."
 msgstr "Project submitted and is pending admin approval."
 
-#: app/templates/about.html:2 app/templates/base.html:92
+#: app/templates/_macros.html:8
+msgid "Close"
+msgstr "Close"
+
+#: app/templates/_macros.html:35
+#, fuzzy
+msgid "Page navigation"
+msgstr "Toggle navigation"
+
+#: app/templates/about.html:2 app/templates/base.html:90
 msgid "About"
 msgstr "About"
 
@@ -294,49 +336,49 @@ msgstr "Search"
 msgid "Upload"
 msgstr "Upload"
 
-#: app/templates/base.html:38 app/templates/projects/mine.html:2
+#: app/templates/base.html:36 app/templates/projects/mine.html:2
 #: app/templates/projects/mine.html:4
 msgid "My submissions"
 msgstr "My submissions"
 
-#: app/templates/base.html:42
-msgid "Admin"
-msgstr "Admin"
+#: app/templates/base.html:40
+msgid "Doctor panel"
+msgstr "Doctor panel"
 
-#: app/templates/base.html:44
+#: app/templates/base.html:42
 msgid "Dashboard"
 msgstr "Dashboard"
 
-#: app/templates/admin/approvals.html:2 app/templates/base.html:45
+#: app/templates/admin/approvals.html:2 app/templates/base.html:43
 msgid "Approvals"
 msgstr "Approvals"
 
 #: app/templates/admin/reports.html:10 app/templates/admin/users.html:2
-#: app/templates/admin/users.html:5 app/templates/base.html:46
+#: app/templates/admin/users.html:5 app/templates/base.html:44
 msgid "Users"
 msgstr "Users"
 
-#: app/templates/admin/reports.html:2 app/templates/base.html:47
+#: app/templates/admin/reports.html:2 app/templates/base.html:45
 msgid "Reports"
 msgstr "Reports"
 
-#: app/templates/base.html:55
+#: app/templates/base.html:53
 msgid "Language switcher"
 msgstr "Language switcher"
 
-#: app/templates/base.html:70
+#: app/templates/base.html:68
 msgid "Sign out"
 msgstr "Sign out"
 
-#: app/templates/auth/register.html:2 app/templates/base.html:75
+#: app/templates/auth/register.html:2 app/templates/base.html:73
 msgid "Register"
 msgstr "Register"
 
-#: app/templates/base.html:90
+#: app/templates/base.html:88
 msgid "Arab Open University — Kuwait Branch"
 msgstr "Arab Open University — Kuwait Branch"
 
-#: app/templates/base.html:93 app/templates/privacy.html:2
+#: app/templates/base.html:91 app/templates/privacy.html:2
 msgid "Privacy"
 msgstr "Privacy"
 
@@ -582,7 +624,7 @@ msgstr "Browse projects"
 msgid "Search results"
 msgstr "Search results"
 
-#: app/templates/projects/browse.html:10 app/templates/projects/view.html:31
+#: app/templates/projects/browse.html:10 app/templates/projects/view.html:43
 msgid "Keywords"
 msgstr "Keywords"
 
@@ -640,13 +682,21 @@ msgstr "Submit a graduation project"
 
 #: app/templates/projects/upload.html:5
 msgid ""
-"Faculty submissions enter a pending queue and are published once an "
-"administrator approves them."
+"Submissions enter a pending queue and are published once a doctor "
+"approves them."
 msgstr ""
 
 #: app/templates/projects/upload.html:38
 msgid "Hold Ctrl/Cmd to select multiple."
 msgstr "Hold Ctrl/Cmd to select multiple."
+
+#: app/templates/projects/upload.html:47
+msgid "The fields below are optional but recommended for richer demos."
+msgstr "The fields below are optional but recommended for richer demos."
+
+#: app/templates/projects/upload.html:52
+msgid "Will play directly on the project page. Up to ~150 MB recommended."
+msgstr "Will play directly on the project page. Up to ~150 MB recommended."
 
 #: app/templates/projects/view.html:13
 msgid "This project is currently"
@@ -660,19 +710,56 @@ msgstr "and is not publicly visible."
 msgid "Uploaded by"
 msgstr "Uploaded by"
 
-#: app/templates/projects/view.html:35
+#: app/templates/projects/view.html:28
+msgid "Demo video"
+msgstr "Demo video"
+
+#: app/templates/projects/view.html:30
+msgid "Demo video for"
+msgstr "Demo video for"
+
+#: app/templates/projects/view.html:33
+msgid "Your browser does not support embedded video."
+msgstr "Your browser does not support embedded video."
+
+#: app/templates/projects/view.html:34
+msgid "Open video"
+msgstr "Open video"
+
+#: app/templates/projects/view.html:48
+msgid "Source code"
+msgstr "Source code"
+
+#: app/templates/projects/view.html:52
+msgid "View on GitHub"
+msgstr "View on GitHub"
+
+#: app/templates/projects/view.html:59
 msgid "Files"
 msgstr "Files"
 
-#: app/templates/projects/view.html:42
+#: app/templates/projects/view.html:66
+msgid "Slides"
+msgstr "Slides"
+
+#: app/templates/projects/view.html:70
 msgid "Download"
 msgstr "Download"
 
-#: app/templates/projects/view.html:44
+#: app/templates/projects/view.html:72
 msgid "Sign in to download"
 msgstr "Sign in to download"
 
-#: app/templates/projects/view.html:50
+#: app/templates/projects/view.html:78
 msgid "No files attached."
 msgstr "No files attached."
+
+#~ msgid "Admin"
+#~ msgstr "Admin"
+
+#~ msgid ""
+#~ "Faculty submissions enter a pending "
+#~ "queue and are published once an "
+#~ "administrator approves them."
+#~ msgstr ""
 
