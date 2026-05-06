@@ -1,0 +1,3 @@
+# Always use LF for shell scripts so they execute correctly on Linux/macOS
+# regardless of which OS committed them.
+*.sh text eol=lf

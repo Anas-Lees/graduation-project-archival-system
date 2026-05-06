@@ -7,7 +7,21 @@ Implements the TM471 Part A specification: bilingual (English/Arabic) interface 
 
 ---
 
-## Quick start (Windows)
+## Live deployment
+
+The app is designed to deploy free on **PythonAnywhere** (always-on, no credit card).
+Setup takes ~10 minutes and consists of `git clone` + `bash scripts/pa_bootstrap.sh`
++ a couple of clicks in the PythonAnywhere dashboard.
+
+→ **See [DEPLOY_PYTHONANYWHERE.md](DEPLOY_PYTHONANYWHERE.md) for the step-by-step guide.**
+
+It also runs cleanly on Render, Fly.io, Railway, or any host that can run a
+Python 3.11 WSGI app — point them at `wsgi:application` and set `SECRET_KEY` +
+`FLASK_HTTPS=1` in env.
+
+---
+
+## Quick start (Windows, local development)
 
 ```cmd
 cd E:\salman\gpas

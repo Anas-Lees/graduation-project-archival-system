@@ -19,6 +19,13 @@ def create_app(config_class=Config):
     os.makedirs(os.path.join(app.root_path, "..", "instance"), exist_ok=True)
     os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 
+    # Production safety: warn if SECRET_KEY came from the random fallback
+    if not getattr(config_class, "_SECRET_KEY_FROM_ENV", True):
+        app.logger.warning(
+            "SECRET_KEY not set in environment. A random one was generated for this "
+            "process — sessions will reset on every restart. Set SECRET_KEY in env for production."
+        )
+
     db.init_app(app)
     login_manager.init_app(app)
     csrf.init_app(app)
