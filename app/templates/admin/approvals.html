@@ -1,33 +1,56 @@
 {% extends "base.html" %}
 {% block title %}{{ _('Approvals') }}{% endblock %}
 {% block content %}
-<h1 class="h3 mb-3">{{ _('Pending approvals') }}</h1>
-{% if pending %}
-  {% for p in pending %}
-    <article class="card mb-3">
-      <div class="card-body">
-        <h2 class="h5"><a href="{{ url_for('projects.view', pid=p.id) }}">{{ p.title }}</a></h2>
-        <p class="text-muted small mb-1">{{ p.year }} · {{ p.department }} · {{ _('by') }} {{ p.uploader.full_name }} ({{ p.uploader.email }})</p>
-        <p>{{ p.abstract[:300] }}{% if p.abstract|length > 300 %}…{% endif %}</p>
-        <div class="d-flex gap-2">
-          <form action="{{ url_for('admin.approve', pid=p.id) }}" method="post">
-            {{ reject_form.csrf_token() }}
-            <button type="submit" class="btn btn-success btn-sm">{{ _('Approve') }}</button>
-          </form>
-          <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="collapse" data-bs-target="#reject-{{ p.id }}">{{ _('Reject…') }}</button>
+<div class="container my-4">
+  <div class="section-eyebrow">{{ _('Doctor panel') }}</div>
+  <h1 class="h2 mb-4">{{ _('Pending approvals') }} {% if pending %}<span class="badge rounded-pill ms-2" style="background:var(--gpas-warn);font-size:.85rem">{{ pending|length }}</span>{% endif %}</h1>
+
+  {% if pending %}
+    <div class="d-flex flex-column gap-3">
+    {% for p in pending %}
+      <article class="card p-4">
+        <div class="d-flex flex-wrap justify-content-between gap-3 align-items-start">
+          <div class="flex-grow-1">
+            <div class="card-meta mb-1">
+              <span>{{ p.year }}</span><span class="dot"></span>
+              <span>{{ p.department }}</span><span class="dot"></span>
+              <span>{{ _('by') }} {{ p.uploader.full_name }}</span>
+            </div>
+            <h2 class="h5 mb-2"><a href="{{ url_for('projects.view', pid=p.id) }}">{{ p.title }}</a></h2>
+            <p class="card-text">{{ p.abstract[:300] }}{% if p.abstract|length > 300 %}…{% endif %}</p>
+            {% if p.categories %}
+              <div class="d-flex flex-wrap gap-1 mb-2">
+                {% for c in p.categories %}<span class="gpas-chip">{{ c.localized(lang) }}</span>{% endfor %}
+              </div>
+            {% endif %}
+          </div>
+          <div class="d-flex flex-column gap-2 flex-shrink-0">
+            <form action="{{ url_for('admin.approve', pid=p.id) }}" method="post">
+              {{ reject_form.csrf_token() }}
+              <button type="submit" class="btn btn-primary w-100">✓ {{ _('Approve') }}</button>
+            </form>
+            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="collapse" data-bs-target="#reject-{{ p.id }}">{{ _('Reject…') }}</button>
+            <a class="btn btn-link btn-sm" href="{{ url_for('projects.view', pid=p.id) }}">{{ _('Preview') }} →</a>
+          </div>
         </div>
         <div class="collapse mt-3" id="reject-{{ p.id }}">
-          <form action="{{ url_for('admin.reject', pid=p.id) }}" method="post">
+          <form action="{{ url_for('admin.reject', pid=p.id) }}" method="post" class="border-top pt-3">
             {{ reject_form.csrf_token() }}
             <label for="reason-{{ p.id }}" class="form-label">{{ _('Reason') }}</label>
-            <textarea id="reason-{{ p.id }}" name="reason" class="form-control mb-2" rows="3" required></textarea>
-            <button type="submit" class="btn btn-danger btn-sm">{{ _('Confirm rejection') }}</button>
+            <textarea id="reason-{{ p.id }}" name="reason" class="form-control mb-2" rows="3" required
+                      placeholder="{{ _('Explain what the student should fix…') }}"></textarea>
+            <button type="submit" class="btn btn-danger">{{ _('Confirm rejection') }}</button>
           </form>
         </div>
-      </div>
-    </article>
-  {% endfor %}
-{% else %}
-  <p class="text-muted">{{ _('Nothing pending. Good job!') }}</p>
-{% endif %}
+      </article>
+    {% endfor %}
+    </div>
+  {% else %}
+    <div class="gpas-empty">
+      <div class="gpas-empty-icon">✓</div>
+      <p>{{ _('Nothing pending. Good job!') }}</p>
+      <a class="btn btn-outline-primary" href="{{ url_for('admin.dashboard') }}">{{ _('Back to dashboard') }} →</a>
+    </div>
+  {% endif %}
+</div>
 {% endblock %}

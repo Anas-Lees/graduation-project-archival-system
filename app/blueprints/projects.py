@@ -143,6 +143,9 @@ def upload():
     form = ProjectForm()
     cats = db.session.query(Category).order_by(Category.name_en).all()
     form.categories.choices = [(c.id, c.name_en) for c in cats]
+    # Default the year to the current year on a fresh GET
+    if request.method == "GET" and not form.year.data:
+        form.year.data = datetime.utcnow().year
 
     if form.validate_on_submit():
         project = Project(

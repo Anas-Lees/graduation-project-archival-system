@@ -297,23 +297,51 @@ textarea:focus-visible,
 .form-label { font-weight: 600; color: var(--gpas-ink-900); margin-bottom: .35rem; }
 .form-text  { color: var(--gpas-ink-500); }
 
-/* Search bar styled (used in hero + browse) */
+/* Search bar styled (used in hero + browse) — uses logical props for RTL flip */
 .gpas-search {
   display: flex; gap: .5rem;
+  align-items: center;
   background: #fff;
   border: 1px solid var(--gpas-border);
   border-radius: var(--radius-pill);
-  padding: .35rem .35rem .35rem 1.25rem;
+  padding-block: .35rem;
+  padding-inline-start: 1.25rem;
+  padding-inline-end: .35rem;
   box-shadow: var(--shadow-sm);
   max-width: 580px;
 }
 .gpas-search input {
-  flex: 1; border: 0; outline: 0;
+  flex: 1; min-width: 0; border: 0; outline: 0;
   background: transparent;
   font-size: 1rem; color: var(--gpas-ink-900);
 }
 .gpas-search input::placeholder { color: var(--gpas-ink-300); }
-.gpas-search .btn { padding: .55rem 1.4rem; }
+.gpas-search .btn { padding: .55rem 1.4rem; flex-shrink: 0; }
+
+/* Category checkbox cards (upload form) */
+.gpas-cat-grid { margin: 0; }
+.gpas-cat-grid .col-sm-6, .gpas-cat-grid .col-md-4 { padding: .25rem; }
+.gpas-cat-card {
+  display: flex; align-items: center; gap: .65rem;
+  padding: .65rem .85rem;
+  border: 1px solid var(--gpas-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  background: #fff;
+  transition: border-color .12s ease, background-color .12s ease;
+  font-weight: 500; color: var(--gpas-ink-700);
+  min-height: 48px;
+  margin: 0; width: 100%;
+}
+.gpas-cat-card:hover { border-color: var(--gpas-blue-300); background: var(--gpas-blue-50); }
+.gpas-cat-card .form-check-input { margin: 0; flex-shrink: 0; }
+.gpas-cat-card .form-check-input:checked + span { color: var(--gpas-blue-700); font-weight: 600; }
+.gpas-cat-card:has(.form-check-input:checked) {
+  border-color: var(--gpas-blue-500);
+  background: var(--gpas-blue-50);
+  box-shadow: 0 0 0 1px var(--gpas-blue-500) inset;
+}
+[dir="rtl"] .gpas-cat-card { text-align: right; }
 
 /* Filter sidebar / panel */
 .gpas-filters {
@@ -321,6 +349,36 @@ textarea:focus-visible,
   border: 1px solid var(--gpas-border);
   border-radius: var(--radius);
   padding: 1.25rem;
+}
+
+/* ============================================================
+   Auth pages (login / register)
+   ============================================================ */
+.gpas-auth {
+  position: relative;
+  padding: clamp(2rem, 5vw, 4rem) 0;
+  min-height: 80vh;
+  display: flex; align-items: center;
+}
+.gpas-auth::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(700px 400px at 110% 0%, var(--gpas-blue-50) 0%, transparent 60%),
+    radial-gradient(500px 300px at -10% 110%, #f0eaff 0%, transparent 60%);
+  z-index: -1;
+}
+.gpas-auth-card {
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--gpas-border);
+}
+.gpas-auth-art .gpas-hero-eyebrow { margin-bottom: 1rem; }
+.gpas-auth-art ul li { color: var(--gpas-ink-700); }
+.gpas-auth-art code {
+  background: var(--gpas-bg-soft); padding: .1rem .35rem;
+  border-radius: 4px; color: var(--gpas-ink-900);
+  font-size: .9em; unicode-bidi: plaintext;
 }
 
 /* ============================================================
@@ -342,13 +400,12 @@ textarea:focus-visible,
 
 .gpas-citation {
   background: var(--gpas-bg-soft);
-  border-left: 4px solid var(--gpas-blue-500);
+  border-inline-start: 4px solid var(--gpas-blue-500);
   padding: 1rem 1.25rem;
   border-radius: var(--radius-sm);
   font-size: .92rem; color: var(--gpas-ink-700);
   position: relative;
 }
-[dir="rtl"] .gpas-citation { border-left: 0; border-right: 4px solid var(--gpas-blue-500); }
 .gpas-citation pre {
   margin: 0; white-space: pre-wrap; word-break: break-word;
   font-family: inherit; font-size: inherit; color: inherit;
@@ -419,12 +476,23 @@ textarea:focus-visible,
 .badge { white-space: nowrap; }
 main p, main li { max-width: 70ch; }
 
-/* RTL helpers */
-[dir="rtl"] .me-1 { margin-right: 0 !important; margin-left: 0.25rem !important; }
-[dir="rtl"] .me-2 { margin-right: 0 !important; margin-left: 0.5rem !important; }
-[dir="rtl"] .me-3 { margin-right: 0 !important; margin-left: 1rem !important; }
-[dir="rtl"] .ms-auto { margin-left: 0 !important; margin-right: auto !important; }
-[dir="rtl"] .text-end { text-align: left !important; }
+/* RTL: Bootstrap RTL build handles most spacing utilities, but a few custom
+   classes still use physical `right/left` properties — flip them here. */
+[dir="rtl"] .gpas-hero h1 { text-align: right; }
+[dir="rtl"] .gpas-hero .lead { text-align: right; }
+[dir="rtl"] .gpas-citation pre { text-align: right; direction: rtl; }
+[dir="rtl"] .gpas-card-thumb-letter { text-align: center; }
+[dir="rtl"] .skip-link { left: auto; right: 0; border-bottom-right-radius: 0; border-bottom-left-radius: var(--radius-sm); }
+[dir="rtl"] .gpas-footer-bottom { flex-direction: row-reverse; }
+
+/* Latin runs inside Arabic paragraphs (URLs, GitHub links) shouldn't reverse */
+[dir="rtl"] .text-break,
+[dir="rtl"] .gpas-citation pre,
+[dir="rtl"] code,
+[dir="rtl"] .gpas-github { unicode-bidi: plaintext; }
+
+/* Pagination reads naturally LTR even in RTL pages */
+[dir="rtl"] .pagination { direction: ltr; }
 
 /* Pagination */
 .pagination .page-link {

@@ -45,9 +45,18 @@
     </div>
 
     <div class="mb-3">
-      {{ form.categories.label(class="form-label") }}
-      {{ form.categories(class="form-select", size=5) }}
-      <div class="form-text">{{ _('Hold Ctrl/Cmd to select multiple.') }}</div>
+      <label class="form-label">{{ _('Categories') }}</label>
+      <div class="row g-2 gpas-cat-grid" role="group" aria-label="{{ _('Categories') }}">
+        {% for subfield in form.categories %}
+          <div class="col-sm-6 col-md-4">
+            <label class="gpas-cat-card">
+              {{ subfield(class="form-check-input") }}
+              <span>{{ subfield.label.text }}</span>
+            </label>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="form-text">{{ _('Pick all that apply.') }}</div>
     </div>
 
     <div class="mb-3">
@@ -115,7 +124,7 @@
         items.slice(0, 12).forEach(it => {
           const chip = document.createElement('button');
           chip.type = 'button'; chip.className = 'gpas-chip border-0';
-          chip.innerHTML = `${it.keyword} <span class="text-muted">·${it.count}</span>`;
+          chip.innerHTML = `${it.keyword} <span class="text-muted">${it.count}</span>`;
           chip.addEventListener('click', () => addKeyword(it.keyword));
           cloud.appendChild(chip);
         });

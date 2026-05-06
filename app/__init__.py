@@ -39,10 +39,20 @@ def create_app(config_class=Config):
 
     @app.context_processor
     def _inject_globals():
+        from flask_login import current_user
+        from .models import Project
+        from sqlalchemy import func
+        pending_count = 0
+        if getattr(current_user, "is_authenticated", False) and current_user.has_role("doc"):
+            pending_count = (
+                db.session.query(func.count(Project.id))
+                .filter(Project.status == "pending").scalar()
+            ) or 0
         return {
             "lang": g.lang,
             "is_rtl": g.is_rtl,
             "languages": app.config["LANGUAGES"],
+            "pending_count": pending_count,
         }
 
     from .blueprints.main import bp as main_bp

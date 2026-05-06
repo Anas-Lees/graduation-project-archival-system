@@ -1,8 +1,14 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed, FileRequired
-from wtforms import StringField, PasswordField, TextAreaField, IntegerField, SelectField, SelectMultipleField, BooleanField, SubmitField, URLField
+from wtforms import StringField, PasswordField, TextAreaField, IntegerField, SelectField, SelectMultipleField, BooleanField, SubmitField, URLField, widgets
 from wtforms.validators import DataRequired, Email, EqualTo, Length, NumberRange, Optional, URL, Regexp
 from flask_babel import lazy_gettext as _l
+
+
+class MultiCheckboxField(SelectMultipleField):
+    """SelectMultipleField rendered as a list of checkboxes."""
+    widget = widgets.ListWidget(prefix_label=False)
+    option_widget = widgets.CheckboxInput()
 
 
 class RegisterForm(FlaskForm):
@@ -26,7 +32,7 @@ class ProjectForm(FlaskForm):
     keywords = StringField(_l("Keywords (comma-separated)"), validators=[Optional(), Length(max=500)])
     year = IntegerField(_l("Year"), validators=[DataRequired(), NumberRange(min=2000, max=2099)])
     department = StringField(_l("Department"), validators=[DataRequired(), Length(max=120)])
-    categories = SelectMultipleField(_l("Categories"), coerce=int)
+    categories = MultiCheckboxField(_l("Categories"), coerce=int)
     thumbnail = FileField(_l("Thumbnail image (optional, JPG / PNG / WebP)"),
                           validators=[Optional(),
                                       FileAllowed(["jpg", "jpeg", "png", "webp", "svg"],

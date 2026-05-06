@@ -1,30 +1,41 @@
 {% extends "base.html" %}
 {% block title %}{{ _('Admin dashboard') }}{% endblock %}
 {% block content %}
-<h1 class="h3 mb-4">{{ _('Admin dashboard') }}</h1>
-<div class="row g-3 mb-4">
-  <div class="col-md-4">
-    <a href="{{ url_for('admin.approvals') }}" class="text-decoration-none">
-      <div class="card text-bg-warning h-100"><div class="card-body">
-        <div class="display-6">{{ pending_count }}</div>
-        <div>{{ _('Pending approvals') }}</div>
-      </div></div>
-    </a>
+<div class="container my-4">
+  <div class="section-eyebrow">{{ _('Doctor panel') }}</div>
+  <h1 class="h2 mb-4">{{ _('Admin dashboard') }}</h1>
+
+  <div class="row g-3 mb-4">
+    <div class="col-md-4">
+      <a href="{{ url_for('admin.approvals') }}" class="text-decoration-none">
+        <div class="gpas-stat" style="border-color: var(--gpas-warn); background: #fff8ed">
+          <div class="gpas-stat-value" style="color: var(--gpas-warn)">{{ pending_count }}</div>
+          <div class="gpas-stat-label">{{ _('Pending approvals') }}</div>
+        </div>
+      </a>
+    </div>
+    <div class="col-md-4">
+      <a href="{{ url_for('projects.browse') }}" class="text-decoration-none">
+        <div class="gpas-stat" style="border-color: var(--gpas-blue-300); background: var(--gpas-blue-50)">
+          <div class="gpas-stat-value" style="color: var(--gpas-blue-700)">{{ total_projects }}</div>
+          <div class="gpas-stat-label">{{ _('Approved projects') }}</div>
+        </div>
+      </a>
+    </div>
+    <div class="col-md-4">
+      <a href="{{ url_for('admin.users') }}" class="text-decoration-none">
+        <div class="gpas-stat">
+          <div class="gpas-stat-value">{{ user_count }}</div>
+          <div class="gpas-stat-label">{{ _('Registered users') }}</div>
+        </div>
+      </a>
+    </div>
   </div>
-  <div class="col-md-4">
-    <div class="card text-bg-primary h-100"><div class="card-body">
-      <div class="display-6">{{ total_projects }}</div>
-      <div>{{ _('Approved projects') }}</div>
-    </div></div>
-  </div>
-  <div class="col-md-4">
-    <a href="{{ url_for('admin.users') }}" class="text-decoration-none">
-      <div class="card text-bg-secondary h-100"><div class="card-body">
-        <div class="display-6">{{ user_count }}</div>
-        <div>{{ _('Registered users') }}</div>
-      </div></div>
-    </a>
+
+  <div class="d-flex flex-wrap gap-2">
+    <a class="btn btn-primary" href="{{ url_for('admin.approvals') }}">{{ _('Review pending') }} →</a>
+    <a class="btn btn-outline-primary" href="{{ url_for('admin.reports') }}">{{ _('View reports') }}</a>
+    <a class="btn btn-outline-secondary" href="{{ url_for('admin.users') }}">{{ _('Manage users') }}</a>
   </div>
 </div>
-<p><a class="btn btn-outline-primary" href="{{ url_for('admin.reports') }}">{{ _('View reports') }}</a></p>
 {% endblock %}

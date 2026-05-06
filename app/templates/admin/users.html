@@ -1,35 +1,55 @@
 {% extends "base.html" %}
 {% block title %}{{ _('Users') }}{% endblock %}
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-3">
-  <h1 class="h3 mb-0">{{ _('Users') }}</h1>
-  <a class="btn btn-primary" href="{{ url_for('admin.user_new') }}">+ {{ _('New user') }}</a>
-</div>
-<div class="table-responsive">
-<table class="table table-striped">
-  <thead><tr>
-    <th>{{ _('Name') }}</th><th>{{ _('Email') }}</th><th>{{ _('Role') }}</th><th>{{ _('Verified') }}</th><th>{{ _('Created') }}</th><th></th>
-  </tr></thead>
-  <tbody>
-    {% for u in users %}
-      <tr>
-        <td>{{ u.full_name }}</td>
-        <td>{{ u.email }}</td>
-        <td><span class="badge bg-secondary">{{ u.role }}</span></td>
-        <td>{% if u.email_verified %}✓{% else %}—{% endif %}</td>
-        <td>{{ u.created_at.strftime('%Y-%m-%d') }}</td>
-        <td class="text-end">
-          <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin.user_edit', uid=u.id) }}">{{ _('Edit') }}</a>
-          {% if u.id != current_user.id %}
-            <form action="{{ url_for('admin.user_delete', uid=u.id) }}" method="post" class="d-inline" onsubmit="return confirm('{{ _('Delete this user?') }}');">
-              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-              <button class="btn btn-sm btn-outline-danger">{{ _('Delete') }}</button>
-            </form>
-          {% endif %}
-        </td>
-      </tr>
-    {% endfor %}
-  </tbody>
-</table>
+<div class="container my-4">
+  <div class="d-flex justify-content-between align-items-end mb-4">
+    <div>
+      <div class="section-eyebrow">{{ _('Doctor panel') }}</div>
+      <h1 class="h2 mb-0">{{ _('Users') }}</h1>
+    </div>
+    <a class="btn btn-primary" href="{{ url_for('admin.user_new') }}">+ {{ _('New user') }}</a>
+  </div>
+  <div class="card p-0">
+    <div class="table-responsive">
+      <table class="table align-middle mb-0">
+        <thead>
+          <tr style="background:var(--gpas-bg-soft)">
+            <th class="ps-3">{{ _('Name') }}</th>
+            <th>{{ _('Email') }}</th>
+            <th>{{ _('Role') }}</th>
+            <th>{{ _('Verified') }}</th>
+            <th>{{ _('Created') }}</th>
+            <th class="pe-3 text-end"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for u in users %}
+            <tr>
+              <td class="ps-3 fw-semibold" style="color:var(--gpas-ink-900)">{{ u.full_name }}</td>
+              <td class="text-muted">{{ u.email }}</td>
+              <td>
+                {% if u.role == 'doc' %}
+                  <span class="gpas-chip" style="background:var(--gpas-blue-50); color:var(--gpas-blue-700)">{{ _('Doctor') }}</span>
+                {% else %}
+                  <span class="gpas-chip">{{ _('Student') }}</span>
+                {% endif %}
+              </td>
+              <td>{% if u.email_verified %}<span style="color:var(--gpas-success)">✓</span>{% else %}<span class="text-muted">—</span>{% endif %}</td>
+              <td class="text-muted small">{{ u.created_at.strftime('%b %d, %Y') }}</td>
+              <td class="pe-3 text-end">
+                <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('admin.user_edit', uid=u.id) }}">{{ _('Edit') }}</a>
+                {% if u.id != current_user.id %}
+                  <form action="{{ url_for('admin.user_delete', uid=u.id) }}" method="post" class="d-inline" data-confirm="{{ _('Delete this user?') }}">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button class="btn btn-sm btn-outline-danger">{{ _('Delete') }}</button>
+                  </form>
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
 {% endblock %}

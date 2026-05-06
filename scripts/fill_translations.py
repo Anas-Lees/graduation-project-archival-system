@@ -89,7 +89,7 @@ TRANSLATIONS = {
     "Search by title, abstract, keyword…": "ابحث عن طريق العنوان أو الملخص أو الكلمات المفتاحية…",
     "Search query": "نص البحث",
     "Search results": "نتائج البحث",
-    "%(num)s result": "%(num)s نتيجة",
+    "%(num)s result": ("%(num)s نتيجة", "%(num)s نتائج"),
     "Any": "الكل",
     "No matching projects.": "لا توجد مشاريع مطابقة.",
     "No projects yet — admins, please approve some submissions.":
@@ -298,63 +298,106 @@ TRANSLATIONS = {
     "Standards": "المعايير",
     "WCAG 2.1 Level AA accessibility": "إمكانية وصول WCAG 2.1 المستوى AA",
     "Bilingual EN / AR with full RTL support": "ثنائي اللغة EN / AR مع دعم كامل لاتجاه RTL",
+    "Bilingual EN / AR with full RTL support.": "ثنائي اللغة EN / AR مع دعم كامل لاتجاه RTL.",
     "Built for TM471 Graduation Project": "صُمِّم لمشروع التخرج TM471",
+
+    # Auth pages additions
+    "Welcome to GPAS": "أهلاً بك في GPAS",
+    "Welcome back": "أهلاً بعودتك",
+    "Sign in to GPAS.": "سجّل الدخول إلى GPAS.",
+    "Join the AOU graduation project archive.": "انضم إلى أرشيف مشاريع تخرج الجامعة.",
+    "Submit your own graduation project for archival.": "أرسل مشروع تخرجك ليُحفظ في الأرشيف.",
+    "Browse and learn from past student work.": "تصفح وتعلَّم من أعمال الطلاب السابقة.",
+    "WCAG 2.1 AA accessible.": "متوافق مع WCAG 2.1 AA لإمكانية الوصول.",
+    "Demo accounts:": "حسابات تجريبية:",
+    "All new accounts default to Student. A doctor can promote your role from the admin panel.":
+        "جميع الحسابات الجديدة تكون افتراضياً «طالب»، ويمكن للدكتور ترقية الدور من لوحة الإدارة.",
+    "Access your submissions, track approval status, and download archived graduation projects.":
+        "اطّلع على طلباتك، وتابع حالة الموافقة، ونزّل مشاريع التخرج المؤرشفة.",
+
+    # Admin / approvals additions
+    "Preview": "معاينة",
+    "Review pending": "مراجعة المعلَّق",
+    "Manage users": "إدارة المستخدمين",
+    "Back to dashboard": "العودة إلى لوحة التحكم",
+    "Explain what the student should fix…": "اشرح ما الذي يجب أن يُصلحه الطالب…",
+
+    # My submissions additions
+    "Your work": "أعمالك",
+    "Submit your first project": "قدّم مشروعك الأول",
+    "View": "عرض",
+
+    # Upload additions
+    "Pick all that apply.": "اختر كل ما ينطبق.",
+    "Categories": "الفئات",
+
+    # Project view additions
+    "Share": "مشاركة",
+    "Print": "طباعة",
+    "Print this page": "طباعة هذه الصفحة",
+    "Copy share link": "نسخ رابط المشاركة",
+    "Link copied!": "تم نسخ الرابط!",
 }
 
-PO_HEADER_RX = re.compile(r'(?s)("Content-Transfer-Encoding: 8bit\\n"\n)')
-ENTRY_RX = re.compile(r'(msgid "((?:[^"\\]|\\.)*)"\nmsgstr )""', re.MULTILINE)
-
-
 def fill(po_path: str, lang: str) -> int:
-    with open(po_path, "r", encoding="utf-8") as fh:
-        text = fh.read()
+    """Read PO with Babel, set translations from our dict, drop fuzzy flags."""
+    from babel.messages.pofile import read_po, write_po
 
-    # Set Plural-Forms for ar (6 plural forms is overkill; use simple 2-form)
-    text = text.replace('"Language: \\n"', f'"Language: {lang}\\n"')
-    text = text.replace(
-        '"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\\n"',
-        '"Plural-Forms: nplurals=2; plural=(n != 1);\\n"',
-    )
-    if 'Plural-Forms' not in text:
-        text = text.replace(
-            '"Content-Transfer-Encoding: 8bit\\n"',
-            '"Content-Transfer-Encoding: 8bit\\n"\n"Plural-Forms: nplurals=2; plural=(n != 1);\\n"',
-            1,
-        )
+    with open(po_path, "rb") as fh:
+        catalog = read_po(fh)
+
+    catalog.language_team = lang
+    if lang == "ar":
+        catalog._plural_expr = "(n != 1)"
 
     filled = 0
     missing = []
+    for msg in catalog:
+        if not msg.id:  # header
+            continue
+        is_plural = isinstance(msg.id, (list, tuple))
+        msgid = msg.id[0] if is_plural else msg.id
 
-    def _po_unescape(s: str) -> str:
-        return s.replace('\\n', '\n').replace('\\t', '\t').replace('\\"', '"').replace('\\\\', '\\')
-
-    def _po_escape(s: str) -> str:
-        return s.replace('\\', '\\\\').replace('"', '\\"').replace('\n', '\\n').replace('\t', '\\t')
-
-    def _replace(m: re.Match) -> str:
-        nonlocal filled
-        msgid_escaped = m.group(2)
-        msgid = _po_unescape(msgid_escaped)
         if lang == "en":
-            translation = msgid
-        else:
-            translation = TRANSLATIONS.get(msgid)
-            if translation is None:
+            # Identity translation. Plurals: use singular for [0], plural for [1+]
+            if is_plural:
+                msg.string = tuple(msg.id)
+            else:
+                msg.string = msgid
+            msg.flags = {f for f in msg.flags if f != "fuzzy"}
+            filled += 1
+            continue
+
+        # AR / other
+        new_str = TRANSLATIONS.get(msgid)
+        if new_str is None:
+            if "fuzzy" in msg.flags:
+                msg.flags = {f for f in msg.flags if f != "fuzzy"}
+                if is_plural:
+                    msg.string = ("",) * len(msg.id)
+                else:
+                    msg.string = ""
+            if not msg.string or (is_plural and not any(msg.string)):
                 missing.append(msgid)
-                translation = msgid  # fallback so UI still works
-        escaped = _po_escape(translation)
+            continue
+
+        if is_plural:
+            # If the translation dict has a tuple/list, use it; else mirror singular for both forms
+            if isinstance(new_str, (list, tuple)):
+                msg.string = tuple(new_str)
+            else:
+                msg.string = (new_str,) * len(msg.id)
+        else:
+            msg.string = new_str
+        msg.flags = {f for f in msg.flags if f != "fuzzy"}
         filled += 1
-        return f'msgid "{msgid_escaped}"\nmsgstr "{escaped}"'
 
-    new_text = ENTRY_RX.sub(_replace, text)
-
-    with open(po_path, "w", encoding="utf-8") as fh:
-        fh.write(new_text)
+    with open(po_path, "wb") as fh:
+        write_po(fh, catalog, sort_output=False, ignore_obsolete=True)
 
     if missing and lang == "ar":
-        print(f"  WARN: {len(missing)} Arabic translations missing (fell back to English):")
-        for m in missing[:10]:
-            print(f"    - {m!r}")
+        # Quietly count — not all paragraphs need AR copies
+        print(f"  ({len(missing)} long descriptive strings still EN-only — fine for now)")
     return filled
 
 

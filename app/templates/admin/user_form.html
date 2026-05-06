@@ -1,14 +1,33 @@
 {% extends "base.html" %}
 {% block title %}{% if mode == 'new' %}{{ _('New user') }}{% else %}{{ _('Edit user') }}{% endif %}{% endblock %}
 {% block content %}
-<h1 class="h3 mb-3">{% if mode == 'new' %}{{ _('New user') }}{% else %}{{ _('Edit user') }}{% endif %}</h1>
-<form method="post" class="col-md-6" novalidate>
-  {{ form.hidden_tag() }}
-  <div class="mb-3">{{ form.full_name.label(class="form-label") }} {{ form.full_name(class="form-control") }}</div>
-  <div class="mb-3">{{ form.email.label(class="form-label") }} {{ form.email(class="form-control") }}</div>
-  <div class="mb-3">{{ form.role.label(class="form-label") }} {{ form.role(class="form-select") }}</div>
-  <div class="mb-3">{{ form.password.label(class="form-label") }} {{ form.password(class="form-control") }}</div>
-  {{ form.submit(class="btn btn-primary") }}
-  <a href="{{ url_for('admin.users') }}" class="btn btn-link">{{ _('Cancel') }}</a>
-</form>
+<div class="container my-4" style="max-width: 640px">
+  <div class="section-eyebrow">{{ _('Doctor panel') }}</div>
+  <h1 class="h2 mb-3">{% if mode == 'new' %}{{ _('New user') }}{% else %}{{ _('Edit user') }}{% endif %}</h1>
+
+  <form method="post" novalidate class="card p-4">
+    {{ form.hidden_tag() }}
+    <div class="mb-3">
+      {{ form.full_name.label(class="form-label") }}
+      {{ form.full_name(class="form-control") }}
+    </div>
+    <div class="mb-3">
+      {{ form.email.label(class="form-label") }}
+      {{ form.email(class="form-control") }}
+    </div>
+    <div class="mb-3">
+      {{ form.role.label(class="form-label") }}
+      {{ form.role(class="form-select") }}
+    </div>
+    <div class="mb-4">
+      {{ form.password.label(class="form-label") }}
+      {{ form.password(class="form-control") }}
+      <div class="form-text">{{ _('At least 8 characters.') }}</div>
+    </div>
+    <div class="d-flex gap-2">
+      {{ form.submit(class="btn btn-primary") }}
+      <a href="{{ url_for('admin.users') }}" class="btn btn-outline-secondary">{{ _('Cancel') }}</a>
+    </div>
+  </form>
+</div>
 {% endblock %}

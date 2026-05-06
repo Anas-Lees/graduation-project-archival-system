@@ -7,145 +7,149 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-05-06 16:36+0300\n"
+"POT-Creation-Date: 2026-05-06 16:57+0300\n"
 "PO-Revision-Date: 2026-05-03 13:33+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
-"Language-Team: en <LL@li.org>\n"
+"Language-Team: en\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: app/forms.py:9 app/forms.py:58
+#: app/forms.py:15 app/forms.py:64
 msgid "Full name"
 msgstr "Full name"
 
-#: app/forms.py:10 app/forms.py:17 app/forms.py:59
-#: app/templates/admin/users.html:11
+#: app/forms.py:16 app/forms.py:23 app/forms.py:65
+#: app/templates/admin/users.html:18
 msgid "Email"
 msgstr "Email"
 
-#: app/forms.py:11 app/forms.py:18
+#: app/forms.py:17 app/forms.py:24
 msgid "Password"
 msgstr "Password"
 
-#: app/forms.py:12
+#: app/forms.py:18
 msgid "Confirm password"
 msgstr "Confirm password"
 
-#: app/forms.py:13 app/templates/index.html:27
+#: app/forms.py:19 app/templates/auth/register.html:21
+#: app/templates/index.html:27
 msgid "Create account"
 msgstr "Create account"
 
-#: app/forms.py:19
+#: app/forms.py:25
 msgid "Remember me"
 msgstr "Remember me"
 
-#: app/forms.py:20 app/templates/auth/login.html:2
-#: app/templates/auth/register.html:33 app/templates/base.html:85
-#: app/templates/base.html:121 app/templates/projects/view.html:93
+#: app/forms.py:26 app/templates/auth/login.html:2
+#: app/templates/auth/login.html:25 app/templates/auth/register.html:53
+#: app/templates/base.html:94 app/templates/base.html:129
+#: app/templates/projects/view.html:105
 msgid "Sign in"
 msgstr "Sign in"
 
-#: app/forms.py:24 app/templates/projects/mine.html:8
+#: app/forms.py:30 app/templates/projects/mine.html:19
 msgid "Title"
 msgstr "Title"
 
-#: app/forms.py:25 app/templates/projects/view.html:54
+#: app/forms.py:31 app/templates/projects/view.html:66
 msgid "Abstract"
 msgstr "Abstract"
 
-#: app/forms.py:26
+#: app/forms.py:32
 msgid "Keywords (comma-separated)"
 msgstr "Keywords (comma-separated)"
 
-#: app/forms.py:27 app/templates/admin/reports.html:46
-#: app/templates/projects/browse.html:26 app/templates/projects/mine.html:8
+#: app/forms.py:33 app/templates/admin/reports.html:55
+#: app/templates/projects/browse.html:26 app/templates/projects/mine.html:20
 msgid "Year"
 msgstr "Year"
 
-#: app/forms.py:28 app/templates/admin/reports.html:39
+#: app/forms.py:34 app/templates/admin/reports.html:46
 #: app/templates/projects/browse.html:33
 msgid "Department"
 msgstr "Department"
 
-#: app/forms.py:29
+#: app/forms.py:35 app/templates/projects/upload.html:48
+#: app/templates/projects/upload.html:49
 msgid "Categories"
 msgstr "Categories"
 
-#: app/forms.py:30
-#, fuzzy
+#: app/forms.py:36
 msgid "Thumbnail image (optional, JPG / PNG / WebP)"
-msgstr "Slides (optional, PPTX / PPT / PDF)"
+msgstr "Thumbnail image (optional, JPG / PNG / WebP)"
 
-#: app/forms.py:33
+#: app/forms.py:39
 msgid "Images only (JPG, PNG, WebP, SVG)"
 msgstr "Images only (JPG, PNG, WebP, SVG)"
 
-#: app/forms.py:34
-#, fuzzy
+#: app/forms.py:40
 msgid "Project document (PDF or DOCX)"
-msgstr "Project file (PDF or DOCX)"
+msgstr "Project document (PDF or DOCX)"
 
-#: app/forms.py:36
+#: app/forms.py:42
 msgid "PDF or DOCX only"
 msgstr "PDF or DOCX only"
 
-#: app/forms.py:37
+#: app/forms.py:43
 msgid "Demo video (optional, MP4 / WebM / MOV)"
 msgstr "Demo video (optional, MP4 / WebM / MOV)"
 
-#: app/forms.py:40
+#: app/forms.py:46
 msgid "MP4, WebM, MOV, or M4V only"
 msgstr "MP4, WebM, MOV, or M4V only"
 
-#: app/forms.py:41
+#: app/forms.py:47
 msgid "Slides (optional, PPTX / PPT / PDF)"
 msgstr "Slides (optional, PPTX / PPT / PDF)"
 
-#: app/forms.py:44
+#: app/forms.py:50
 msgid "PPTX, PPT, or PDF only"
 msgstr "PPTX, PPT, or PDF only"
 
-#: app/forms.py:45
+#: app/forms.py:51
 msgid "GitHub repository (optional)"
 msgstr "GitHub repository (optional)"
 
-#: app/forms.py:48
+#: app/forms.py:54
 msgid "Must be a github.com URL, e.g. https://github.com/user/repo"
 msgstr "Must be a github.com URL, e.g. https://github.com/user/repo"
 
-#: app/forms.py:49
+#: app/forms.py:55
 msgid "Submit for approval"
 msgstr "Submit for approval"
 
-#: app/forms.py:53 app/templates/admin/approvals.html:22
+#: app/forms.py:59 app/templates/admin/approvals.html:39
+#: app/templates/projects/mine.html:32
 msgid "Reason"
 msgstr "Reason"
 
-#: app/forms.py:54
+#: app/forms.py:60
 msgid "Reject"
 msgstr "Reject"
 
-#: app/forms.py:60 app/templates/admin/users.html:11
+#: app/forms.py:66 app/templates/admin/users.html:19
 msgid "Role"
 msgstr "Role"
 
-#: app/forms.py:60
+#: app/forms.py:66 app/templates/admin/users.html:34
+#: app/templates/auth/login.html:17
 msgid "Student"
 msgstr "Student"
 
-#: app/forms.py:61
+#: app/forms.py:67 app/templates/admin/users.html:32
+#: app/templates/auth/login.html:18
 msgid "Doctor"
 msgstr "Doctor"
 
-#: app/forms.py:62
+#: app/forms.py:68
 msgid "Password (leave blank to keep)"
 msgstr "Password (leave blank to keep)"
 
-#: app/forms.py:63
+#: app/forms.py:69
 msgid "Save"
 msgstr "Save"
 
@@ -246,17 +250,17 @@ msgstr "Welcome back, %(name)s!"
 msgid "You have been signed out."
 msgstr "You have been signed out."
 
-#: app/blueprints/projects.py:191
+#: app/blueprints/projects.py:194
 #, python-format
 msgid "New project pending approval: %(title)s"
 msgstr "New project pending approval: %(title)s"
 
-#: app/blueprints/projects.py:192
-#, fuzzy, python-format
+#: app/blueprints/projects.py:195
+#, python-format
 msgid "%(name)s submitted '%(title)s'. Review at /admin/approvals."
-msgstr "Faculty member %(name)s submitted '%(title)s'. Review at /admin/approvals."
+msgstr "%(name)s submitted '%(title)s'. Review at /admin/approvals."
 
-#: app/blueprints/projects.py:194
+#: app/blueprints/projects.py:197
 msgid "Project submitted and is pending admin approval."
 msgstr "Project submitted and is pending admin approval."
 
@@ -265,21 +269,18 @@ msgid "Close"
 msgstr "Close"
 
 #: app/templates/_macros.html:44
-#, fuzzy
 msgid "Video"
-msgstr "Open video"
+msgstr "Video"
 
 #: app/templates/_macros.html:45
-#, fuzzy
 msgid "GitHub"
-msgstr "View on GitHub"
+msgstr "GitHub"
 
 #: app/templates/_macros.html:62
-#, fuzzy
 msgid "Page navigation"
-msgstr "Toggle navigation"
+msgstr "Page navigation"
 
-#: app/templates/about.html:2 app/templates/base.html:115
+#: app/templates/about.html:2 app/templates/base.html:123
 msgid "About"
 msgstr "About"
 
@@ -294,6 +295,10 @@ msgid ""
 "centralises the storage, discovery, and dissemination of graduation "
 "projects produced by the Faculty of Computer Studies."
 msgstr ""
+"The Graduation Project Archival System (GPAS) is a web-based digital "
+"repository developed for the Arab Open University — Kuwait Branch. It "
+"centralises the storage, discovery, and dissemination of graduation "
+"projects produced by the Faculty of Computer Studies."
 
 #: app/templates/about.html:8
 msgid "Goals"
@@ -325,6 +330,9 @@ msgid ""
 "keyboard navigation, descriptive alt text, sufficient colour contrast, "
 "and bilingual English/Arabic support including right-to-left layouts."
 msgstr ""
+"The system is designed to conform to WCAG 2.1 Level AA, with full "
+"keyboard navigation, descriptive alt text, sufficient colour contrast, "
+"and bilingual English/Arabic support including right-to-left layouts."
 
 #: app/templates/base.html:7
 msgid "Graduation Project Archival System"
@@ -335,6 +343,8 @@ msgid ""
 "A bilingual digital repository for graduation projects at Arab Open "
 "University — Kuwait Branch."
 msgstr ""
+"A bilingual digital repository for graduation projects at Arab Open "
+"University — Kuwait Branch."
 
 #: app/templates/base.html:26
 msgid "Skip to main content"
@@ -345,107 +355,102 @@ msgid "Primary navigation"
 msgstr "Primary navigation"
 
 #: app/templates/base.html:33
-#, fuzzy
 msgid "Graduation Project Archive"
-msgstr "Graduation Project Archival System"
+msgstr "Graduation Project Archive"
 
 #: app/templates/base.html:36
 msgid "Toggle navigation"
 msgstr "Toggle navigation"
 
-#: app/templates/base.html:41 app/templates/base.html:113
+#: app/templates/base.html:41 app/templates/base.html:122
 #: app/templates/projects/view.html:9
 msgid "Browse"
 msgstr "Browse"
 
-#: app/templates/base.html:42 app/templates/base.html:114
-#: app/templates/index.html:20 app/templates/projects/browse.html:3
-msgid "Search"
-msgstr "Search"
-
-#: app/templates/base.html:44
+#: app/templates/base.html:43
 msgid "Upload"
 msgstr "Upload"
 
-#: app/templates/base.html:45 app/templates/projects/mine.html:2
-#: app/templates/projects/mine.html:4
+#: app/templates/base.html:44 app/templates/projects/mine.html:2
+#: app/templates/projects/mine.html:8
 msgid "My submissions"
 msgstr "My submissions"
 
-#: app/templates/base.html:49
+#: app/templates/admin/approvals.html:5 app/templates/admin/dashboard.html:5
+#: app/templates/admin/reports.html:5 app/templates/admin/user_form.html:5
+#: app/templates/admin/users.html:7 app/templates/base.html:49
 msgid "Doctor panel"
 msgstr "Doctor panel"
 
-#: app/templates/base.html:51
+#: app/templates/base.html:55
 msgid "Dashboard"
 msgstr "Dashboard"
 
-#: app/templates/admin/approvals.html:2 app/templates/base.html:52
+#: app/templates/admin/approvals.html:2 app/templates/base.html:58
 msgid "Approvals"
 msgstr "Approvals"
 
-#: app/templates/admin/reports.html:10 app/templates/admin/users.html:2
-#: app/templates/admin/users.html:5 app/templates/base.html:53
+#: app/templates/admin/reports.html:12 app/templates/admin/users.html:2
+#: app/templates/admin/users.html:8 app/templates/base.html:62
 msgid "Users"
 msgstr "Users"
 
-#: app/templates/admin/reports.html:2 app/templates/base.html:54
+#: app/templates/admin/reports.html:2 app/templates/base.html:63
 msgid "Reports"
 msgstr "Reports"
 
-#: app/templates/base.html:62
+#: app/templates/base.html:71
 msgid "Language switcher"
 msgstr "Language switcher"
 
-#: app/templates/base.html:81
+#: app/templates/base.html:90
 msgid "Sign out"
 msgstr "Sign out"
 
-#: app/templates/auth/register.html:2 app/templates/base.html:87
-#: app/templates/base.html:122
+#: app/templates/auth/register.html:2 app/templates/base.html:96
+#: app/templates/base.html:130
 msgid "Register"
 msgstr "Register"
 
-#: app/templates/base.html:107
+#: app/templates/base.html:116
 msgid ""
 "A bilingual digital repository preserving the graduation projects of the "
 "Faculty of Computer Studies at the Arab Open University — Kuwait Branch."
 msgstr ""
+"A bilingual digital repository preserving the graduation projects of the "
+"Faculty of Computer Studies at the Arab Open University — Kuwait Branch."
 
-#: app/templates/base.html:111
+#: app/templates/base.html:120
 msgid "Explore"
 msgstr "Explore"
 
-#: app/templates/base.html:119
-#, fuzzy
+#: app/templates/base.html:127
 msgid "Account"
-msgstr "Count"
+msgstr "Account"
 
-#: app/templates/base.html:126
+#: app/templates/base.html:134
 msgid "Standards"
 msgstr "Standards"
 
-#: app/templates/base.html:128
-#, fuzzy
+#: app/templates/base.html:136
 msgid "WCAG 2.1 Level AA accessibility"
-msgstr "e.g. accessibility"
+msgstr "WCAG 2.1 Level AA accessibility"
 
-#: app/templates/base.html:129
+#: app/templates/base.html:137
 msgid "Bilingual EN / AR with full RTL support"
 msgstr "Bilingual EN / AR with full RTL support"
 
-#: app/templates/base.html:130 app/templates/privacy.html:4
+#: app/templates/base.html:138 app/templates/privacy.html:4
 msgid "Privacy notice"
 msgstr "Privacy notice"
 
-#: app/templates/base.html:135
+#: app/templates/base.html:143
 msgid "Arab Open University — Kuwait Branch"
 msgstr "Arab Open University — Kuwait Branch"
 
-#: app/templates/base.html:136
-#, fuzzy
+#: app/templates/base.html:144
 msgid "Built for TM471 Graduation Project"
-msgstr "Submit a graduation project"
+msgstr "Built for TM471 Graduation Project"
 
 #: app/templates/index.html:3 app/templates/projects/view.html:8
 msgid "Home"
@@ -456,9 +461,8 @@ msgid "Faculty of Computer Studies — AOU Kuwait"
 msgstr "Faculty of Computer Studies — AOU Kuwait"
 
 #: app/templates/index.html:11
-#, fuzzy
 msgid "Preserve and discover graduation projects."
-msgstr "Submit a graduation project"
+msgstr "Preserve and discover graduation projects."
 
 #: app/templates/index.html:13
 msgid ""
@@ -466,15 +470,21 @@ msgid ""
 "supervise, and the next generation learn from every graduation project "
 "the university produces."
 msgstr ""
+"A bilingual digital archive that lets students publish, doctors "
+"supervise, and the next generation learn from every graduation project "
+"the university produces."
 
 #: app/templates/index.html:18
-#, fuzzy
 msgid "Search by title, keyword, year…"
-msgstr "Search by title, abstract, keyword…"
+msgstr "Search by title, keyword, year…"
 
 #: app/templates/index.html:19
 msgid "Search query"
 msgstr "Search query"
+
+#: app/templates/index.html:20 app/templates/projects/browse.html:3
+msgid "Search"
+msgstr "Search"
 
 #: app/templates/index.html:25 app/templates/projects/browse.html:3
 #: app/templates/projects/browse.html:10
@@ -482,9 +492,8 @@ msgid "Browse projects"
 msgstr "Browse projects"
 
 #: app/templates/index.html:29 app/templates/index.html:148
-#, fuzzy
 msgid "Submit a project"
-msgstr "Submit a graduation project"
+msgstr "Submit a project"
 
 #: app/templates/index.html:35
 msgid "Illustration of a digital archive"
@@ -495,14 +504,12 @@ msgid "Open"
 msgstr "Open"
 
 #: app/templates/index.html:94
-#, fuzzy
 msgid "approved projects"
-msgstr "Approved projects"
+msgstr "approved projects"
 
 #: app/templates/index.html:96
-#, fuzzy
 msgid "departments"
-msgstr "Department"
+msgstr "departments"
 
 #: app/templates/index.html:98
 msgid "academic years archived"
@@ -513,28 +520,24 @@ msgid "Open access for the AOU community"
 msgstr "Open access for the AOU community"
 
 #: app/templates/index.html:109
-#, fuzzy
 msgid "Browse by topic"
-msgstr "Browse projects"
+msgstr "Browse by topic"
 
 #: app/templates/index.html:110
-#, fuzzy
 msgid "Popular categories"
-msgstr "Categories"
+msgstr "Popular categories"
 
 #: app/templates/index.html:112
 msgid "See all"
 msgstr "See all"
 
 #: app/templates/index.html:118
-#, fuzzy
 msgid "project"
-msgstr "Reject"
+msgstr "project"
 
 #: app/templates/index.html:118
-#, fuzzy
 msgid "projects"
-msgstr "Reject"
+msgstr "projects"
 
 #: app/templates/index.html:132
 msgid "Latest work"
@@ -545,23 +548,20 @@ msgid "Recently added"
 msgstr "Recently added"
 
 #: app/templates/index.html:135
-#, fuzzy
 msgid "All projects"
-msgstr "Upload project"
+msgstr "All projects"
 
 #: app/templates/index.html:146
-#, fuzzy
 msgid "No projects yet — once a doctor approves submissions they appear here."
-msgstr "No projects yet — admins, please approve some submissions."
+msgstr "No projects yet — once a doctor approves submissions they appear here."
 
-#: app/templates/admin/dashboard.html:17 app/templates/index.html:158
+#: app/templates/admin/dashboard.html:21 app/templates/index.html:158
 msgid "Approved projects"
 msgstr "Approved projects"
 
 #: app/templates/index.html:159
-#, fuzzy
 msgid "Departments"
-msgstr "Department"
+msgstr "Departments"
 
 #: app/templates/index.html:160
 msgid "Years archived"
@@ -581,6 +581,9 @@ msgid ""
 " name, university email, role, language preference, and a record of the "
 "projects you upload, view, or download."
 msgstr ""
+"GPAS stores only the personal data needed to operate the repository: your"
+" name, university email, role, language preference, and a record of the "
+"projects you upload, view, or download."
 
 #: app/templates/privacy.html:6
 msgid ""
@@ -588,6 +591,9 @@ msgid ""
 "bcrypt algorithm. All session activity is restricted to the GPAS "
 "application and is automatically expired after 30 minutes of inactivity."
 msgstr ""
+"Passwords are never stored in plain text — they are hashed using the "
+"bcrypt algorithm. All session activity is restricted to the GPAS "
+"application and is automatically expired after 30 minutes of inactivity."
 
 #: app/templates/privacy.html:7
 msgid ""
@@ -595,156 +601,233 @@ msgid ""
 " contain a timestamp, IP address, browser identifier, the project "
 "accessed, and your account ID where applicable."
 msgstr ""
+"Access logs are retained for usage statistics and security auditing. They"
+" contain a timestamp, IP address, browser identifier, the project "
+"accessed, and your account ID where applicable."
 
 #: app/templates/privacy.html:8
 msgid ""
 "You may request the deletion of your account by contacting an "
 "administrator."
 msgstr ""
+"You may request the deletion of your account by contacting an "
+"administrator."
 
-#: app/templates/admin/approvals.html:4 app/templates/admin/dashboard.html:10
+#: app/templates/admin/approvals.html:6 app/templates/admin/dashboard.html:13
 msgid "Pending approvals"
 msgstr "Pending approvals"
 
-#: app/templates/admin/approvals.html:10
+#: app/templates/admin/approvals.html:17
 msgid "by"
 msgstr "by"
 
-#: app/templates/admin/approvals.html:15
+#: app/templates/admin/approvals.html:30
 msgid "Approve"
 msgstr "Approve"
 
-#: app/templates/admin/approvals.html:17
+#: app/templates/admin/approvals.html:32
 msgid "Reject…"
 msgstr "Reject…"
 
-#: app/templates/admin/approvals.html:24
+#: app/templates/admin/approvals.html:33
+msgid "Preview"
+msgstr "Preview"
+
+#: app/templates/admin/approvals.html:41
+msgid "Explain what the student should fix…"
+msgstr "Explain what the student should fix…"
+
+#: app/templates/admin/approvals.html:42
 msgid "Confirm rejection"
 msgstr "Confirm rejection"
 
-#: app/templates/admin/approvals.html:31
+#: app/templates/admin/approvals.html:51
 msgid "Nothing pending. Good job!"
 msgstr "Nothing pending. Good job!"
 
-#: app/templates/admin/dashboard.html:2 app/templates/admin/dashboard.html:4
+#: app/templates/admin/approvals.html:52
+msgid "Back to dashboard"
+msgstr "Back to dashboard"
+
+#: app/templates/admin/dashboard.html:2 app/templates/admin/dashboard.html:6
 msgid "Admin dashboard"
 msgstr "Admin dashboard"
 
-#: app/templates/admin/dashboard.html:24
+#: app/templates/admin/dashboard.html:29
 msgid "Registered users"
 msgstr "Registered users"
 
-#: app/templates/admin/dashboard.html:29
+#: app/templates/admin/dashboard.html:36
+msgid "Review pending"
+msgstr "Review pending"
+
+#: app/templates/admin/dashboard.html:37
 msgid "View reports"
 msgstr "View reports"
 
-#: app/templates/admin/reports.html:4
+#: app/templates/admin/dashboard.html:38
+msgid "Manage users"
+msgstr "Manage users"
+
+#: app/templates/admin/reports.html:6
 msgid "Usage reports"
 msgstr "Usage reports"
 
-#: app/templates/admin/reports.html:7 app/templates/projects/mine.html:16
-#: app/templates/projects/view.html:39
+#: app/templates/admin/reports.html:9 app/templates/projects/mine.html:38
+#: app/templates/projects/view.html:41
 msgid "Approved"
 msgstr "Approved"
 
-#: app/templates/admin/reports.html:8 app/templates/projects/mine.html:17
+#: app/templates/admin/reports.html:10 app/templates/projects/mine.html:40
 msgid "Pending"
 msgstr "Pending"
 
-#: app/templates/admin/reports.html:9 app/templates/projects/mine.html:18
+#: app/templates/admin/reports.html:11 app/templates/projects/mine.html:42
 msgid "Rejected"
 msgstr "Rejected"
 
-#: app/templates/admin/reports.html:11
+#: app/templates/admin/reports.html:13
 msgid "Views (30d)"
 msgstr "Views (30d)"
 
-#: app/templates/admin/reports.html:12
+#: app/templates/admin/reports.html:14
 msgid "Downloads (30d)"
 msgstr "Downloads (30d)"
 
-#: app/templates/admin/reports.html:17
+#: app/templates/admin/reports.html:19
 msgid "Most viewed projects"
 msgstr "Most viewed projects"
 
-#: app/templates/admin/reports.html:22 app/templates/admin/reports.html:32
+#: app/templates/admin/reports.html:25 app/templates/admin/reports.html:37
 msgid "No data yet."
 msgstr "No data yet."
 
-#: app/templates/admin/reports.html:27
+#: app/templates/admin/reports.html:31
 msgid "Most downloaded projects"
 msgstr "Most downloaded projects"
 
-#: app/templates/admin/reports.html:37
+#: app/templates/admin/reports.html:43
 msgid "Approved projects by department"
 msgstr "Approved projects by department"
 
-#: app/templates/admin/reports.html:39 app/templates/admin/reports.html:46
+#: app/templates/admin/reports.html:46 app/templates/admin/reports.html:55
 msgid "Count"
 msgstr "Count"
 
-#: app/templates/admin/reports.html:44
+#: app/templates/admin/reports.html:52
 msgid "Approved projects by year"
 msgstr "Approved projects by year"
 
-#: app/templates/admin/user_form.html:2 app/templates/admin/user_form.html:4
-#: app/templates/admin/users.html:6
+#: app/templates/admin/user_form.html:2 app/templates/admin/user_form.html:6
+#: app/templates/admin/users.html:10
 msgid "New user"
 msgstr "New user"
 
-#: app/templates/admin/user_form.html:2 app/templates/admin/user_form.html:4
+#: app/templates/admin/user_form.html:2 app/templates/admin/user_form.html:6
 msgid "Edit user"
 msgstr "Edit user"
 
-#: app/templates/admin/user_form.html:12 app/templates/projects/upload.html:91
-msgid "Cancel"
-msgstr "Cancel"
-
-#: app/templates/admin/users.html:11
-msgid "Name"
-msgstr "Name"
-
-#: app/templates/admin/users.html:11
-msgid "Verified"
-msgstr "Verified"
-
-#: app/templates/admin/users.html:11
-msgid "Created"
-msgstr "Created"
-
-#: app/templates/admin/users.html:22
-msgid "Edit"
-msgstr "Edit"
-
-#: app/templates/admin/users.html:24
-msgid "Delete this user?"
-msgstr "Delete this user?"
-
-#: app/templates/admin/users.html:26
-msgid "Delete"
-msgstr "Delete"
-
-#: app/templates/auth/login.html:6
-msgid "Sign in to GPAS"
-msgstr "Sign in to GPAS"
-
-#: app/templates/auth/login.html:26
-msgid "No account?"
-msgstr "No account?"
-
-#: app/templates/auth/login.html:26
-msgid "Register here"
-msgstr "Register here"
-
-#: app/templates/auth/register.html:6
-msgid "Create your GPAS account"
-msgstr "Create your GPAS account"
-
-#: app/templates/auth/register.html:22
+#: app/templates/admin/user_form.html:25 app/templates/auth/register.html:41
 msgid "At least 8 characters."
 msgstr "At least 8 characters."
 
-#: app/templates/auth/register.html:33
+#: app/templates/admin/user_form.html:29 app/templates/projects/upload.html:100
+msgid "Cancel"
+msgstr "Cancel"
+
+#: app/templates/admin/users.html:17
+msgid "Name"
+msgstr "Name"
+
+#: app/templates/admin/users.html:20
+msgid "Verified"
+msgstr "Verified"
+
+#: app/templates/admin/users.html:21
+msgid "Created"
+msgstr "Created"
+
+#: app/templates/admin/users.html:40
+msgid "Edit"
+msgstr "Edit"
+
+#: app/templates/admin/users.html:42
+msgid "Delete this user?"
+msgstr "Delete this user?"
+
+#: app/templates/admin/users.html:44
+msgid "Delete"
+msgstr "Delete"
+
+#: app/templates/auth/login.html:9
+msgid "Welcome back"
+msgstr "Welcome back"
+
+#: app/templates/auth/login.html:10
+msgid "Sign in to GPAS."
+msgstr "Sign in to GPAS."
+
+#: app/templates/auth/login.html:12
+msgid ""
+"Access your submissions, track approval status, and download archived "
+"graduation projects."
+msgstr ""
+"Access your submissions, track approval status, and download archived "
+"graduation projects."
+
+#: app/templates/auth/login.html:15
+msgid "Demo accounts:"
+msgstr "Demo accounts:"
+
+#: app/templates/auth/login.html:26
+msgid "Sign in to GPAS"
+msgstr "Sign in to GPAS"
+
+#: app/templates/auth/login.html:47
+msgid "No account?"
+msgstr "No account?"
+
+#: app/templates/auth/login.html:47
+msgid "Register here"
+msgstr "Register here"
+
+#: app/templates/auth/register.html:9
+msgid "Welcome to GPAS"
+msgstr "Welcome to GPAS"
+
+#: app/templates/auth/register.html:10
+msgid "Join the AOU graduation project archive."
+msgstr "Join the AOU graduation project archive."
+
+#: app/templates/auth/register.html:12
+msgid "Submit your own graduation project for archival."
+msgstr "Submit your own graduation project for archival."
+
+#: app/templates/auth/register.html:13
+msgid "Browse and learn from past student work."
+msgstr "Browse and learn from past student work."
+
+#: app/templates/auth/register.html:14
+msgid "Bilingual EN / AR with full RTL support."
+msgstr "Bilingual EN / AR with full RTL support."
+
+#: app/templates/auth/register.html:15
+msgid "WCAG 2.1 AA accessible."
+msgstr "WCAG 2.1 AA accessible."
+
+#: app/templates/auth/register.html:22
+msgid "Create your GPAS account"
+msgstr "Create your GPAS account"
+
+#: app/templates/auth/register.html:23
+msgid ""
+"All new accounts default to Student. A doctor can promote your role from "
+"the admin panel."
+msgstr ""
+"All new accounts default to Student. A doctor can promote your role from "
+"the admin panel."
+
+#: app/templates/auth/register.html:53
 msgid "Already have an account?"
 msgstr "Already have an account?"
 
@@ -784,10 +867,10 @@ msgstr "Search results"
 #, python-format
 msgid "%(num)s result"
 msgid_plural "%(num)s results"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(num)s result"
+msgstr[1] "%(num)s results"
 
-#: app/templates/projects/browse.html:19 app/templates/projects/view.html:58
+#: app/templates/projects/browse.html:19 app/templates/projects/view.html:70
 msgid "Keywords"
 msgstr "Keywords"
 
@@ -817,30 +900,40 @@ msgid "No matching projects."
 msgstr "No matching projects."
 
 #: app/templates/projects/browse.html:68
-#, fuzzy
 msgid "See all projects"
-msgstr "Browse projects"
+msgstr "See all projects"
 
-#: app/templates/projects/mine.html:8
+#: app/templates/projects/mine.html:7
+msgid "Your work"
+msgstr "Your work"
+
+#: app/templates/projects/mine.html:10 app/templates/projects/upload.html:5
+msgid "New submission"
+msgstr "New submission"
+
+#: app/templates/projects/mine.html:21
 msgid "Status"
 msgstr "Status"
 
-#: app/templates/projects/mine.html:8
+#: app/templates/projects/mine.html:22
 msgid "Submitted"
 msgstr "Submitted"
 
-#: app/templates/projects/mine.html:27
+#: app/templates/projects/mine.html:47
+msgid "View"
+msgstr "View"
+
+#: app/templates/projects/mine.html:58
 msgid "You have not submitted any projects yet."
 msgstr "You have not submitted any projects yet."
+
+#: app/templates/projects/mine.html:59
+msgid "Submit your first project"
+msgstr "Submit your first project"
 
 #: app/templates/projects/upload.html:2
 msgid "Upload project"
 msgstr "Upload project"
-
-#: app/templates/projects/upload.html:5
-#, fuzzy
-msgid "New submission"
-msgstr "My submissions"
 
 #: app/templates/projects/upload.html:6
 msgid "Submit a graduation project"
@@ -851,6 +944,8 @@ msgid ""
 "Submissions enter a pending queue and are published once a doctor "
 "approves them."
 msgstr ""
+"Submissions enter a pending queue and are published once a doctor "
+"approves them."
 
 #: app/templates/projects/upload.html:41
 msgid "start typing — popular keywords appear as you go"
@@ -861,34 +956,34 @@ msgid "Tip: pick from the most-used keywords below to improve discoverability."
 msgstr "Tip: pick from the most-used keywords below to improve discoverability."
 
 #: app/templates/projects/upload.html:44
-#, fuzzy
 msgid "Most-used keywords"
-msgstr "Keywords"
+msgstr "Most-used keywords"
 
-#: app/templates/projects/upload.html:50
-msgid "Hold Ctrl/Cmd to select multiple."
-msgstr "Hold Ctrl/Cmd to select multiple."
+#: app/templates/projects/upload.html:59
+msgid "Pick all that apply."
+msgstr "Pick all that apply."
 
-#: app/templates/projects/upload.html:60
+#: app/templates/projects/upload.html:69
 msgid "Optional, recommended"
 msgstr "Optional, recommended"
 
-#: app/templates/projects/upload.html:61
+#: app/templates/projects/upload.html:70
 msgid ""
 "Adding a thumbnail, video, slides, and GitHub link makes the project page"
 " richer."
 msgstr ""
+"Adding a thumbnail, video, slides, and GitHub link makes the project page"
+" richer."
 
-#: app/templates/projects/upload.html:66
+#: app/templates/projects/upload.html:75
 msgid "Used as the cover on cards and the project page. 16:9 ratio looks best."
 msgstr "Used as the cover on cards and the project page. 16:9 ratio looks best."
 
-#: app/templates/projects/upload.html:73
-#, fuzzy
+#: app/templates/projects/upload.html:82
 msgid "Plays directly on the project page. Up to ~150 MB recommended."
-msgstr "Will play directly on the project page. Up to ~150 MB recommended."
+msgstr "Plays directly on the project page. Up to ~150 MB recommended."
 
-#: app/templates/projects/upload.html:106
+#: app/templates/projects/upload.html:115
 msgid "No suggestions yet — be the first to add keywords."
 msgstr "No suggestions yet — be the first to add keywords."
 
@@ -900,94 +995,79 @@ msgstr "This project is currently"
 msgid "and is not publicly visible."
 msgstr "and is not publicly visible."
 
-#: app/templates/projects/view.html:39
+#: app/templates/projects/view.html:41
 msgid "Uploaded by"
 msgstr "Uploaded by"
 
-#: app/templates/projects/view.html:43
+#: app/templates/projects/view.html:44
+msgid "Copy share link"
+msgstr "Copy share link"
+
+#: app/templates/projects/view.html:45
+msgid "Share"
+msgstr "Share"
+
+#: app/templates/projects/view.html:47
+msgid "Print this page"
+msgstr "Print this page"
+
+#: app/templates/projects/view.html:48
+msgid "Print"
+msgstr "Print"
+
+#: app/templates/projects/view.html:55
 msgid "Demo video for"
 msgstr "Demo video for"
 
-#: app/templates/projects/view.html:46
+#: app/templates/projects/view.html:58
 msgid "Your browser does not support embedded video."
 msgstr "Your browser does not support embedded video."
 
-#: app/templates/projects/view.html:47
+#: app/templates/projects/view.html:59
 msgid "Open video"
 msgstr "Open video"
 
-#: app/templates/projects/view.html:71
+#: app/templates/projects/view.html:83
 msgid "Source code"
 msgstr "Source code"
 
-#: app/templates/projects/view.html:74
+#: app/templates/projects/view.html:86
 msgid "View on GitHub"
 msgstr "View on GitHub"
 
-#: app/templates/projects/view.html:79
+#: app/templates/projects/view.html:91
 msgid "Files"
 msgstr "Files"
 
-#: app/templates/projects/view.html:86
+#: app/templates/projects/view.html:98
 msgid "Slides"
 msgstr "Slides"
 
-#: app/templates/projects/view.html:91
+#: app/templates/projects/view.html:103
 msgid "Download"
 msgstr "Download"
 
-#: app/templates/projects/view.html:99
+#: app/templates/projects/view.html:111
 msgid "No files attached."
 msgstr "No files attached."
 
-#: app/templates/projects/view.html:103
+#: app/templates/projects/view.html:115
 msgid "Cite this work"
 msgstr "Cite this work"
 
-#: app/templates/projects/view.html:105
-#, fuzzy
+#: app/templates/projects/view.html:117
 msgid "Graduation Project Archival System, Arab Open University — Kuwait Branch."
-msgstr "Arab Open University — Kuwait Branch"
+msgstr "Graduation Project Archival System, Arab Open University — Kuwait Branch."
 
-#: app/templates/projects/view.html:108
+#: app/templates/projects/view.html:120
 msgid "Copy citation"
 msgstr "Copy citation"
 
-#: app/templates/projects/view.html:125
+#: app/templates/projects/view.html:140
 msgid "Copied!"
 msgstr "Copied!"
 
-#~ msgid "Admin"
-#~ msgstr "Admin"
-
-#~ msgid ""
-#~ "Faculty submissions enter a pending "
-#~ "queue and are published once an "
-#~ "administrator approves them."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A centralized digital repository preserving"
-#~ " graduation projects from the Faculty "
-#~ "of Computer Studies — searchable, "
-#~ "accessible, and bilingual."
-#~ msgstr ""
-
-#~ msgid "Repository statistics"
-#~ msgstr "Repository statistics"
-
-#~ msgid "Departments represented"
-#~ msgstr "Departments represented"
-
-#~ msgid "Apply"
-#~ msgstr "Apply"
-
-#~ msgid "The fields below are optional but recommended for richer demos."
-#~ msgstr "The fields below are optional but recommended for richer demos."
-
-#~ msgid "Demo video"
-#~ msgstr "Demo video"
-
-#~ msgid "Sign in to download"
-#~ msgstr "Sign in to download"
+#: app/templates/projects/view.html:149
+msgid "Link copied!"
+msgstr "Link copied!"
 

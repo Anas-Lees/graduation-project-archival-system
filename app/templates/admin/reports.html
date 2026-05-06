@@ -1,51 +1,62 @@
 {% extends "base.html" %}
 {% block title %}{{ _('Reports') }}{% endblock %}
 {% block content %}
-<h1 class="h3 mb-3">{{ _('Usage reports') }}</h1>
+<div class="container my-4">
+  <div class="section-eyebrow">{{ _('Doctor panel') }}</div>
+  <h1 class="h2 mb-4">{{ _('Usage reports') }}</h1>
 
-<section class="row text-center mb-4">
-  <div class="col-md-2"><div class="border rounded p-3"><div class="h4">{{ totals.approved }}</div><small>{{ _('Approved') }}</small></div></div>
-  <div class="col-md-2"><div class="border rounded p-3"><div class="h4">{{ totals.pending }}</div><small>{{ _('Pending') }}</small></div></div>
-  <div class="col-md-2"><div class="border rounded p-3"><div class="h4">{{ totals.rejected }}</div><small>{{ _('Rejected') }}</small></div></div>
-  <div class="col-md-2"><div class="border rounded p-3"><div class="h4">{{ totals.users }}</div><small>{{ _('Users') }}</small></div></div>
-  <div class="col-md-2"><div class="border rounded p-3"><div class="h4">{{ totals.views_30d }}</div><small>{{ _('Views (30d)') }}</small></div></div>
-  <div class="col-md-2"><div class="border rounded p-3"><div class="h4">{{ totals.downloads_30d }}</div><small>{{ _('Downloads (30d)') }}</small></div></div>
-</section>
+  <section class="row g-3 mb-4">
+    <div class="col-6 col-md-2"><div class="gpas-stat"><div class="gpas-stat-value" style="color:var(--gpas-success)">{{ totals.approved }}</div><div class="gpas-stat-label">{{ _('Approved') }}</div></div></div>
+    <div class="col-6 col-md-2"><div class="gpas-stat"><div class="gpas-stat-value" style="color:var(--gpas-warn)">{{ totals.pending }}</div><div class="gpas-stat-label">{{ _('Pending') }}</div></div></div>
+    <div class="col-6 col-md-2"><div class="gpas-stat"><div class="gpas-stat-value" style="color:var(--gpas-danger)">{{ totals.rejected }}</div><div class="gpas-stat-label">{{ _('Rejected') }}</div></div></div>
+    <div class="col-6 col-md-2"><div class="gpas-stat"><div class="gpas-stat-value">{{ totals.users }}</div><div class="gpas-stat-label">{{ _('Users') }}</div></div></div>
+    <div class="col-6 col-md-2"><div class="gpas-stat"><div class="gpas-stat-value">{{ totals.views_30d }}</div><div class="gpas-stat-label">{{ _('Views (30d)') }}</div></div></div>
+    <div class="col-6 col-md-2"><div class="gpas-stat"><div class="gpas-stat-value">{{ totals.downloads_30d }}</div><div class="gpas-stat-label">{{ _('Downloads (30d)') }}</div></div></div>
+  </section>
 
-<div class="row g-4">
-  <section class="col-md-6">
-    <h2 class="h5">{{ _('Most viewed projects') }}</h2>
-    <ol class="list-group list-group-numbered">
-      {% for p, c in top_views %}
-        <li class="list-group-item d-flex justify-content-between"><a href="{{ url_for('projects.view', pid=p.id) }}">{{ p.title }}</a><span class="badge bg-primary">{{ c }}</span></li>
-      {% else %}
-        <li class="list-group-item text-muted">{{ _('No data yet.') }}</li>
-      {% endfor %}
-    </ol>
-  </section>
-  <section class="col-md-6">
-    <h2 class="h5">{{ _('Most downloaded projects') }}</h2>
-    <ol class="list-group list-group-numbered">
-      {% for p, c in top_downloads %}
-        <li class="list-group-item d-flex justify-content-between"><a href="{{ url_for('projects.view', pid=p.id) }}">{{ p.title }}</a><span class="badge bg-success">{{ c }}</span></li>
-      {% else %}
-        <li class="list-group-item text-muted">{{ _('No data yet.') }}</li>
-      {% endfor %}
-    </ol>
-  </section>
-  <section class="col-md-6">
-    <h2 class="h5">{{ _('Approved projects by department') }}</h2>
-    <table class="table table-sm">
-      <thead><tr><th>{{ _('Department') }}</th><th class="text-end">{{ _('Count') }}</th></tr></thead>
-      <tbody>{% for d, c in by_dept %}<tr><td>{{ d }}</td><td class="text-end">{{ c }}</td></tr>{% endfor %}</tbody>
-    </table>
-  </section>
-  <section class="col-md-6">
-    <h2 class="h5">{{ _('Approved projects by year') }}</h2>
-    <table class="table table-sm">
-      <thead><tr><th>{{ _('Year') }}</th><th class="text-end">{{ _('Count') }}</th></tr></thead>
-      <tbody>{% for y, c in by_year %}<tr><td>{{ y }}</td><td class="text-end">{{ c }}</td></tr>{% endfor %}</tbody>
-    </table>
-  </section>
+  <div class="row g-4">
+    <section class="col-md-6">
+      <h2 class="h5 mb-3">{{ _('Most viewed projects') }}</h2>
+      <div class="card p-0">
+        <ol class="list-group list-group-flush list-group-numbered">
+          {% for p, c in top_views %}
+            <li class="list-group-item d-flex justify-content-between align-items-center"><a href="{{ url_for('projects.view', pid=p.id) }}" style="color:var(--gpas-ink-900)">{{ p.title }}</a><span class="badge rounded-pill" style="background:var(--gpas-blue-500)">{{ c }}</span></li>
+          {% else %}
+            <li class="list-group-item text-muted">{{ _('No data yet.') }}</li>
+          {% endfor %}
+        </ol>
+      </div>
+    </section>
+    <section class="col-md-6">
+      <h2 class="h5 mb-3">{{ _('Most downloaded projects') }}</h2>
+      <div class="card p-0">
+        <ol class="list-group list-group-flush list-group-numbered">
+          {% for p, c in top_downloads %}
+            <li class="list-group-item d-flex justify-content-between align-items-center"><a href="{{ url_for('projects.view', pid=p.id) }}" style="color:var(--gpas-ink-900)">{{ p.title }}</a><span class="badge rounded-pill" style="background:var(--gpas-success)">{{ c }}</span></li>
+          {% else %}
+            <li class="list-group-item text-muted">{{ _('No data yet.') }}</li>
+          {% endfor %}
+        </ol>
+      </div>
+    </section>
+    <section class="col-md-6">
+      <h2 class="h5 mb-3">{{ _('Approved projects by department') }}</h2>
+      <div class="card p-0">
+        <table class="table mb-0">
+          <thead><tr style="background:var(--gpas-bg-soft)"><th class="ps-3">{{ _('Department') }}</th><th class="pe-3 text-end">{{ _('Count') }}</th></tr></thead>
+          <tbody>{% for d, c in by_dept %}<tr><td class="ps-3">{{ d }}</td><td class="pe-3 text-end fw-semibold">{{ c }}</td></tr>{% endfor %}</tbody>
+        </table>
+      </div>
+    </section>
+    <section class="col-md-6">
+      <h2 class="h5 mb-3">{{ _('Approved projects by year') }}</h2>
+      <div class="card p-0">
+        <table class="table mb-0">
+          <thead><tr style="background:var(--gpas-bg-soft)"><th class="ps-3">{{ _('Year') }}</th><th class="pe-3 text-end">{{ _('Count') }}</th></tr></thead>
+          <tbody>{% for y, c in by_year %}<tr><td class="ps-3">{{ y }}</td><td class="pe-3 text-end fw-semibold">{{ c }}</td></tr>{% endfor %}</tbody>
+        </table>
+      </div>
+    </section>
+  </div>
 </div>
 {% endblock %}

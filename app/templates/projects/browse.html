@@ -9,7 +9,7 @@
       <div class="section-eyebrow">{% if mode == 'search' %}{{ _('Discover') }}{% else %}{{ _('All work') }}{% endif %}</div>
       <h1 class="h2 mb-0">{% if mode == 'search' %}{{ _('Search results') }}{% else %}{{ _('Browse projects') }}{% endif %}</h1>
     </div>
-    <p class="text-muted mb-0">{{ ngettext('%(num)s result', '%(num)s results', total) }}</p>
+    <p class="text-muted mb-0">{{ ngettext('%(num)s result', '%(num)s results', total, num=total) }}</p>
   </div>
 
   <form action="{{ url_for('projects.search' if mode == 'search' else 'projects.browse') }}"
