@@ -2,48 +2,180 @@
 {% from "_macros.html" import project_card %}
 {% block title %}{{ _('Home') }}{% endblock %}
 {% block content %}
-<section class="p-5 mb-4 bg-light rounded-3">
-  <div class="container-fluid py-3">
-    <h1 class="display-5 fw-bold">{{ _('Graduation Project Archival System') }}</h1>
-    <p class="fs-5 col-md-9">
-      {{ _('A centralized digital repository preserving graduation projects from the Faculty of Computer Studies — searchable, accessible, and bilingual.') }}
-    </p>
-    <form action="{{ url_for('projects.search') }}" method="get" role="search" class="mt-3">
-      <label for="hero-q" class="form-label visually-hidden">{{ _('Search query') }}</label>
-      <div class="input-group input-group-lg">
-        <input id="hero-q" name="q" type="search" class="form-control" placeholder="{{ _('Search by title, abstract, keyword…') }}">
-        <button class="btn btn-primary" type="submit">{{ _('Search') }}</button>
+
+<section class="gpas-hero">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6">
+        <span class="gpas-hero-eyebrow"><span class="dot"></span> {{ _('Faculty of Computer Studies — AOU Kuwait') }}</span>
+        <h1>{{ _('Preserve and discover graduation projects.') }}</h1>
+        <p class="lead">
+          {{ _('A bilingual digital archive that lets students publish, doctors supervise, and the next generation learn from every graduation project the university produces.') }}
+        </p>
+
+        <form action="{{ url_for('projects.search') }}" method="get" class="gpas-search mb-3" role="search">
+          <input type="search" name="q" list="kw-suggestions" autocomplete="off"
+                 placeholder="{{ _('Search by title, keyword, year…') }}"
+                 aria-label="{{ _('Search query') }}">
+          <button class="btn btn-primary" type="submit">{{ _('Search') }}</button>
+        </form>
+        <datalist id="kw-suggestions"></datalist>
+
+        <div class="gpas-hero-cta">
+          <a class="btn btn-primary btn-lg" href="{{ url_for('projects.browse') }}">{{ _('Browse projects') }} →</a>
+          {% if not current_user.is_authenticated %}
+            <a class="btn btn-outline-secondary btn-lg" href="{{ url_for('auth.register') }}">{{ _('Create account') }}</a>
+          {% else %}
+            <a class="btn btn-outline-secondary btn-lg" href="{{ url_for('projects.upload') }}">{{ _('Submit a project') }}</a>
+          {% endif %}
+        </div>
       </div>
-    </form>
+
+      <div class="col-lg-6 d-none d-lg-block">
+        <svg viewBox="0 0 600 460" role="img" aria-label="{{ _('Illustration of a digital archive') }}" class="w-100 gpas-hero-illustration" style="max-height:420px">
+          <defs>
+            <linearGradient id="gA" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0" stop-color="#2c4cff"/>
+              <stop offset="1" stop-color="#6f3cff"/>
+            </linearGradient>
+            <linearGradient id="gB" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0" stop-color="#dbe4ff"/>
+              <stop offset="1" stop-color="#eef3ff"/>
+            </linearGradient>
+            <filter id="sh" x="-10%" y="-10%" width="120%" height="120%">
+              <feGaussianBlur in="SourceAlpha" stdDeviation="6"/>
+              <feOffset dy="6"/>
+              <feComponentTransfer><feFuncA type="linear" slope=".15"/></feComponentTransfer>
+              <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+          <ellipse cx="320" cy="380" rx="240" ry="34" fill="#eef3ff"/>
+          <g transform="translate(120 80) rotate(-6)" filter="url(#sh)">
+            <rect width="220" height="280" rx="18" fill="url(#gB)"/>
+            <rect x="22" y="32" width="100" height="10" rx="5" fill="#aab1c8"/>
+            <rect x="22" y="56" width="170" height="6" rx="3" fill="#cfd5ea"/>
+            <rect x="22" y="72" width="170" height="6" rx="3" fill="#cfd5ea"/>
+            <rect x="22" y="88" width="120" height="6" rx="3" fill="#cfd5ea"/>
+          </g>
+          <g transform="translate(220 70)" filter="url(#sh)">
+            <rect width="240" height="300" rx="18" fill="#fff" stroke="#e6e8f0"/>
+            <rect x="24" y="28" width="120" height="14" rx="7" fill="#0b1437"/>
+            <rect x="24" y="56" width="190" height="8" rx="4" fill="#cfd5ea"/>
+            <rect x="24" y="76" width="190" height="8" rx="4" fill="#cfd5ea"/>
+            <rect x="24" y="96" width="140" height="8" rx="4" fill="#cfd5ea"/>
+            <rect x="24" y="124" width="190" height="100" rx="10" fill="url(#gA)"/>
+            <text x="119" y="184" font-family="Inter,sans-serif" font-weight="800" font-size="44" fill="white" text-anchor="middle">▶</text>
+            <rect x="24" y="244" width="80" height="28" rx="14" fill="#2c4cff"/>
+            <text x="64" y="263" font-family="Inter,sans-serif" font-weight="600" font-size="13" fill="white" text-anchor="middle">{{ _('Open') }}</text>
+            <rect x="116" y="244" width="60" height="28" rx="14" fill="#fff" stroke="#e6e8f0"/>
+            <text x="146" y="263" font-family="Inter,sans-serif" font-weight="600" font-size="13" fill="#5a6285" text-anchor="middle">PDF</text>
+          </g>
+          <g transform="translate(440 110)" filter="url(#sh)">
+            <rect width="120" height="40" rx="20" fill="#fff" stroke="#e6e8f0"/>
+            <circle cx="22" cy="20" r="6" fill="#168f5a"/>
+            <text x="38" y="25" font-family="Inter,sans-serif" font-size="13" fill="#0b1437" font-weight="600">WCAG AA</text>
+          </g>
+          <g transform="translate(60 220)" filter="url(#sh)">
+            <rect width="130" height="40" rx="20" fill="#fff" stroke="#e6e8f0"/>
+            <text x="65" y="25" font-family="Inter,sans-serif" font-size="13" fill="#0b1437" font-weight="600" text-anchor="middle">EN ⇄ AR</text>
+          </g>
+          <g transform="translate(420 290)" filter="url(#sh)">
+            <rect width="140" height="40" rx="20" fill="#fff" stroke="#e6e8f0"/>
+            <text x="70" y="25" font-family="Inter,sans-serif" font-size="13" fill="#0b1437" font-weight="600" text-anchor="middle">⌥ GitHub</text>
+          </g>
+        </svg>
+      </div>
+    </div>
   </div>
 </section>
 
-<section aria-labelledby="stats-h" class="row text-center mb-5">
-  <h2 id="stats-h" class="visually-hidden">{{ _('Repository statistics') }}</h2>
-  <div class="col-md-6">
-    <div class="border rounded p-4">
-      <div class="display-6">{{ counts.total }}</div>
-      <div class="text-muted">{{ _('Approved projects') }}</div>
-    </div>
-  </div>
-  <div class="col-md-6">
-    <div class="border rounded p-4">
-      <div class="display-6">{{ counts.departments }}</div>
-      <div class="text-muted">{{ _('Departments represented') }}</div>
-    </div>
+<section class="gpas-trust">
+  <div class="container d-flex flex-wrap justify-content-center align-items-center gap-3 gap-md-5 text-center">
+    <span><strong>{{ counts.total }}</strong> {{ _('approved projects') }}</span>
+    <span class="d-none d-md-inline" style="color:var(--gpas-ink-300)">•</span>
+    <span><strong>{{ counts.departments }}</strong> {{ _('departments') }}</span>
+    <span class="d-none d-md-inline" style="color:var(--gpas-ink-300)">•</span>
+    <span><strong>{{ counts.years }}</strong> {{ _('academic years archived') }}</span>
+    <span class="d-none d-md-inline" style="color:var(--gpas-ink-300)">•</span>
+    <span>{{ _('Open access for the AOU community') }}</span>
   </div>
 </section>
 
-<section aria-labelledby="recent-h">
-  <h2 id="recent-h" class="h4 mb-3">{{ _('Recently added') }}</h2>
-  {% if recent %}
+{% if popular %}
+<section class="section">
+  <div class="container">
+    <div class="d-flex flex-wrap justify-content-between align-items-end mb-4">
+      <div>
+        <div class="section-eyebrow">{{ _('Browse by topic') }}</div>
+        <h2 class="mb-0">{{ _('Popular categories') }}</h2>
+      </div>
+      <a class="btn btn-outline-primary btn-sm" href="{{ url_for('projects.browse') }}">{{ _('See all') }} →</a>
+    </div>
     <div class="row g-3">
-      {% for p in recent %}
-        <div class="col-md-6 col-lg-4">{{ project_card(p) }}</div>
+      {% for cat, count in popular %}
+        <div class="col-6 col-md-4 col-lg-3">
+          <a class="card h-100 d-block p-3 text-decoration-none" href="{{ url_for('projects.browse', category=cat.id) }}">
+            <div class="card-meta mb-1">{{ count }} {{ _('project') if count == 1 else _('projects') }}</div>
+            <h3 class="h6 m-0" style="color:var(--gpas-ink-900)">{{ cat.localized(lang) }}</h3>
+          </a>
+        </div>
       {% endfor %}
     </div>
-  {% else %}
-    <p class="text-muted">{{ _('No projects yet — admins, please approve some submissions.') }}</p>
-  {% endif %}
+  </div>
 </section>
+{% endif %}
+
+<section class="section pt-0">
+  <div class="container">
+    <div class="d-flex flex-wrap justify-content-between align-items-end mb-4">
+      <div>
+        <div class="section-eyebrow">{{ _('Latest work') }}</div>
+        <h2 class="mb-0">{{ _('Recently added') }}</h2>
+      </div>
+      <a class="btn btn-outline-primary btn-sm" href="{{ url_for('projects.browse') }}">{{ _('All projects') }} →</a>
+    </div>
+    {% if recent %}
+      <div class="row g-3">
+        {% for p in recent %}
+          <div class="col-md-6 col-lg-4">{{ project_card(p) }}</div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="gpas-empty">
+        <div class="gpas-empty-icon">📚</div>
+        <p>{{ _('No projects yet — once a doctor approves submissions they appear here.') }}</p>
+        {% if current_user.is_authenticated %}
+          <a class="btn btn-primary" href="{{ url_for('projects.upload') }}">{{ _('Submit a project') }} →</a>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<section class="section pt-0">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-3"><div class="gpas-stat"><div class="gpas-stat-value">{{ counts.total }}</div><div class="gpas-stat-label">{{ _('Approved projects') }}</div></div></div>
+      <div class="col-md-3"><div class="gpas-stat"><div class="gpas-stat-value">{{ counts.departments }}</div><div class="gpas-stat-label">{{ _('Departments') }}</div></div></div>
+      <div class="col-md-3"><div class="gpas-stat"><div class="gpas-stat-value">{{ counts.years }}</div><div class="gpas-stat-label">{{ _('Years archived') }}</div></div></div>
+      <div class="col-md-3"><div class="gpas-stat"><div class="gpas-stat-value">AA</div><div class="gpas-stat-label">{{ _('WCAG 2.1 conformance') }}</div></div></div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+{% block scripts %}
+<script>
+  // Populate hero search datalist with the most popular keywords
+  fetch("{{ url_for('projects.api_keywords') }}")
+    .then(r => r.json()).then(items => {
+      const dl = document.getElementById('kw-suggestions');
+      if (!dl) return;
+      items.slice(0, 12).forEach(it => {
+        const o = document.createElement('option');
+        o.value = it.keyword;
+        dl.appendChild(o);
+      });
+    }).catch(() => {});
+</script>
 {% endblock %}

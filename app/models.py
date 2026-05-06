@@ -50,6 +50,7 @@ class Project(db.Model):
     year = db.Column(db.Integer, nullable=False, index=True)
     department = db.Column(db.String(120), nullable=False, index=True)
     github_url = db.Column(db.String(500))
+    thumbnail_path = db.Column(db.String(500))  # relative path under app/static/, or None
     status = db.Column(db.String(20), default="pending", index=True)  # pending/approved/rejected
     uploader_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     approver_id = db.Column(db.Integer, db.ForeignKey("users.id"))

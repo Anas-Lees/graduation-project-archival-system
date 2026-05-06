@@ -68,10 +68,13 @@ def main():
     pdf = b"%PDF-1.4\n1 0 obj<<>>endobj\ntrailer<</Root 1 0 R>>\n%%EOF\n"
     fake_mp4 = b"\x00\x00\x00\x18ftypmp42" + b"\x00" * 80  # extension passes; bytes are placeholder
     fake_pptx = b"PK\x03\x04" + b"\x00" * 60               # zip magic so it looks plausible
+    fake_png = (b"\x89PNG\r\n\x1a\n" + b"\x00" * 16
+                + b"IHDR" + b"\x00" * 13 + b"IEND" + b"\xaeB`\x82")
     files = [
-        ("file",   ("smoke_test.pdf",   io.BytesIO(pdf),       "application/pdf")),
-        ("video",  ("smoke_test.mp4",   io.BytesIO(fake_mp4),  "video/mp4")),
-        ("slides", ("smoke_test.pptx",  io.BytesIO(fake_pptx), "application/vnd.openxmlformats-officedocument.presentationml.presentation")),
+        ("file",      ("smoke_test.pdf",   io.BytesIO(pdf),       "application/pdf")),
+        ("video",     ("smoke_test.mp4",   io.BytesIO(fake_mp4),  "video/mp4")),
+        ("slides",    ("smoke_test.pptx",  io.BytesIO(fake_pptx), "application/vnd.openxmlformats-officedocument.presentationml.presentation")),
+        ("thumbnail", ("smoke_thumb.png",  io.BytesIO(fake_png),  "image/png")),
     ]
     data = {
         "csrf_token": token,
@@ -117,6 +120,28 @@ def main():
 
     assert "smoke_test.pptx" in r.text or "Slides" in r.text
     ok("project page lists slides file")
+
+    # Thumbnail uploaded and rendered as cover
+    assert "uploads/thumbs/" in r.text, "thumbnail not rendered on view page"
+    ok("project page renders thumbnail cover")
+
+    # Citation block present
+    assert "Cite this work" in r.text or "citation-text" in r.text
+    ok("project page includes citation block")
+
+    # Keyword suggestion API returns popular keywords
+    rk = requests.get(f"{BASE}/projects/api/keywords")
+    assert rk.status_code == 200
+    kws = rk.json()
+    assert isinstance(kws, list) and len(kws) > 0 and "keyword" in kws[0]
+    ok(f"/api/keywords returns {len(kws)} popular keywords")
+
+    # Home page hero + popular categories
+    rh = requests.get(f"{BASE}/")
+    assert "Preserve and discover" in rh.text or "graduation" in rh.text.lower()
+    ok("home hero rendered")
+    assert "Popular categories" in rh.text or "popular" in rh.text.lower()
+    ok("home shows popular categories section")
 
     # Inline media route returns the video bytes (not as attachment)
     media_match = re.search(rf'src="(/projects/{pid}/media/\d+)"', r.text)

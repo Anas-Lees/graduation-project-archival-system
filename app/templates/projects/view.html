@@ -1,81 +1,131 @@
 {% extends "base.html" %}
 {% block title %}{{ project.title }}{% endblock %}
 {% block content %}
-<nav aria-label="breadcrumb">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="{{ url_for('projects.browse') }}">{{ _('Browse') }}</a></li>
-    <li class="breadcrumb-item active" aria-current="page">{{ project.title }}</li>
-  </ol>
-</nav>
 
-{% if project.status != 'approved' %}
-  <div class="alert alert-warning">
-    {{ _('This project is currently') }} <strong>{{ project.status }}</strong> {{ _('and is not publicly visible.') }}
-  </div>
-{% endif %}
+<div class="container my-4" style="max-width: 1100px">
+  <nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb small">
+      <li class="breadcrumb-item"><a href="{{ url_for('main.index') }}">{{ _('Home') }}</a></li>
+      <li class="breadcrumb-item"><a href="{{ url_for('projects.browse') }}">{{ _('Browse') }}</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{{ project.title[:60] }}</li>
+    </ol>
+  </nav>
 
-<article>
-  <h1>{{ project.title }}</h1>
-  <p class="text-muted">
-    {{ project.year }} · {{ project.department }} ·
-    {{ _('Uploaded by') }} {{ project.uploader.full_name }}
-  </p>
-  {% if project.categories %}
-    <p>{% for c in project.categories %}<span class="badge bg-secondary me-1">{{ c.localized(lang) }}</span>{% endfor %}</p>
-  {% endif %}
-
-  {% if project.video_file %}
-    <h2 class="h4 mt-4">{{ _('Demo video') }}</h2>
-    <div class="ratio ratio-16x9 mb-4 bg-dark">
-      <video controls preload="metadata" aria-label="{{ _('Demo video for') }} {{ project.title }}">
-        <source src="{{ url_for('projects.media', pid=project.id, fid=project.video_file.id) }}"
-                type="{{ project.video_file.mimetype or 'video/mp4' }}">
-        {{ _('Your browser does not support embedded video.') }}
-        <a href="{{ url_for('projects.media', pid=project.id, fid=project.video_file.id) }}">{{ _('Open video') }}</a>
-      </video>
+  {% if project.status != 'approved' %}
+    <div class="alert alert-warning">
+      {{ _('This project is currently') }} <strong>{{ project.status }}</strong> {{ _('and is not publicly visible.') }}
     </div>
   {% endif %}
 
-  <h2 class="h4 mt-4">{{ _('Abstract') }}</h2>
-  <p>{{ project.abstract }}</p>
-
-  {% if project.keywords %}
-    <h2 class="h5 mt-4">{{ _('Keywords') }}</h2>
-    <p>{{ project.keywords }}</p>
-  {% endif %}
-
-  {% if project.github_url %}
-    <h2 class="h5 mt-4">{{ _('Source code') }}</h2>
-    <p>
-      <a class="btn btn-outline-dark" href="{{ project.github_url }}" target="_blank" rel="noopener noreferrer">
-        <span aria-hidden="true">⌥</span>
-        {{ _('View on GitHub') }} →
-      </a>
-      <br>
-      <small class="text-muted">{{ project.github_url }}</small>
-    </p>
-  {% endif %}
-
-  <h2 class="h5 mt-4">{{ _('Files') }}</h2>
-  {% set non_video = project.document_files + ([project.slides_file] if project.slides_file else []) %}
-  {% if non_video %}
-    <ul class="list-group mb-4">
-    {% for f in non_video %}
-      <li class="list-group-item d-flex justify-content-between align-items-center">
-        <span>
-          {% if f.kind == 'slides' %}<span class="badge bg-info text-dark me-2">{{ _('Slides') }}</span>{% endif %}
-          {{ f.filename }} <small class="text-muted">({{ (f.size / 1024) | round(1) }} KB)</small>
-        </span>
-        {% if current_user.is_authenticated %}
-          <a class="btn btn-sm btn-outline-primary" href="{{ url_for('projects.download', pid=project.id, fid=f.id) }}">{{ _('Download') }}</a>
-        {% else %}
-          <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('auth.login', next=request.path) }}">{{ _('Sign in to download') }}</a>
-        {% endif %}
-      </li>
-    {% endfor %}
-    </ul>
+  {# Cover thumbnail #}
+  {% if project.thumbnail_path %}
+    <div class="gpas-cover" style="background-image:url('{{ url_for('static', filename=project.thumbnail_path) }}')"></div>
   {% else %}
-    <p class="text-muted">{{ _('No files attached.') }}</p>
+    {% set hue = (project.id or 0) * 137 % 360 %}
+    <div class="gpas-cover" style="background:linear-gradient(135deg, hsl({{ hue }},75%,55%) 0%, hsl({{ (hue + 60) % 360 }},75%,50%) 100%)">
+      <div class="gpas-card-thumb-pattern"></div>
+      <div class="gpas-card-thumb-letter" style="font-size:7rem">{{ project.title[0] | upper }}</div>
+    </div>
   {% endif %}
-</article>
+
+  <article>
+    <div class="d-flex flex-wrap gap-2 mb-2">
+      <span class="gpas-chip"><strong>{{ project.year }}</strong></span>
+      <span class="gpas-chip">{{ project.department }}</span>
+      {% for c in project.categories %}<span class="gpas-chip">{{ c.localized(lang) }}</span>{% endfor %}
+    </div>
+
+    <h1 style="font-size: clamp(1.8rem, 3.5vw, 2.6rem)">{{ project.title }}</h1>
+    <p class="text-muted">{{ _('Uploaded by') }} {{ project.uploader.full_name }}{% if project.approved_at %} · {{ _('Approved') }} {{ project.approved_at.strftime('%b %Y') }}{% endif %}</p>
+
+    {% if project.video_file %}
+      <div class="gpas-video ratio ratio-16x9 mb-4">
+        <video controls preload="metadata" aria-label="{{ _('Demo video for') }} {{ project.title }}">
+          <source src="{{ url_for('projects.media', pid=project.id, fid=project.video_file.id) }}"
+                  type="{{ project.video_file.mimetype or 'video/mp4' }}">
+          {{ _('Your browser does not support embedded video.') }}
+          <a href="{{ url_for('projects.media', pid=project.id, fid=project.video_file.id) }}">{{ _('Open video') }}</a>
+        </video>
+      </div>
+    {% endif %}
+
+    <div class="row g-4">
+      <div class="col-lg-8">
+        <h2 class="h4 mt-2">{{ _('Abstract') }}</h2>
+        <p style="font-size:1.05rem; line-height:1.65">{{ project.abstract }}</p>
+
+        {% if project.keywords %}
+          <h2 class="h6 mt-4 text-uppercase" style="letter-spacing:.1em; color:var(--gpas-ink-500)">{{ _('Keywords') }}</h2>
+          <div class="d-flex flex-wrap gap-1">
+            {% for k in project.keywords.split(',') %}
+              {% if k.strip() %}
+                <a class="gpas-chip" href="{{ url_for('projects.search', q=k.strip()) }}">{{ k.strip() }}</a>
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="col-lg-4">
+        {% if project.github_url %}
+          <h2 class="h6 text-uppercase" style="letter-spacing:.1em; color:var(--gpas-ink-500)">{{ _('Source code') }}</h2>
+          <a class="gpas-github" href="{{ project.github_url }}" target="_blank" rel="noopener noreferrer">
+            <span aria-hidden="true">⌥</span>
+            {{ _('View on GitHub') }} →
+          </a>
+          <p class="small text-muted mt-2 text-break">{{ project.github_url }}</p>
+        {% endif %}
+
+        <h2 class="h6 text-uppercase mt-4" style="letter-spacing:.1em; color:var(--gpas-ink-500)">{{ _('Files') }}</h2>
+        {% set non_video = project.document_files + ([project.slides_file] if project.slides_file else []) %}
+        {% if non_video %}
+          <ul class="list-group list-group-flush">
+          {% for f in non_video %}
+            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+              <span class="small">
+                {% if f.kind == 'slides' %}<span class="badge bg-info text-dark me-2">{{ _('Slides') }}</span>{% endif %}
+                {{ f.filename[:30] }}{% if f.filename|length > 30 %}…{% endif %}<br>
+                <span class="text-muted">{{ (f.size / 1024) | round(1) }} KB</span>
+              </span>
+              {% if current_user.is_authenticated %}
+                <a class="btn btn-sm btn-outline-primary" href="{{ url_for('projects.download', pid=project.id, fid=f.id) }}" download>{{ _('Download') }}</a>
+              {% else %}
+                <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('auth.login', next=request.path) }}">{{ _('Sign in') }}</a>
+              {% endif %}
+            </li>
+          {% endfor %}
+          </ul>
+        {% else %}
+          <p class="text-muted small">{{ _('No files attached.') }}</p>
+        {% endif %}
+
+        {# Citation block #}
+        <h2 class="h6 text-uppercase mt-4" style="letter-spacing:.1em; color:var(--gpas-ink-500)">{{ _('Cite this work') }}</h2>
+        <div class="gpas-citation">
+          <pre id="citation-text">{{ project.uploader.full_name }} ({{ project.year }}). {{ project.title }}. {{ _('Graduation Project Archival System, Arab Open University — Kuwait Branch.') }} {{ request.url }}</pre>
+        </div>
+        <button id="copy-cite" class="btn btn-sm btn-outline-secondary mt-2" type="button">
+          <span aria-hidden="true">📋</span> {{ _('Copy citation') }}
+        </button>
+      </div>
+    </div>
+  </article>
+</div>
+
+{% endblock %}
+{% block scripts %}
+<script>
+  (function () {
+    const btn = document.getElementById('copy-cite');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      const txt = document.getElementById('citation-text').innerText;
+      navigator.clipboard.writeText(txt).then(() => {
+        const original = btn.innerHTML;
+        btn.innerHTML = '✓ {{ _("Copied!") }}';
+        setTimeout(() => { btn.innerHTML = original; }, 1800);
+      });
+    });
+  })();
+</script>
 {% endblock %}

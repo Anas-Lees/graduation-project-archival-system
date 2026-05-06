@@ -225,6 +225,80 @@ TRANSLATIONS = {
         "أرسل %(name)s مشروع «%(title)s». راجعه على /admin/approvals.",
     "Submissions enter a pending queue and are published once a doctor approves them.":
         "تدخل الطلبات قائمة الانتظار وتُنشَر بعد موافقة الدكتور.",
+
+    # Hero / home
+    "Faculty of Computer Studies — AOU Kuwait": "كلية الدراسات الحاسوبية — الجامعة العربية المفتوحة، الكويت",
+    "Preserve and discover graduation projects.": "احفظ مشاريع التخرج واكتشفها.",
+    "A bilingual digital archive that lets students publish, doctors supervise, and the next generation learn from every graduation project the university produces.":
+        "أرشيف رقمي ثنائي اللغة يتيح للطلاب النشر، وللدكاترة الإشراف، وللأجيال القادمة التعلم من كل مشروع تخرج تنتجه الجامعة.",
+    "A bilingual digital repository preserving the graduation projects of the Faculty of Computer Studies at the Arab Open University — Kuwait Branch.":
+        "مستودع رقمي ثنائي اللغة يحفظ مشاريع تخرج كلية الدراسات الحاسوبية بالجامعة العربية المفتوحة — فرع الكويت.",
+    "A bilingual digital repository for graduation projects at Arab Open University — Kuwait Branch.":
+        "مستودع رقمي ثنائي اللغة لمشاريع التخرج في الجامعة العربية المفتوحة — فرع الكويت.",
+    "Search by title, keyword, year…": "ابحث بالعنوان أو الكلمة المفتاحية أو السنة…",
+    "Browse projects": "تصفح المشاريع",
+    "Create account": "إنشاء حساب",
+    "Submit a project": "تقديم مشروع",
+    "Illustration of a digital archive": "رسم توضيحي لأرشيف رقمي",
+    "Open": "فتح",
+    "approved projects": "مشاريع معتمدة",
+    "departments": "أقسام",
+    "academic years archived": "سنوات أكاديمية مؤرشفة",
+    "Open access for the AOU community": "وصول مفتوح لمجتمع الجامعة",
+    "Browse by topic": "تصفح حسب الموضوع",
+    "Popular categories": "الفئات الرائجة",
+    "See all": "عرض الكل",
+    "project": "مشروع",
+    "projects": "مشاريع",
+    "Latest work": "أحدث المشاريع",
+    "All projects": "جميع المشاريع",
+    "No projects yet — once a doctor approves submissions they appear here.":
+        "لا توجد مشاريع بعد — ستظهر هنا حالما يوافق الدكتور على الطلبات.",
+    "Years archived": "السنوات المؤرشفة",
+    "WCAG 2.1 conformance": "التوافق مع WCAG 2.1",
+    "Graduation Project Archive": "أرشيف مشاريع التخرج",
+
+    # Browse polish
+    "All work": "كل المشاريع",
+    "Discover": "اكتشف",
+    "Apply filters": "تطبيق الفلاتر",
+    "See all projects": "عرض جميع المشاريع",
+    "Video": "فيديو",
+    "GitHub": "GitHub",
+
+    # Project view polish
+    "Cite this work": "اقتبس هذا العمل",
+    "Copy citation": "نسخ الاقتباس",
+    "Copied!": "تم النسخ!",
+    "Graduation Project Archival System, Arab Open University — Kuwait Branch.":
+        "نظام أرشفة مشاريع التخرج، الجامعة العربية المفتوحة — فرع الكويت.",
+
+    # Upload polish
+    "New submission": "طلب جديد",
+    "Optional, recommended": "اختياري، موصى به",
+    "Adding a thumbnail, video, slides, and GitHub link makes the project page richer.":
+        "إضافة صورة مصغرة وفيديو وعرض تقديمي ورابط GitHub يجعل صفحة المشروع أكثر ثراءً.",
+    "Thumbnail image (optional, JPG / PNG / WebP)": "صورة مصغرة (اختياري، JPG / PNG / WebP)",
+    "Images only (JPG, PNG, WebP, SVG)": "الصور فقط (JPG أو PNG أو WebP أو SVG)",
+    "Used as the cover on cards and the project page. 16:9 ratio looks best.":
+        "تُستخدم كغلاف على البطاقات وصفحة المشروع. النسبة 16:9 هي الأفضل.",
+    "Plays directly on the project page. Up to ~150 MB recommended.":
+        "يُشغَّل مباشرةً على صفحة المشروع. يُفضَّل ألا يتجاوز 150 ميغابايت تقريباً.",
+    "start typing — popular keywords appear as you go":
+        "ابدأ الكتابة — تظهر الكلمات الرائجة أثناء الإدخال",
+    "Tip: pick from the most-used keywords below to improve discoverability.":
+        "نصيحة: اختر من الكلمات الرائجة أدناه لتحسين الاكتشاف.",
+    "Most-used keywords": "الكلمات الأكثر استخداماً",
+    "No suggestions yet — be the first to add keywords.":
+        "لا توجد اقتراحات بعد — كن أول من يضيف كلمات.",
+
+    # Footer
+    "Explore": "استكشاف",
+    "Account": "الحساب",
+    "Standards": "المعايير",
+    "WCAG 2.1 Level AA accessibility": "إمكانية وصول WCAG 2.1 المستوى AA",
+    "Bilingual EN / AR with full RTL support": "ثنائي اللغة EN / AR مع دعم كامل لاتجاه RTL",
+    "Built for TM471 Graduation Project": "صُمِّم لمشروع التخرج TM471",
 }
 
 PO_HEADER_RX = re.compile(r'(?s)("Content-Transfer-Encoding: 8bit\\n"\n)')

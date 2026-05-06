@@ -84,14 +84,29 @@ Two roles only:
 
 ## Rich project pages
 
-Each project can include up to three media attachments and a source-code link:
+Each project can include four media attachments and a source-code link:
 
 | Slot | Accepted formats | Where it appears |
 |---|---|---|
 | **Project document** (required) | PDF, DOCX, DOC | Listed in the Files section with a download button |
-| **Demo video** (optional) | MP4, WebM, MOV, M4V | Embedded as a `<video controls>` player at the top of the project page (16:9, streams inline via `/projects/<id>/media/<file_id>`) |
+| **Thumbnail / cover** (optional) | JPG, PNG, WebP, SVG | Used on cards in browse / home + as a 21:9 cover at the top of the project page. If absent, GPAS auto-generates a colored gradient cover with the title initial. |
+| **Demo video** (optional) | MP4, WebM, MOV, M4V | Embedded as a `<video controls>` player on the project page (streams inline via `/projects/<id>/media/<file_id>`) |
 | **Slides** (optional) | PPTX, PPT, PDF | Listed under Files with a "Slides" badge and download button |
-| **GitHub repository** (optional) | `https://github.com/...` URL | Rendered as a "View on GitHub →" button under the abstract |
+| **GitHub repository** (optional) | `https://github.com/...` URL | Rendered as a "View on GitHub →" button |
+
+### Smart keyword suggestions
+
+When uploading, the keywords field shows the **most-used keywords across the archive** as both a `<datalist>` (type-ahead) and clickable chips with usage counts. The data comes from `GET /projects/api/keywords` which scans every approved project and returns the top 40 by frequency. The hero search box on the home page and the browse page's keyword filter use the same endpoint for autocomplete.
+
+### Other UX features
+
+- **Citation block** on every project page (APA-style) with a one-click "Copy citation" button.
+- **Popular categories** strip on the home page, ranked by approved-project count.
+- **Trust strip** showing total projects, departments, and academic years archived.
+- **Sticky translucent navbar** with backdrop blur (Bootstrap 5 + custom CSS).
+- **Pill-shaped buttons**, soft shadows, hover-lift cards, subtle gradients — visual style inspired by modern SaaS landing pages.
+- **Empty states** with illustrated placeholders and clear CTAs.
+- **Custom SVG hero illustration** (no external image deps).
 
 To see video playback in action, sign in as `student@aou.edu.kw`, click **Upload**, attach any MP4 (along with the required PDF), then sign in as `doc@aou.edu.kw` and approve it from **Doctor panel → Approvals**. Open the project page — the video plays in-page.
 

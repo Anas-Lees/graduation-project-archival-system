@@ -27,6 +27,10 @@ class ProjectForm(FlaskForm):
     year = IntegerField(_l("Year"), validators=[DataRequired(), NumberRange(min=2000, max=2099)])
     department = StringField(_l("Department"), validators=[DataRequired(), Length(max=120)])
     categories = SelectMultipleField(_l("Categories"), coerce=int)
+    thumbnail = FileField(_l("Thumbnail image (optional, JPG / PNG / WebP)"),
+                          validators=[Optional(),
+                                      FileAllowed(["jpg", "jpeg", "png", "webp", "svg"],
+                                                  _l("Images only (JPG, PNG, WebP, SVG)"))])
     file = FileField(_l("Project document (PDF or DOCX)"),
                      validators=[FileRequired(),
                                  FileAllowed(["pdf", "docx", "doc"], _l("PDF or DOCX only"))])

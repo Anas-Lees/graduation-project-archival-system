@@ -22,3 +22,18 @@ def save_upload(file_storage):
     file_storage.save(full)
     size = os.path.getsize(full)
     return full, original, file_storage.mimetype or "application/octet-stream", size
+
+
+def save_thumbnail(file_storage):
+    """Save an image into uploads/thumbs/. Returns the static-relative URL path
+    (e.g. 'uploads/thumbs/<uuid>.png') so it can be passed to url_for('static', filename=...).
+    """
+    original = secure_filename(file_storage.filename or "thumb")
+    ext = original.rsplit(".", 1)[-1].lower() if "." in original else "png"
+    unique = f"{uuid.uuid4().hex}.{ext}"
+    folder = os.path.join(current_app.config["UPLOAD_FOLDER"], "thumbs")
+    os.makedirs(folder, exist_ok=True)
+    full = os.path.join(folder, unique)
+    file_storage.save(full)
+    # Path relative to app/static/ — what the template needs
+    return f"uploads/thumbs/{unique}"

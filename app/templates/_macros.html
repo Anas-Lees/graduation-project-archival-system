@@ -13,18 +13,45 @@
   {% endwith %}
 {% endmacro %}
 
+{% macro project_thumb(p, height_class="") %}
+  {# Renders a project's thumbnail or a generated gradient placeholder #}
+  {% if p.thumbnail_path %}
+    <span class="gpas-card-thumb {{ height_class }}"
+          style="background-image:url('{{ url_for('static', filename=p.thumbnail_path) }}')"
+          aria-hidden="true"></span>
+  {% else %}
+    {% set seed = (p.id or 0) * 137 %}
+    {% set hue = seed % 360 %}
+    <span class="gpas-card-thumb {{ height_class }}"
+          style="background:linear-gradient(135deg, hsl({{ hue }},75%,55%) 0%, hsl({{ (hue + 60) % 360 }},75%,50%) 100%)"
+          aria-hidden="true">
+      <span class="gpas-card-thumb-pattern"></span>
+      <span class="gpas-card-thumb-letter">{{ p.title[0] | upper }}</span>
+    </span>
+  {% endif %}
+{% endmacro %}
+
 {% macro project_card(p) %}
-  <article class="card h-100 shadow-sm">
-    <div class="card-body">
-      <h3 class="h5 card-title"><a class="stretched-link text-decoration-none" href="{{ url_for('projects.view', pid=p.id) }}">{{ p.title }}</a></h3>
-      <p class="text-muted small mb-2">{{ p.year }} · {{ p.department }}</p>
-      <p class="card-text">{{ p.abstract[:160] }}{% if p.abstract|length > 160 %}…{% endif %}</p>
-    </div>
-    {% if p.categories %}
-      <div class="card-footer bg-white border-0 pt-0">
-        {% for c in p.categories %}<span class="badge bg-secondary me-1">{{ c.localized(lang) }}</span>{% endfor %}
+  <article class="card h-100 d-flex flex-column">
+    <a href="{{ url_for('projects.view', pid=p.id) }}" aria-label="{{ p.title }}">
+      {{ project_thumb(p) }}
+    </a>
+    <div class="card-body d-flex flex-column">
+      <div class="card-meta">
+        <span>{{ p.year }}</span>
+        <span class="dot"></span>
+        <span>{{ p.department }}</span>
+        {% if p.video_file %}<span class="dot"></span><span>▶ {{ _('Video') }}</span>{% endif %}
+        {% if p.github_url %}<span class="dot"></span><span>⌥ {{ _('GitHub') }}</span>{% endif %}
       </div>
-    {% endif %}
+      <h3 class="card-title"><a href="{{ url_for('projects.view', pid=p.id) }}">{{ p.title }}</a></h3>
+      <p class="card-text">{{ p.abstract[:140] }}{% if p.abstract|length > 140 %}…{% endif %}</p>
+      {% if p.categories %}
+        <div class="mt-auto pt-2 d-flex flex-wrap gap-1">
+          {% for c in p.categories[:3] %}<span class="gpas-chip">{{ c.localized(lang) }}</span>{% endfor %}
+        </div>
+      {% endif %}
+    </div>
   </article>
 {% endmacro %}
 

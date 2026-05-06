@@ -15,9 +15,11 @@ class Config:
     ALLOWED_DOC_EXTENSIONS = {"pdf", "docx", "doc"}
     ALLOWED_VIDEO_EXTENSIONS = {"mp4", "webm", "mov", "m4v"}
     ALLOWED_SLIDES_EXTENSIONS = {"pptx", "ppt", "pdf"}
+    ALLOWED_IMAGE_EXTENSIONS = {"jpg", "jpeg", "png", "webp", "svg"}
     # Combined for legacy callers that referenced ALLOWED_EXTENSIONS
     ALLOWED_EXTENSIONS = (
-        ALLOWED_DOC_EXTENSIONS | ALLOWED_VIDEO_EXTENSIONS | ALLOWED_SLIDES_EXTENSIONS
+        ALLOWED_DOC_EXTENSIONS | ALLOWED_VIDEO_EXTENSIONS
+        | ALLOWED_SLIDES_EXTENSIONS | ALLOWED_IMAGE_EXTENSIONS
     )
 
     # NFR05: 30-min idle timeout

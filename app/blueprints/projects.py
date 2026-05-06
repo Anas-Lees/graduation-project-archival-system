@@ -1,5 +1,7 @@
+import re
 from datetime import datetime
-from flask import Blueprint, render_template, request, abort, send_file, flash, redirect, url_for, current_app
+from collections import Counter
+from flask import Blueprint, render_template, request, abort, send_file, flash, redirect, url_for, current_app, jsonify
 from flask_login import login_required, current_user
 from sqlalchemy import text, func, distinct
 from flask_babel import gettext as _
@@ -7,7 +9,7 @@ from ..extensions import db
 from ..models import Project, ProjectFile, Category, AccessLog
 from ..forms import ProjectForm
 from ..utils.security import role_required
-from ..utils.files import save_upload
+from ..utils.files import save_upload, save_thumbnail
 from ..utils.search import build_fts_query
 from ..utils.mailer import send_email
 
@@ -155,6 +157,11 @@ def upload():
         )
         if form.categories.data:
             project.categories = db.session.query(Category).filter(Category.id.in_(form.categories.data)).all()
+
+        # Optional thumbnail
+        if form.thumbnail.data and form.thumbnail.data.filename:
+            project.thumbnail_path = save_thumbnail(form.thumbnail.data)
+
         db.session.add(project)
         db.session.flush()
 
@@ -194,3 +201,33 @@ def upload():
 def mine():
     items = db.session.query(Project).filter(Project.uploader_id == current_user.id).order_by(Project.created_at.desc()).all()
     return render_template("projects/mine.html", items=items)
+
+
+# --------------------------------------------------------------------------- #
+# Suggestion APIs (used by upload datalist + browse search box)               #
+# --------------------------------------------------------------------------- #
+
+_KW_SPLIT = re.compile(r"[,;|]| {2,}")
+
+
+@bp.route("/api/keywords")
+def api_keywords():
+    """Return the most-used keywords across approved projects, ranked by frequency."""
+    rows = db.session.query(Project.keywords).filter(
+        Project.status == "approved", Project.keywords.isnot(None), Project.keywords != ""
+    ).all()
+    counter = Counter()
+    for (kw,) in rows:
+        for token in _KW_SPLIT.split(kw or ""):
+            t = token.strip().lower()
+            if 2 <= len(t) <= 40:
+                counter[t] += 1
+    top = [{"keyword": k, "count": c} for k, c in counter.most_common(40)]
+    return jsonify(top)
+
+
+@bp.route("/api/titles")
+def api_titles():
+    """Return up to 25 approved project titles to power search-bar autocomplete."""
+    rows = db.session.query(Project.title).filter(Project.status == "approved").order_by(Project.created_at.desc()).limit(25).all()
+    return jsonify([t for (t,) in rows])

@@ -5,6 +5,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}{{ _('Graduation Project Archival System') }}{% endblock %} — GPAS</title>
+  <meta name="description" content="{{ _('A bilingual digital repository for graduation projects at Arab Open University — Kuwait Branch.') }}">
+
+  {# Google Fonts: Inter for Latin, Tajawal for Arabic #}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+
   {% if is_rtl %}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css"
           integrity="sha384-nU14brUcp6StFntEOOEBvcJm4huWjB0OcIeQ3fltAfSmuZFrkAif0T+UtNGlKKQv" crossorigin="anonymous">
@@ -13,22 +20,24 @@
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   {% endif %}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%232c4cff'/%3E%3Ctext x='50' y='66' font-family='Inter,sans-serif' font-size='58' font-weight='800' fill='white' text-anchor='middle'%3EG%3C/text%3E%3C/svg%3E">
 </head>
 <body>
   <a href="#main" class="visually-hidden-focusable skip-link">{{ _('Skip to main content') }}</a>
 
   <header>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary" aria-label="{{ _('Primary navigation') }}">
+    <nav class="navbar navbar-expand-lg gpas-nav" aria-label="{{ _('Primary navigation') }}">
       <div class="container">
-        <a class="navbar-brand" href="{{ url_for('main.index') }}">
-          <strong>GPAS</strong> <span class="d-none d-md-inline">— {{ _('Graduation Project Archival System') }}</span>
+        <a class="navbar-brand d-flex align-items-center gap-2" href="{{ url_for('main.index') }}">
+          <span class="gpas-logo">GPAS</span>
+          <span class="d-none d-lg-inline text-muted small fw-normal">{{ _('Graduation Project Archive') }}</span>
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain"
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMain"
                 aria-controls="navMain" aria-expanded="false" aria-label="{{ _('Toggle navigation') }}">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navMain">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
             <li class="nav-item"><a class="nav-link" href="{{ url_for('projects.browse') }}">{{ _('Browse') }}</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url_for('projects.search') }}">{{ _('Search') }}</a></li>
             {% if current_user.is_authenticated %}
@@ -47,11 +56,11 @@
               </li>
             {% endif %}
           </ul>
-          <ul class="navbar-nav">
+          <ul class="navbar-nav align-items-lg-center">
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"
                  aria-label="{{ _('Language switcher') }}">
-                {{ languages[lang] }}
+                <span aria-hidden="true">🌐</span> {{ languages[lang] }}
               </a>
               <ul class="dropdown-menu dropdown-menu-end">
                 {% for code, name in languages.items() %}
@@ -61,16 +70,22 @@
             </li>
             {% if current_user.is_authenticated %}
               <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  {{ current_user.full_name }} <small class="badge bg-light text-dark">{{ current_user.role }}</small>
+                <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <span class="badge bg-primary rounded-pill" style="background:var(--gpas-blue-500) !important">{{ current_user.full_name[0] }}</span>
+                  <span class="d-none d-md-inline">{{ current_user.full_name.split(' ')[0] }}</span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
+                  <li><span class="dropdown-item-text small text-muted">{{ current_user.email }}</span></li>
+                  <li><span class="dropdown-item-text small"><span class="gpas-chip">{{ current_user.role }}</span></span></li>
+                  <li><hr class="dropdown-divider"></li>
                   <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}">{{ _('Sign out') }}</a></li>
                 </ul>
               </li>
             {% else %}
               <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.login') }}">{{ _('Sign in') }}</a></li>
-              <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.register') }}">{{ _('Register') }}</a></li>
+              <li class="nav-item ms-lg-2">
+                <a class="btn btn-primary btn-sm" href="{{ url_for('auth.register') }}">{{ _('Register') }} →</a>
+              </li>
             {% endif %}
           </ul>
         </div>
@@ -78,23 +93,54 @@
     </nav>
   </header>
 
-  <main id="main" class="container my-4" tabindex="-1">
-    {{ flash_messages() }}
+  <main id="main" tabindex="-1">
+    {% if get_flashed_messages() %}<div class="container mt-3">{{ flash_messages() }}</div>{% endif %}
     {% block content %}{% endblock %}
   </main>
 
-  <footer class="border-top mt-5 py-4 bg-light">
-    <div class="container small text-muted d-flex flex-wrap gap-3 justify-content-between">
-      <span>© {{ 2025 }} {{ _('Arab Open University — Kuwait Branch') }}</span>
-      <span>
-        <a href="{{ url_for('main.about') }}" class="me-3">{{ _('About') }}</a>
-        <a href="{{ url_for('main.privacy') }}">{{ _('Privacy') }}</a>
-      </span>
+  <footer class="gpas-footer">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-md-4">
+          <h6>GPAS</h6>
+          <p class="small mb-0" style="color:#aab1c8;max-width:32ch">
+            {{ _('A bilingual digital repository preserving the graduation projects of the Faculty of Computer Studies at the Arab Open University — Kuwait Branch.') }}
+          </p>
+        </div>
+        <div class="col-md-2">
+          <h6>{{ _('Explore') }}</h6>
+          <ul class="list-unstyled small">
+            <li class="mb-2"><a href="{{ url_for('projects.browse') }}">{{ _('Browse') }}</a></li>
+            <li class="mb-2"><a href="{{ url_for('projects.search') }}">{{ _('Search') }}</a></li>
+            <li class="mb-2"><a href="{{ url_for('main.about') }}">{{ _('About') }}</a></li>
+          </ul>
+        </div>
+        <div class="col-md-2">
+          <h6>{{ _('Account') }}</h6>
+          <ul class="list-unstyled small">
+            <li class="mb-2"><a href="{{ url_for('auth.login') }}">{{ _('Sign in') }}</a></li>
+            <li class="mb-2"><a href="{{ url_for('auth.register') }}">{{ _('Register') }}</a></li>
+          </ul>
+        </div>
+        <div class="col-md-4">
+          <h6>{{ _('Standards') }}</h6>
+          <ul class="list-unstyled small" style="color:#aab1c8">
+            <li class="mb-2">{{ _('WCAG 2.1 Level AA accessibility') }}</li>
+            <li class="mb-2">{{ _('Bilingual EN / AR with full RTL support') }}</li>
+            <li class="mb-2"><a href="{{ url_for('main.privacy') }}">{{ _('Privacy notice') }}</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="gpas-footer-bottom">
+        <span>© {{ 2026 }} {{ _('Arab Open University — Kuwait Branch') }}</span>
+        <span>{{ _('Built for TM471 Graduation Project') }}</span>
+      </div>
     </div>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
           integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+  {% block scripts %}{% endblock %}
 </body>
 </html>

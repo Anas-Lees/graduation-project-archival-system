@@ -1,70 +1,136 @@
 {% extends "base.html" %}
 {% block title %}{{ _('Upload project') }}{% endblock %}
 {% block content %}
-<h1 class="h3 mb-3">{{ _('Submit a graduation project') }}</h1>
-<p class="text-muted">{{ _('Submissions enter a pending queue and are published once a doctor approves them.') }}</p>
+<div class="container my-4" style="max-width: 820px">
+  <div class="section-eyebrow">{{ _('New submission') }}</div>
+  <h1 class="h2 mb-2">{{ _('Submit a graduation project') }}</h1>
+  <p class="text-muted">{{ _('Submissions enter a pending queue and are published once a doctor approves them.') }}</p>
 
-<form method="post" enctype="multipart/form-data" novalidate class="mt-3">
-  {{ form.hidden_tag() }}
-  <div class="mb-3">
-    {{ form.title.label(class="form-label") }}
-    {{ form.title(class="form-control") }}
-    {% for e in form.title.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
-  </div>
-  <div class="row g-3 mb-3">
-    <div class="col-md-3">
-      {{ form.year.label(class="form-label") }}
-      {{ form.year(class="form-control") }}
-      {% for e in form.year.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+  <form method="post" enctype="multipart/form-data" novalidate class="mt-4 card p-4">
+    {{ form.hidden_tag() }}
+
+    <div class="mb-3">
+      {{ form.title.label(class="form-label") }}
+      {{ form.title(class="form-control") }}
+      {% for e in form.title.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
     </div>
-    <div class="col-md-9">
-      {{ form.department.label(class="form-label") }}
-      {{ form.department(class="form-control") }}
-      {% for e in form.department.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+
+    <div class="row g-3 mb-3">
+      <div class="col-md-3">
+        {{ form.year.label(class="form-label") }}
+        {{ form.year(class="form-control") }}
+        {% for e in form.year.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+      </div>
+      <div class="col-md-9">
+        {{ form.department.label(class="form-label") }}
+        {{ form.department(class="form-control") }}
+        {% for e in form.department.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+      </div>
     </div>
-  </div>
-  <div class="mb-3">
-    {{ form.abstract.label(class="form-label") }}
-    {{ form.abstract(class="form-control", rows=6) }}
-    {% for e in form.abstract.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
-  </div>
-  <div class="mb-3">
-    {{ form.keywords.label(class="form-label") }}
-    {{ form.keywords(class="form-control") }}
-  </div>
-  <div class="mb-3">
-    {{ form.categories.label(class="form-label") }}
-    {{ form.categories(class="form-select", size=5) }}
-    <div class="form-text">{{ _('Hold Ctrl/Cmd to select multiple.') }}</div>
-  </div>
-  <div class="mb-3">
-    {{ form.file.label(class="form-label") }}
-    {{ form.file(class="form-control") }}
-    {% for e in form.file.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
-  </div>
 
-  <hr class="my-4">
-  <p class="text-muted small">{{ _('The fields below are optional but recommended for richer demos.') }}</p>
+    <div class="mb-3">
+      {{ form.abstract.label(class="form-label") }}
+      {{ form.abstract(class="form-control", rows=6) }}
+      {% for e in form.abstract.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+    </div>
 
-  <div class="mb-3">
-    {{ form.video.label(class="form-label") }}
-    {{ form.video(class="form-control", accept="video/mp4,video/webm,video/quicktime") }}
-    <div class="form-text">{{ _('Will play directly on the project page. Up to ~150 MB recommended.') }}</div>
-    {% for e in form.video.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
-  </div>
+    {# Keywords with type-ahead from most popular existing keywords #}
+    <div class="mb-3">
+      {{ form.keywords.label(class="form-label") }}
+      {{ form.keywords(class="form-control", list="kw-popular", autocomplete="off",
+                       placeholder=_('start typing — popular keywords appear as you go')) }}
+      <datalist id="kw-popular"></datalist>
+      <div class="form-text" id="kw-cloud-hint">{{ _('Tip: pick from the most-used keywords below to improve discoverability.') }}</div>
+      <div class="d-flex flex-wrap gap-1 mt-2" id="kw-cloud" aria-label="{{ _('Most-used keywords') }}"></div>
+    </div>
 
-  <div class="mb-3">
-    {{ form.slides.label(class="form-label") }}
-    {{ form.slides(class="form-control", accept=".pptx,.ppt,application/pdf") }}
-    {% for e in form.slides.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
-  </div>
+    <div class="mb-3">
+      {{ form.categories.label(class="form-label") }}
+      {{ form.categories(class="form-select", size=5) }}
+      <div class="form-text">{{ _('Hold Ctrl/Cmd to select multiple.') }}</div>
+    </div>
 
-  <div class="mb-3">
-    {{ form.github_url.label(class="form-label") }}
-    {{ form.github_url(class="form-control", placeholder="https://github.com/your-name/your-repo", inputmode="url") }}
-    {% for e in form.github_url.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
-  </div>
+    <div class="mb-3">
+      {{ form.file.label(class="form-label") }}
+      {{ form.file(class="form-control", accept=".pdf,.docx,.doc") }}
+      {% for e in form.file.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+    </div>
 
-  {{ form.submit(class="btn btn-primary") }}
-</form>
+    <hr class="my-4">
+    <h2 class="h6 text-uppercase mb-2" style="letter-spacing:.1em; color:var(--gpas-ink-500)">{{ _('Optional, recommended') }}</h2>
+    <p class="text-muted small mb-3">{{ _('Adding a thumbnail, video, slides, and GitHub link makes the project page richer.') }}</p>
+
+    <div class="mb-3">
+      {{ form.thumbnail.label(class="form-label") }}
+      {{ form.thumbnail(class="form-control", accept="image/png,image/jpeg,image/webp,image/svg+xml") }}
+      <div class="form-text">{{ _('Used as the cover on cards and the project page. 16:9 ratio looks best.') }}</div>
+      {% for e in form.thumbnail.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+    </div>
+
+    <div class="mb-3">
+      {{ form.video.label(class="form-label") }}
+      {{ form.video(class="form-control", accept="video/mp4,video/webm,video/quicktime") }}
+      <div class="form-text">{{ _('Plays directly on the project page. Up to ~150 MB recommended.') }}</div>
+      {% for e in form.video.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+    </div>
+
+    <div class="mb-3">
+      {{ form.slides.label(class="form-label") }}
+      {{ form.slides(class="form-control", accept=".pptx,.ppt,application/pdf") }}
+      {% for e in form.slides.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+    </div>
+
+    <div class="mb-4">
+      {{ form.github_url.label(class="form-label") }}
+      {{ form.github_url(class="form-control", placeholder="https://github.com/your-name/your-repo", inputmode="url") }}
+      {% for e in form.github_url.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+    </div>
+
+    <div class="d-flex gap-2 align-items-center">
+      {{ form.submit(class="btn btn-primary btn-lg") }}
+      <a class="btn btn-outline-secondary btn-lg" href="{{ url_for('projects.browse') }}">{{ _('Cancel') }}</a>
+    </div>
+  </form>
+</div>
+
+{% endblock %}
+{% block scripts %}
+<script>
+  (function () {
+    fetch("{{ url_for('projects.api_keywords') }}")
+      .then(r => r.json()).then(items => {
+        const dl = document.getElementById('kw-popular');
+        const cloud = document.getElementById('kw-cloud');
+        if (!items.length) {
+          document.getElementById('kw-cloud-hint').textContent =
+            "{{ _('No suggestions yet — be the first to add keywords.') }}";
+          return;
+        }
+        items.forEach(it => {
+          const o = document.createElement('option');
+          o.value = it.keyword; o.label = `${it.count}× used`;
+          dl.appendChild(o);
+        });
+        // Render top-12 as clickable chips
+        items.slice(0, 12).forEach(it => {
+          const chip = document.createElement('button');
+          chip.type = 'button'; chip.className = 'gpas-chip border-0';
+          chip.innerHTML = `${it.keyword} <span class="text-muted">·${it.count}</span>`;
+          chip.addEventListener('click', () => addKeyword(it.keyword));
+          cloud.appendChild(chip);
+        });
+      }).catch(() => {});
+
+    function addKeyword(kw) {
+      const input = document.getElementById('keywords');
+      if (!input) return;
+      const cur = input.value.trim();
+      const list = cur ? cur.split(',').map(s => s.trim()).filter(Boolean) : [];
+      if (list.includes(kw)) return;
+      list.push(kw);
+      input.value = list.join(', ');
+      input.focus();
+    }
+  })();
+</script>
 {% endblock %}

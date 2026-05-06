@@ -198,6 +198,40 @@ def write_pdf(filename: str, upload_folder: str) -> str:
     return path
 
 
+def write_thumbnail(title: str, project_id: int, upload_folder: str) -> str:
+    """Generate a small SVG cover for a project. Stored under uploads/thumbs/.
+    Returns path relative to app/static/ (so url_for('static', filename=...) works).
+    """
+    folder = os.path.join(upload_folder, "thumbs")
+    os.makedirs(folder, exist_ok=True)
+    hue = (project_id * 137) % 360
+    initial = (title or "?")[0].upper()
+    title_short = (title[:26] + "…") if len(title) > 26 else title
+    svg = f"""<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 450' role='img' aria-label='{title}'>
+  <defs>
+    <linearGradient id='g' x1='0' x2='1' y1='0' y2='1'>
+      <stop offset='0' stop-color='hsl({hue},75%,55%)'/>
+      <stop offset='1' stop-color='hsl({(hue + 60) % 360},75%,50%)'/>
+    </linearGradient>
+    <radialGradient id='p' cx='30%' cy='30%' r='60%'>
+      <stop offset='0' stop-color='rgba(255,255,255,.25)'/>
+      <stop offset='1' stop-color='rgba(255,255,255,0)'/>
+    </radialGradient>
+  </defs>
+  <rect width='800' height='450' fill='url(#g)'/>
+  <rect width='800' height='450' fill='url(#p)'/>
+  <circle cx='670' cy='110' r='130' fill='rgba(255,255,255,.10)'/>
+  <circle cx='110' cy='370' r='90'  fill='rgba(255,255,255,.08)'/>
+  <text x='60' y='250' font-family='Inter,Tajawal,sans-serif' font-size='160' font-weight='800' fill='rgba(255,255,255,.95)'>{initial}</text>
+  <text x='60' y='340' font-family='Inter,Tajawal,sans-serif' font-size='26' font-weight='600' fill='rgba(255,255,255,.85)'>{title_short.replace('&', '&amp;').replace('<', '&lt;')}</text>
+</svg>"""
+    filename = f"seed_thumb_{project_id}_{uuid.uuid4().hex[:8]}.svg"
+    path = os.path.join(folder, filename)
+    with open(path, "w", encoding="utf-8") as fh:
+        fh.write(svg)
+    return f"uploads/thumbs/{filename}"
+
+
 def upsert_projects(app):
     student = db.session.query(User).filter_by(email="student@aou.edu.kw").one()
     doc = db.session.query(User).filter_by(email="doc@aou.edu.kw").one()
@@ -225,6 +259,9 @@ def upsert_projects(app):
 
         db.session.add(project)
         db.session.flush()
+
+        # Thumbnail
+        project.thumbnail_path = write_thumbnail(p["title"], project.id, upload_folder)
 
         # Main document
         doc_unique = f"seed_{slug}_{uuid.uuid4().hex[:8]}.pdf"
