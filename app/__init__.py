@@ -50,7 +50,7 @@ def create_app(config_class=Config):
         from .models import Project
         from sqlalchemy import func
         pending_count = 0
-        if getattr(current_user, "is_authenticated", False) and current_user.has_role("doc"):
+        if getattr(current_user, "is_authenticated", False) and current_user.has_role("faculty"):
             pending_count = (
                 db.session.query(func.count(Project.id))
                 .filter(Project.status == "pending").scalar()

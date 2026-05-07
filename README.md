@@ -1,9 +1,9 @@
 # GPAS — Graduation Project Archival System
 
 A web-based digital repository for AOU Kuwait graduation projects.
-Implements the TM471 Part A specification: bilingual (English/Arabic) interface with RTL support, WCAG 2.1 AA accessibility, role-based access control, full-text search, and an admin approval workflow.
+Two roles (Student / Faculty member), full-text search, file uploads (document + video + slides + thumbnail), GitHub link, faculty approval workflow, and a tag-style keyword editor.
 
-**Stack:** Python 3.11 · Flask 3 · SQLAlchemy · SQLite (with FTS5) · Bootstrap 5 · Flask-Babel.
+**Stack:** Python 3.11 · Flask 3 · SQLAlchemy · SQLite (with FTS5) · Bootstrap 5.
 
 ---
 
@@ -21,36 +21,42 @@ Python 3.11 WSGI app — point them at `wsgi:application` and set `SECRET_KEY` +
 
 ---
 
-## Quick start (Windows, local development)
+## Quick start (Windows, fresh clone)
+
+After `git clone`, just run:
 
 ```cmd
-cd E:\salman\gpas
+setup.bat
+```
+
+That single script creates the venv, installs all dependencies, initialises the database, and seeds demo data. **It's the one thing to run on any new computer.** When it finishes, start the server with:
+
+```cmd
 venv\Scripts\activate
-pip install -r requirements.txt
-python scripts\init_db.py
-python scripts\seed.py
 python run.py
 ```
 
-Open http://127.0.0.1:5000
+Open <http://127.0.0.1:5000>.
+
+> **Got "ModuleNotFoundError: No module named 'flask'" / SQLAlchemy errors?** That's because the venv hasn't been created yet on the new machine — the venv is intentionally not in the git repo (it's huge and machine-specific). Just run `setup.bat` once.
 
 For a production-style server use waitress:
 ```cmd
-venv\Scripts\waitress-serve --listen=127.0.0.1:8000 run:app
+venv\Scripts\waitress-serve --listen=127.0.0.1:8000 wsgi:application
 ```
 
 ---
 
 ## Demo accounts (seeded)
 
-| Role    | Email                | Password       |
-|---------|----------------------|----------------|
-| Student | student@aou.edu.kw   | Student123!    |
-| Doctor  | doc@aou.edu.kw       | Doctor123!     |
+| Role           | Email                  | Password      |
+|----------------|------------------------|---------------|
+| Student        | student@aou.edu.kw     | Student123!   |
+| Faculty member | faculty@aou.edu.kw     | Faculty123!   |
 
-Two roles only:
-- **Student** — register, browse, search, download approved projects, **submit** their own graduation projects (which enter the pending queue).
-- **Doctor** (Dr. — supervisor / professor) — everything a student can do, **plus** approve/reject submissions, manage users, and view usage reports.
+Two roles:
+- **Student** — register, browse, search, download approved projects, and submit their own graduation projects (which enter the pending queue).
+- **Faculty member** — everything a student can do, **plus** approve/reject student submissions, manage users, view usage reports, and **publish projects directly on a student's behalf** (no queue — auto-approved).
 
 ---
 

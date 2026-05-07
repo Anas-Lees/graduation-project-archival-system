@@ -39,8 +39,6 @@
     <div class="card-body d-flex flex-column">
       <div class="card-meta">
         <span>{{ p.year }}</span>
-        <span class="dot"></span>
-        <span>{{ p.department }}</span>
         {% if p.video_file %}<span class="dot"></span><span>▶ {{ _('Video') }}</span>{% endif %}
         {% if p.github_url %}<span class="dot"></span><span>⌥ {{ _('GitHub') }}</span>{% endif %}
       </div>

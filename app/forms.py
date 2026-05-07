@@ -29,9 +29,8 @@ class LoginForm(FlaskForm):
 class ProjectForm(FlaskForm):
     title = StringField(_l("Title"), validators=[DataRequired(), Length(max=255)])
     abstract = TextAreaField(_l("Abstract"), validators=[DataRequired(), Length(min=50)])
-    keywords = StringField(_l("Keywords (comma-separated)"), validators=[Optional(), Length(max=500)])
+    keywords = StringField(_l("Keywords"), validators=[Optional(), Length(max=500)])
     year = IntegerField(_l("Year"), validators=[DataRequired(), NumberRange(min=2000, max=2099)])
-    department = StringField(_l("Department"), validators=[DataRequired(), Length(max=120)])
     categories = MultiCheckboxField(_l("Categories"), coerce=int)
     thumbnail = FileField(_l("Thumbnail image (optional, JPG / PNG / WebP)"),
                           validators=[Optional(),
@@ -64,6 +63,6 @@ class UserAdminForm(FlaskForm):
     full_name = StringField(_l("Full name"), validators=[DataRequired()])
     email = StringField(_l("Email"), validators=[DataRequired(), Email()])
     role = SelectField(_l("Role"), choices=[("student", _l("Student")),
-                                            ("doc", _l("Doctor"))])
+                                            ("faculty", _l("Faculty member"))])
     password = PasswordField(_l("Password (leave blank to keep)"), validators=[Optional(), Length(min=8)])
     submit = SubmitField(_l("Save"))

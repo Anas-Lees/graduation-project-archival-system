@@ -1,17 +1,18 @@
 {% extends "base.html" %}
 {% block title %}{{ _('About') }}{% endblock %}
 {% block content %}
-<h1>{{ _('About GPAS') }}</h1>
-<p>
-  {{ _('The Graduation Project Archival System (GPAS) is a web-based digital repository developed for the Arab Open University — Kuwait Branch. It centralises the storage, discovery, and dissemination of graduation projects produced by the Faculty of Computer Studies.') }}
-</p>
-<h2 class="h4 mt-4">{{ _('Goals') }}</h2>
-<ul>
-  <li>{{ _('Preserve student work that would otherwise be lost.') }}</li>
-  <li>{{ _('Help current students learn from past projects.') }}</li>
-  <li>{{ _('Support faculty in advising and ensuring originality.') }}</li>
-  <li>{{ _('Provide administrators with reporting and oversight.') }}</li>
-</ul>
-<h2 class="h4 mt-4">{{ _('Accessibility') }}</h2>
-<p>{{ _('The system is designed to conform to WCAG 2.1 Level AA, with full keyboard navigation, descriptive alt text, sufficient colour contrast, and bilingual English/Arabic support including right-to-left layouts.') }}</p>
+<div class="container my-4" style="max-width: 760px">
+  <div class="section-eyebrow">{{ _('About') }}</div>
+  <h1 class="mb-3">{{ _('About GPAS') }}</h1>
+  <p>
+    {{ _('The Graduation Project Archival System (GPAS) is a web-based digital repository developed for the Arab Open University — Kuwait Branch. It centralises the storage, discovery, and dissemination of graduation projects produced by AOU students across all faculties.') }}
+  </p>
+  <h2 class="h4 mt-4">{{ _('Goals') }}</h2>
+  <ul>
+    <li>{{ _('Preserve student work that would otherwise be lost.') }}</li>
+    <li>{{ _('Help current students learn from past projects.') }}</li>
+    <li>{{ _('Support faculty members in advising and ensuring originality.') }}</li>
+    <li>{{ _('Provide a clear, searchable archive for the whole university community.') }}</li>
+  </ul>
+</div>
 {% endblock %}

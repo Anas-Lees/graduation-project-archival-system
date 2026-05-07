@@ -21,6 +21,20 @@ class User(UserMixin, db.Model):
     def has_role(self, *roles):
         return self.role in roles
 
+    @property
+    def first_name(self):
+        """Return the user's given name, skipping titles like 'Dr.' / 'Prof.'."""
+        TITLES = {"dr", "dr.", "prof", "prof.", "mr", "mr.", "ms", "ms.", "mrs", "mrs.", "miss"}
+        if not self.full_name:
+            return ""
+        for token in self.full_name.split():
+            if token.lower().rstrip(".") + ("." if token.endswith(".") else "") in TITLES:
+                continue
+            if token.lower() in TITLES:
+                continue
+            return token
+        return self.full_name.split()[0]
+
 
 project_categories = db.Table(
     "project_categories",

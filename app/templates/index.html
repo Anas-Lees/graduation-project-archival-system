@@ -7,10 +7,10 @@
   <div class="container">
     <div class="row align-items-center g-5">
       <div class="col-lg-6">
-        <span class="gpas-hero-eyebrow"><span class="dot"></span> {{ _('Faculty of Computer Studies — AOU Kuwait') }}</span>
+        <span class="gpas-hero-eyebrow"><span class="dot"></span> {{ _('Arab Open University — Kuwait Branch') }}</span>
         <h1>{{ _('Preserve and discover graduation projects.') }}</h1>
         <p class="lead">
-          {{ _('A bilingual digital archive that lets students publish, doctors supervise, and the next generation learn from every graduation project the university produces.') }}
+          {{ _('A digital archive that lets students publish, faculty members supervise, and the next generation learn from every graduation project the university produces.') }}
         </p>
 
         <form action="{{ url_for('projects.search') }}" method="get" class="gpas-search mb-3" role="search">
@@ -32,56 +32,88 @@
       </div>
 
       <div class="col-lg-6 d-none d-lg-block">
-        <svg viewBox="0 0 600 460" role="img" aria-label="{{ _('Illustration of a digital archive') }}" class="w-100 gpas-hero-illustration" style="max-height:420px">
+        {# Hero illustration: layered books / archive / magnifying glass.
+           Cleaner & more academic than the previous version — no chip overlays. #}
+        <svg viewBox="0 0 600 460" role="img"
+             aria-label="{{ _('Illustration of an academic archive') }}"
+             class="w-100 gpas-hero-illustration" style="max-height:440px">
           <defs>
             <linearGradient id="gA" x1="0" x2="1" y1="0" y2="1">
               <stop offset="0" stop-color="#2c4cff"/>
               <stop offset="1" stop-color="#6f3cff"/>
             </linearGradient>
-            <linearGradient id="gB" x1="0" x2="1" y1="0" y2="1">
-              <stop offset="0" stop-color="#dbe4ff"/>
-              <stop offset="1" stop-color="#eef3ff"/>
+            <linearGradient id="gShelf" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0" stop-color="#1a30d4"/>
+              <stop offset="1" stop-color="#0b1437"/>
             </linearGradient>
             <filter id="sh" x="-10%" y="-10%" width="120%" height="120%">
               <feGaussianBlur in="SourceAlpha" stdDeviation="6"/>
               <feOffset dy="6"/>
-              <feComponentTransfer><feFuncA type="linear" slope=".15"/></feComponentTransfer>
+              <feComponentTransfer><feFuncA type="linear" slope=".18"/></feComponentTransfer>
               <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
             </filter>
           </defs>
-          <ellipse cx="320" cy="380" rx="240" ry="34" fill="#eef3ff"/>
-          <g transform="translate(120 80) rotate(-6)" filter="url(#sh)">
-            <rect width="220" height="280" rx="18" fill="url(#gB)"/>
-            <rect x="22" y="32" width="100" height="10" rx="5" fill="#aab1c8"/>
-            <rect x="22" y="56" width="170" height="6" rx="3" fill="#cfd5ea"/>
-            <rect x="22" y="72" width="170" height="6" rx="3" fill="#cfd5ea"/>
-            <rect x="22" y="88" width="120" height="6" rx="3" fill="#cfd5ea"/>
+
+          {# Soft floor #}
+          <ellipse cx="300" cy="410" rx="240" ry="22" fill="#dbe4ff" opacity=".7"/>
+
+          {# Bookshelf with spines (back row) #}
+          <g filter="url(#sh)">
+            <rect x="60" y="70" width="380" height="240" rx="12" fill="#fff" stroke="#e6e8f0"/>
+            {# Top shelf books — varied colors #}
+            <g transform="translate(80 90)">
+              <rect width="22" height="100" rx="3" fill="#2c4cff"/>
+              <rect x="28" width="20" height="100" rx="3" fill="#6f3cff"/>
+              <rect x="54" width="26" height="100" rx="3" fill="#1a30d4"/>
+              <rect x="86" width="22" height="100" rx="3" fill="#168f5a"/>
+              <rect x="114" width="20" height="100" rx="3" fill="#b66d00"/>
+              <rect x="140" width="28" height="100" rx="3" fill="#2c4cff"/>
+              <rect x="174" width="22" height="100" rx="3" fill="#6f3cff"/>
+              <rect x="202" width="20" height="100" rx="3" fill="#0b1437"/>
+              <rect x="228" width="26" height="100" rx="3" fill="#168f5a"/>
+              <rect x="260" width="22" height="100" rx="3" fill="#2c4cff"/>
+              <rect x="288" width="22" height="100" rx="3" fill="#1a30d4"/>
+              <rect x="316" width="24" height="100" rx="3" fill="#6f3cff"/>
+            </g>
+            {# Shelf divider #}
+            <rect x="68" y="200" width="364" height="3" fill="#e6e8f0"/>
+            {# Bottom shelf #}
+            <g transform="translate(80 210)">
+              <rect width="20" height="92" rx="3" fill="#0b1437"/>
+              <rect x="26" width="24" height="92" rx="3" fill="#1a30d4"/>
+              <rect x="56" width="22" height="92" rx="3" fill="#168f5a"/>
+              <rect x="84" width="22" height="92" rx="3" fill="#6f3cff"/>
+              <rect x="112" width="26" height="92" rx="3" fill="#b66d00"/>
+              <rect x="144" width="22" height="92" rx="3" fill="#2c4cff"/>
+              <rect x="172" width="20" height="92" rx="3" fill="#1a30d4"/>
+              <rect x="198" width="28" height="92" rx="3" fill="#168f5a"/>
+              <rect x="232" width="22" height="92" rx="3" fill="#0b1437"/>
+              <rect x="260" width="20" height="92" rx="3" fill="#6f3cff"/>
+              <rect x="286" width="24" height="92" rx="3" fill="#2c4cff"/>
+              <rect x="316" width="24" height="92" rx="3" fill="#1a30d4"/>
+            </g>
           </g>
-          <g transform="translate(220 70)" filter="url(#sh)">
-            <rect width="240" height="300" rx="18" fill="#fff" stroke="#e6e8f0"/>
-            <rect x="24" y="28" width="120" height="14" rx="7" fill="#0b1437"/>
-            <rect x="24" y="56" width="190" height="8" rx="4" fill="#cfd5ea"/>
-            <rect x="24" y="76" width="190" height="8" rx="4" fill="#cfd5ea"/>
-            <rect x="24" y="96" width="140" height="8" rx="4" fill="#cfd5ea"/>
-            <rect x="24" y="124" width="190" height="100" rx="10" fill="url(#gA)"/>
-            <text x="119" y="184" font-family="Inter,sans-serif" font-weight="800" font-size="44" fill="white" text-anchor="middle">▶</text>
-            <rect x="24" y="244" width="80" height="28" rx="14" fill="#2c4cff"/>
-            <text x="64" y="263" font-family="Inter,sans-serif" font-weight="600" font-size="13" fill="white" text-anchor="middle">{{ _('Open') }}</text>
-            <rect x="116" y="244" width="60" height="28" rx="14" fill="#fff" stroke="#e6e8f0"/>
-            <text x="146" y="263" font-family="Inter,sans-serif" font-weight="600" font-size="13" fill="#5a6285" text-anchor="middle">PDF</text>
+
+          {# Foreground: open document / project #}
+          <g transform="translate(310 230)" filter="url(#sh)">
+            <rect width="220" height="170" rx="14" fill="#fff" stroke="#e6e8f0"/>
+            <rect x="18" y="22" width="120" height="12" rx="6" fill="#0b1437"/>
+            <rect x="18" y="44" width="170" height="6" rx="3" fill="#cfd5ea"/>
+            <rect x="18" y="58" width="170" height="6" rx="3" fill="#cfd5ea"/>
+            <rect x="18" y="72" width="100" height="6" rx="3" fill="#cfd5ea"/>
+            {# Inline play button (video chip) #}
+            <rect x="18" y="92" width="184" height="50" rx="10" fill="url(#gA)"/>
+            <circle cx="48" cy="117" r="14" fill="#fff" opacity=".95"/>
+            <path d="M44 110 L56 117 L44 124 Z" fill="#2c4cff"/>
+            <rect x="68" y="110" width="120" height="6" rx="3" fill="rgba(255,255,255,.85)"/>
+            <rect x="68" y="122" width="80" height="6" rx="3" fill="rgba(255,255,255,.55)"/>
           </g>
-          <g transform="translate(440 110)" filter="url(#sh)">
-            <rect width="120" height="40" rx="20" fill="#fff" stroke="#e6e8f0"/>
-            <circle cx="22" cy="20" r="6" fill="#168f5a"/>
-            <text x="38" y="25" font-family="Inter,sans-serif" font-size="13" fill="#0b1437" font-weight="600">WCAG AA</text>
-          </g>
-          <g transform="translate(60 220)" filter="url(#sh)">
-            <rect width="130" height="40" rx="20" fill="#fff" stroke="#e6e8f0"/>
-            <text x="65" y="25" font-family="Inter,sans-serif" font-size="13" fill="#0b1437" font-weight="600" text-anchor="middle">EN ⇄ AR</text>
-          </g>
-          <g transform="translate(420 290)" filter="url(#sh)">
-            <rect width="140" height="40" rx="20" fill="#fff" stroke="#e6e8f0"/>
-            <text x="70" y="25" font-family="Inter,sans-serif" font-size="13" fill="#0b1437" font-weight="600" text-anchor="middle">⌥ GitHub</text>
+
+          {# Magnifying glass — search motif #}
+          <g transform="translate(40 300)" filter="url(#sh)">
+            <circle cx="60" cy="60" r="48" fill="#fff" stroke="url(#gA)" stroke-width="6"/>
+            <circle cx="60" cy="60" r="30" fill="#eef3ff"/>
+            <line x1="98" y1="98" x2="138" y2="138" stroke="#2c4cff" stroke-width="10" stroke-linecap="round"/>
           </g>
         </svg>
       </div>
@@ -93,7 +125,7 @@
   <div class="container d-flex flex-wrap justify-content-center align-items-center gap-3 gap-md-5 text-center">
     <span><strong>{{ counts.total }}</strong> {{ _('approved projects') }}</span>
     <span class="d-none d-md-inline" style="color:var(--gpas-ink-300)">•</span>
-    <span><strong>{{ counts.departments }}</strong> {{ _('departments') }}</span>
+    <span><strong>{{ counts.categories }}</strong> {{ _('topic categories') }}</span>
     <span class="d-none d-md-inline" style="color:var(--gpas-ink-300)">•</span>
     <span><strong>{{ counts.years }}</strong> {{ _('academic years archived') }}</span>
     <span class="d-none d-md-inline" style="color:var(--gpas-ink-300)">•</span>
@@ -143,7 +175,7 @@
     {% else %}
       <div class="gpas-empty">
         <div class="gpas-empty-icon">📚</div>
-        <p>{{ _('No projects yet — once a doctor approves submissions they appear here.') }}</p>
+        <p>{{ _('No projects yet — once a faculty member approves submissions they appear here.') }}</p>
         {% if current_user.is_authenticated %}
           <a class="btn btn-primary" href="{{ url_for('projects.upload') }}">{{ _('Submit a project') }} →</a>
         {% endif %}
@@ -155,10 +187,9 @@
 <section class="section pt-0">
   <div class="container">
     <div class="row g-4">
-      <div class="col-md-3"><div class="gpas-stat"><div class="gpas-stat-value">{{ counts.total }}</div><div class="gpas-stat-label">{{ _('Approved projects') }}</div></div></div>
-      <div class="col-md-3"><div class="gpas-stat"><div class="gpas-stat-value">{{ counts.departments }}</div><div class="gpas-stat-label">{{ _('Departments') }}</div></div></div>
-      <div class="col-md-3"><div class="gpas-stat"><div class="gpas-stat-value">{{ counts.years }}</div><div class="gpas-stat-label">{{ _('Years archived') }}</div></div></div>
-      <div class="col-md-3"><div class="gpas-stat"><div class="gpas-stat-value">AA</div><div class="gpas-stat-label">{{ _('WCAG 2.1 conformance') }}</div></div></div>
+      <div class="col-md-4"><div class="gpas-stat"><div class="gpas-stat-value">{{ counts.total }}</div><div class="gpas-stat-label">{{ _('Approved projects') }}</div></div></div>
+      <div class="col-md-4"><div class="gpas-stat"><div class="gpas-stat-value">{{ counts.categories }}</div><div class="gpas-stat-label">{{ _('Topic categories') }}</div></div></div>
+      <div class="col-md-4"><div class="gpas-stat"><div class="gpas-stat-value">{{ counts.years }}</div><div class="gpas-stat-label">{{ _('Years archived') }}</div></div></div>
     </div>
   </div>
 </section>

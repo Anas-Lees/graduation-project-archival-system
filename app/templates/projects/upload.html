@@ -4,7 +4,14 @@
 <div class="container my-4" style="max-width: 820px">
   <div class="section-eyebrow">{{ _('New submission') }}</div>
   <h1 class="h2 mb-2">{{ _('Submit a graduation project') }}</h1>
-  <p class="text-muted">{{ _('Submissions enter a pending queue and are published once a doctor approves them.') }}</p>
+  {% if current_user.has_role('faculty') %}
+    <div class="alert alert-info mt-2 mb-0">
+      <strong>{{ _('Faculty submission.') }}</strong>
+      {{ _("As a faculty member, you can publish a project on a student's behalf. It goes live immediately — no approval queue.") }}
+    </div>
+  {% else %}
+    <p class="text-muted">{{ _('Submissions enter a pending queue and are published once a faculty member approves them.') }}</p>
+  {% endif %}
 
   <form method="post" enctype="multipart/form-data" novalidate class="mt-4 card p-4">
     {{ form.hidden_tag() }}
@@ -16,15 +23,11 @@
     </div>
 
     <div class="row g-3 mb-3">
-      <div class="col-md-3">
+      <div class="col-md-4">
         {{ form.year.label(class="form-label") }}
         {{ form.year(class="form-control") }}
+        <div class="form-text">{{ _('When was this project produced?') }}</div>
         {% for e in form.year.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
-      </div>
-      <div class="col-md-9">
-        {{ form.department.label(class="form-label") }}
-        {{ form.department(class="form-control") }}
-        {% for e in form.department.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
       </div>
     </div>
 
@@ -34,11 +37,15 @@
       {% for e in form.abstract.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
     </div>
 
-    {# Keywords with type-ahead from most popular existing keywords #}
+    {# Tag-style keyword input — type a word + space/Enter to lock it as a chip #}
     <div class="mb-3">
-      {{ form.keywords.label(class="form-label") }}
-      {{ form.keywords(class="form-control", list="kw-popular", autocomplete="off",
-                       placeholder=_('start typing — popular keywords appear as you go')) }}
+      {{ form.keywords.label(class="form-label", for="kw-typer") }}
+      <div id="kw-tags" class="gpas-tag-input form-control" tabindex="-1">
+        <input id="kw-typer" type="text" class="gpas-tag-typer" autocomplete="off"
+               placeholder="{{ _('Type a keyword and press space…') }}"
+               aria-describedby="kw-cloud-hint" list="kw-popular">
+      </div>
+      {{ form.keywords(type="hidden", id="keywords") }}
       <datalist id="kw-popular"></datalist>
       <div class="form-text" id="kw-cloud-hint">{{ _('Tip: pick from the most-used keywords below to improve discoverability.') }}</div>
       <div class="d-flex flex-wrap gap-1 mt-2" id="kw-cloud" aria-label="{{ _('Most-used keywords') }}"></div>
@@ -56,7 +63,7 @@
           </div>
         {% endfor %}
       </div>
-      <div class="form-text">{{ _('Pick all that apply.') }}</div>
+      <div class="form-text">{{ _("Pick all that apply. Choose 'Other' if none of the existing categories fit.") }}</div>
     </div>
 
     <div class="mb-3">
@@ -96,7 +103,11 @@
     </div>
 
     <div class="d-flex gap-2 align-items-center">
-      {{ form.submit(class="btn btn-primary btn-lg") }}
+      {% if current_user.has_role('faculty') %}
+        <button type="submit" name="submit" class="btn btn-primary btn-lg">{{ _('Publish project') }}</button>
+      {% else %}
+        {{ form.submit(class="btn btn-primary btn-lg") }}
+      {% endif %}
       <a class="btn btn-outline-secondary btn-lg" href="{{ url_for('projects.browse') }}">{{ _('Cancel') }}</a>
     </div>
   </form>
@@ -106,6 +117,67 @@
 {% block scripts %}
 <script>
   (function () {
+    // ── Tag-style keyword input ───────────────────────────────────────────
+    const tagBox  = document.getElementById('kw-tags');
+    const typer   = document.getElementById('kw-typer');
+    const hidden  = document.getElementById('keywords');
+    let tags = [];
+
+    function syncHidden() { hidden.value = tags.join(', '); }
+
+    function renderTags() {
+      // Remove existing chip nodes (everything before the typer)
+      [...tagBox.querySelectorAll('.gpas-tag')].forEach(n => n.remove());
+      tags.forEach((t, i) => {
+        const span = document.createElement('span');
+        span.className = 'gpas-tag';
+        span.textContent = t;
+        const x = document.createElement('button');
+        x.type = 'button'; x.className = 'gpas-tag-x';
+        x.setAttribute('aria-label', "{{ _('Remove keyword') }}: " + t);
+        x.textContent = '×';
+        x.addEventListener('click', () => { tags.splice(i, 1); renderTags(); syncHidden(); });
+        span.appendChild(x);
+        tagBox.insertBefore(span, typer);
+      });
+    }
+
+    function addTag(raw) {
+      const t = raw.trim().toLowerCase();
+      if (!t) return;
+      if (tags.includes(t)) return;
+      if (t.length > 40) return;
+      tags.push(t);
+      renderTags();
+      syncHidden();
+    }
+
+    // Initial population from existing hidden value (e.g. on form re-render after errors)
+    if (hidden.value) {
+      hidden.value.split(',').map(s => s.trim()).filter(Boolean).forEach(addTag);
+    }
+
+    typer.addEventListener('keydown', e => {
+      if (e.key === ' ' || e.key === 'Enter' || e.key === ',' || e.key === 'Tab') {
+        if (typer.value.trim()) {
+          e.preventDefault();
+          addTag(typer.value);
+          typer.value = '';
+        } else if (e.key === 'Enter') {
+          // Let the form submit on plain Enter when the typer is empty
+        }
+      } else if (e.key === 'Backspace' && !typer.value && tags.length) {
+        tags.pop();
+        renderTags();
+        syncHidden();
+      }
+    });
+    typer.addEventListener('blur', () => {
+      if (typer.value.trim()) { addTag(typer.value); typer.value = ''; }
+    });
+    tagBox.addEventListener('click', e => { if (e.target === tagBox) typer.focus(); });
+
+    // ── Popular-keyword chips & datalist ──────────────────────────────────
     fetch("{{ url_for('projects.api_keywords') }}")
       .then(r => r.json()).then(items => {
         const dl = document.getElementById('kw-popular');
@@ -117,29 +189,17 @@
         }
         items.forEach(it => {
           const o = document.createElement('option');
-          o.value = it.keyword; o.label = `${it.count}× used`;
+          o.value = it.keyword;
           dl.appendChild(o);
         });
-        // Render top-12 as clickable chips
         items.slice(0, 12).forEach(it => {
           const chip = document.createElement('button');
           chip.type = 'button'; chip.className = 'gpas-chip border-0';
           chip.innerHTML = `${it.keyword} <span class="text-muted">${it.count}</span>`;
-          chip.addEventListener('click', () => addKeyword(it.keyword));
+          chip.addEventListener('click', () => { addTag(it.keyword); typer.focus(); });
           cloud.appendChild(chip);
         });
       }).catch(() => {});
-
-    function addKeyword(kw) {
-      const input = document.getElementById('keywords');
-      if (!input) return;
-      const cur = input.value.trim();
-      const list = cur ? cur.split(',').map(s => s.trim()).filter(Boolean) : [];
-      if (list.includes(kw)) return;
-      list.push(kw);
-      input.value = list.join(', ');
-      input.focus();
-    }
   })();
 </script>
 {% endblock %}

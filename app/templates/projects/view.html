@@ -31,7 +31,6 @@
   <article>
     <div class="d-flex flex-wrap gap-2 mb-2">
       <span class="gpas-chip"><strong>{{ project.year }}</strong></span>
-      <span class="gpas-chip">{{ project.department }}</span>
       {% for c in project.categories %}<span class="gpas-chip">{{ c.localized(lang) }}</span>{% endfor %}
     </div>
 

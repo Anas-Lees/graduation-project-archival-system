@@ -95,7 +95,19 @@ textarea:focus-visible,
 .gpas-nav .navbar-brand .gpas-logo { color: var(--gpas-blue-500); font-weight: 900; }
 .gpas-nav .nav-link { color: var(--gpas-ink-700) !important; font-weight: 500; }
 .gpas-nav .nav-link:hover, .gpas-nav .nav-link.active { color: var(--gpas-blue-600) !important; }
-.gpas-nav .dropdown-menu { border: 1px solid var(--gpas-border); box-shadow: var(--shadow-md); border-radius: var(--radius); }
+.gpas-nav .dropdown-menu {
+  border: 1px solid var(--gpas-border);
+  box-shadow: var(--shadow-md);
+  border-radius: var(--radius);
+  z-index: 1100;  /* sit above sticky page content like '+ New submission' buttons */
+}
+.gpas-avatar {
+  background: var(--gpas-blue-500) !important;
+  color: #fff;
+  width: 28px; height: 28px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: .85rem; font-weight: 700;
+}
 
 /* ============================================================
    Buttons
@@ -317,6 +329,41 @@ textarea:focus-visible,
 }
 .gpas-search input::placeholder { color: var(--gpas-ink-300); }
 .gpas-search .btn { padding: .55rem 1.4rem; flex-shrink: 0; }
+
+/* Tag-style keyword input */
+.gpas-tag-input {
+  display: flex; flex-wrap: wrap; gap: .35rem;
+  min-height: 48px; padding: .35rem .5rem;
+  cursor: text;
+}
+.gpas-tag-input:focus-within {
+  border-color: var(--gpas-blue-500);
+  outline: 3px solid var(--gpas-focus);
+  outline-offset: 2px;
+}
+.gpas-tag {
+  display: inline-flex; align-items: center; gap: .35rem;
+  background: var(--gpas-blue-50);
+  color: var(--gpas-blue-700);
+  font-weight: 600; font-size: .85rem;
+  padding: .2rem .55rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--gpas-blue-300);
+}
+.gpas-tag-x {
+  background: none; border: 0; padding: 0 .15rem;
+  color: var(--gpas-blue-700); font-weight: 700; line-height: 1;
+  cursor: pointer; font-size: 1.05rem;
+}
+.gpas-tag-x:hover { color: var(--gpas-danger); }
+.gpas-tag-typer {
+  flex: 1; min-width: 8rem;
+  border: 0; outline: 0;
+  background: transparent;
+  padding: .15rem 0;
+  font: inherit; color: var(--gpas-ink-900);
+}
+.gpas-tag-typer::placeholder { color: var(--gpas-ink-300); }
 
 /* Category checkbox cards (upload form) */
 .gpas-cat-grid { margin: 0; }

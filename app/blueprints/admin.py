@@ -14,7 +14,7 @@ bp = Blueprint("admin", __name__)
 
 @bp.before_request
 @login_required
-@role_required("doc")
+@role_required("faculty")
 def _gate():
     pass
 
@@ -154,10 +154,11 @@ def reports():
         .filter(AccessLog.action == "download")
         .group_by(Project.id).order_by(desc("c")).limit(5).all()
     )
-    by_dept = (
-        db.session.query(Project.department, func.count(Project.id).label("c"))
+    by_category = (
+        db.session.query(Category, func.count(Project.id).label("c"))
+        .join(Category.projects)
         .filter(Project.status == "approved")
-        .group_by(Project.department).order_by(desc("c")).all()
+        .group_by(Category.id).order_by(desc("c")).all()
     )
     by_year = (
         db.session.query(Project.year, func.count(Project.id).label("c"))
@@ -165,4 +166,4 @@ def reports():
         .group_by(Project.year).order_by(Project.year.desc()).all()
     )
     return render_template("admin/reports.html", totals=totals, top_views=top_views,
-                           top_downloads=top_downloads, by_dept=by_dept, by_year=by_year)
+                           top_downloads=top_downloads, by_category=by_category, by_year=by_year)

@@ -18,9 +18,8 @@ bp = Blueprint("projects", __name__)
 
 def _filter_choices():
     years = [y[0] for y in db.session.query(distinct(Project.year)).filter(Project.status == "approved").order_by(Project.year.desc()).all()]
-    departments = [d[0] for d in db.session.query(distinct(Project.department)).filter(Project.status == "approved").order_by(Project.department).all()]
     categories = db.session.query(Category).order_by(Category.name_en).all()
-    return years, departments, categories
+    return years, categories
 
 
 @bp.route("/")
@@ -28,24 +27,21 @@ def browse():
     page = max(1, request.args.get("page", 1, type=int))
     per_page = current_app.config["PROJECTS_PER_PAGE"]
     year = request.args.get("year", type=int)
-    department = (request.args.get("department") or "").strip() or None
     category_id = request.args.get("category", type=int)
 
     q = db.session.query(Project).filter(Project.status == "approved")
     if year:
         q = q.filter(Project.year == year)
-    if department:
-        q = q.filter(Project.department == department)
     if category_id:
         q = q.filter(Project.categories.any(Category.id == category_id))
     q = q.order_by(Project.year.desc(), Project.created_at.desc())
 
     total = q.count()
     items = q.offset((page - 1) * per_page).limit(per_page).all()
-    years, departments, categories = _filter_choices()
+    years, categories = _filter_choices()
     return render_template("projects/browse.html", items=items, total=total, page=page, per_page=per_page,
-                           years=years, departments=departments, categories=categories,
-                           q="", year=year, department=department, category_id=category_id, mode="browse")
+                           years=years, categories=categories,
+                           q="", year=year, category_id=category_id, mode="browse")
 
 
 @bp.route("/search")
@@ -54,7 +50,6 @@ def search():
     page = max(1, request.args.get("page", 1, type=int))
     per_page = current_app.config["PROJECTS_PER_PAGE"]
     year = request.args.get("year", type=int)
-    department = (request.args.get("department") or "").strip() or None
     category_id = request.args.get("category", type=int)
 
     items, total = [], 0
@@ -67,8 +62,6 @@ def search():
                 base = db.session.query(Project).filter(Project.id.in_(ids), Project.status == "approved")
                 if year:
                     base = base.filter(Project.year == year)
-                if department:
-                    base = base.filter(Project.department == department)
                 if category_id:
                     base = base.filter(Project.categories.any(Category.id == category_id))
                 # Preserve FTS rank order
@@ -78,10 +71,10 @@ def search():
                 total = len(rows)
                 items = rows[(page - 1) * per_page: page * per_page]
 
-    years, departments, categories = _filter_choices()
+    years, categories = _filter_choices()
     return render_template("projects/browse.html", items=items, total=total, page=page, per_page=per_page,
-                           years=years, departments=departments, categories=categories,
-                           q=q_raw, year=year, department=department, category_id=category_id, mode="search")
+                           years=years, categories=categories,
+                           q=q_raw, year=year, category_id=category_id, mode="search")
 
 
 @bp.route("/<int:pid>")
@@ -90,7 +83,7 @@ def view(pid):
     if not project or project.status != "approved":
         # Allow uploader/admin to preview pending
         if not project or not current_user.is_authenticated or not (
-            current_user.has_role("doc") or project.uploader_id == current_user.id
+            current_user.has_role("faculty") or project.uploader_id == current_user.id
         ):
             abort(404)
     log = AccessLog(
@@ -110,7 +103,7 @@ def _file_for_request(pid, fid):
     project = f.project
     if project.status != "approved" and not (
         current_user.is_authenticated and (
-            current_user.has_role("doc") or project.uploader_id == current_user.id
+            current_user.has_role("faculty") or project.uploader_id == current_user.id
         )
     ):
         abort(403)
@@ -138,7 +131,7 @@ def media(pid, fid):
 
 @bp.route("/upload", methods=["GET", "POST"])
 @login_required
-@role_required("student", "doc")
+@role_required("student", "faculty")
 def upload():
     form = ProjectForm()
     cats = db.session.query(Category).order_by(Category.name_en).all()
@@ -148,15 +141,19 @@ def upload():
         form.year.data = datetime.utcnow().year
 
     if form.validate_on_submit():
+        # Faculty submissions auto-approve; student submissions go to the queue.
+        is_faculty = current_user.has_role("faculty")
         project = Project(
             title=form.title.data.strip(),
             abstract=form.abstract.data.strip(),
             keywords=(form.keywords.data or "").strip(),
             year=form.year.data,
-            department=form.department.data.strip(),
+            department="",  # field removed from form; column kept for back-compat
             github_url=(form.github_url.data or "").strip() or None,
-            status="pending",
+            status="approved" if is_faculty else "pending",
             uploader_id=current_user.id,
+            approver_id=current_user.id if is_faculty else None,
+            approved_at=datetime.utcnow() if is_faculty else None,
         )
         if form.categories.data:
             project.categories = db.session.query(Category).filter(Category.id.in_(form.categories.data)).all()
@@ -187,14 +184,17 @@ def upload():
 
         db.session.commit()
 
-        # Notify all docs
-        from ..models import User
-        docs = db.session.query(User).filter(User.role == "doc").all()
-        for d in docs:
-            send_email(d.email, _("New project pending approval: %(title)s", title=project.title),
-                       _("%(name)s submitted '%(title)s'. Review at /admin/approvals.",
-                         name=current_user.full_name, title=project.title))
-        flash(_("Project submitted and is pending admin approval."), "success")
+        if is_faculty:
+            flash(_("Project published — it's now visible in the archive."), "success")
+        else:
+            # Notify all faculty members about the new pending submission
+            from ..models import User
+            faculty_users = db.session.query(User).filter(User.role == "faculty").all()
+            for f in faculty_users:
+                send_email(f.email, _("New project pending approval: %(title)s", title=project.title),
+                           _("%(name)s submitted '%(title)s'. Review at /admin/approvals.",
+                             name=current_user.full_name, title=project.title))
+            flash(_("Project submitted — a faculty member will review it shortly."), "success")
         return redirect(url_for("projects.view", pid=project.id))
     return render_template("projects/upload.html", form=form)
 

@@ -36,7 +36,7 @@ MINIMAL_PDF = (
 
 USERS = [
     {"email": "student@aou.edu.kw", "name": "Salman Dawara",   "role": "student", "password": "Student123!"},
-    {"email": "doc@aou.edu.kw",     "name": "Dr. Aws Abu Eid", "role": "doc",     "password": "Doctor123!"},
+    {"email": "faculty@aou.edu.kw", "name": "Dr. Aws Abu Eid", "role": "faculty", "password": "Faculty123!"},
 ]
 
 CATEGORIES = [
@@ -47,12 +47,15 @@ CATEGORIES = [
     ("Mobile Apps",           "تطبيقات الجوال"),
     ("Databases",             "قواعد البيانات"),
     ("Cybersecurity",         "الأمن السيبراني"),
+    ("Other",                 "أخرى"),
 ]
 
-DEPARTMENTS = ["Information Technology and Computing", "Computer Science", "Information Systems"]
+# Single department (the system isn't faculty-specific anymore)
+DEPARTMENT = "Information Technology"
 
 
 PROJECTS = [
+    # Approved — varied years 2018-2025 to populate the year filter
     {
         "title": "Accessible E-Learning Platform for Visually Impaired Students",
         "abstract": "An accessible web-based learning management system that conforms to WCAG 2.1 Level AA, "
@@ -60,7 +63,7 @@ PROJECTS = [
                     "instructors to author lessons that are automatically narrated and includes adaptive "
                     "color-contrast themes for low-vision users.",
         "keywords": "accessibility, e-learning, WCAG, screen reader, education",
-        "year": 2024, "department": DEPARTMENTS[0], "status": "approved",
+        "year": 2025, "status": "approved",
         "categories": ["Web Development", "Software Engineering"],
         "github": "https://github.com/aou-kuwait/accessible-elearning",
         "slides": True,
@@ -71,7 +74,7 @@ PROJECTS = [
                     "graduation projects using transformer-based embeddings. The system normalizes Arabic "
                     "diacritics, handles dialectal variation, and reports cross-document similarity scores.",
         "keywords": "NLP, Arabic, plagiarism, AI, transformers",
-        "year": 2024, "department": DEPARTMENTS[1], "status": "approved",
+        "year": 2024, "status": "approved",
         "categories": ["AI / Machine Learning", "Software Engineering"],
         "github": "https://github.com/aou-kuwait/arabic-plagiarism",
         "slides": True,
@@ -82,7 +85,7 @@ PROJECTS = [
                     "energy consumption across the AOU Kuwait campus. Uses MQTT, ESP32 sensors, and a "
                     "Node-RED backend with a real-time React dashboard.",
         "keywords": "IoT, MQTT, sensors, dashboard, smart campus",
-        "year": 2023, "department": DEPARTMENTS[1], "status": "approved",
+        "year": 2024, "status": "approved",
         "categories": ["Networks", "Web Development"],
         "github": "https://github.com/aou-kuwait/smart-campus-iot",
         "slides": True,
@@ -93,7 +96,7 @@ PROJECTS = [
                     "to provide immutability and public auditability while preserving voter anonymity through "
                     "zero-knowledge proofs.",
         "keywords": "blockchain, voting, security, zero-knowledge, ethereum",
-        "year": 2023, "department": DEPARTMENTS[2], "status": "approved",
+        "year": 2023, "status": "approved",
         "categories": ["Cybersecurity", "Web Development"],
         "github": "https://github.com/aou-kuwait/blockchain-voting",
         "slides": True,
@@ -104,7 +107,7 @@ PROJECTS = [
                     "Arabic and English. Built with Flutter, it supports right-to-left layout, offline "
                     "caching, and barcode scanning for quick check-out.",
         "keywords": "mobile, flutter, RTL, Arabic, library",
-        "year": 2023, "department": DEPARTMENTS[0], "status": "approved",
+        "year": 2023, "status": "approved",
         "categories": ["Mobile Apps", "Databases"],
         "github": "https://github.com/aou-kuwait/bilingual-library",
         "slides": True,
@@ -115,7 +118,7 @@ PROJECTS = [
                     "and engagement metrics across courses. Power BI dashboards expose at-risk-student "
                     "indicators and support early-intervention workflows for advisors.",
         "keywords": "data warehouse, ETL, analytics, education, BI",
-        "year": 2022, "department": DEPARTMENTS[2], "status": "approved",
+        "year": 2022, "status": "approved",
         "categories": ["Databases", "AI / Machine Learning"],
         "github": "https://github.com/aou-kuwait/student-analytics-dwh",
         "slides": True,
@@ -126,7 +129,7 @@ PROJECTS = [
                     "classifier trained on lexical and host-based features. The classifier runs entirely "
                     "client-side, requiring no external API calls and preserving user privacy.",
         "keywords": "phishing, machine learning, browser extension, security",
-        "year": 2022, "department": DEPARTMENTS[1], "status": "approved",
+        "year": 2022, "status": "approved",
         "categories": ["Cybersecurity", "AI / Machine Learning"],
         "github": "https://github.com/aou-kuwait/phishing-detector",
         "slides": False,
@@ -137,9 +140,42 @@ PROJECTS = [
                     "per-tenant data isolation, OAuth 2.0 authentication, role-based access control, and "
                     "webhook notifications for stock changes.",
         "keywords": "REST, API, SaaS, multi-tenant, OAuth",
-        "year": 2021, "department": DEPARTMENTS[0], "status": "approved",
+        "year": 2021, "status": "approved",
         "categories": ["Software Engineering", "Web Development"],
         "github": "https://github.com/aou-kuwait/multi-tenant-inventory-api",
+        "slides": False,
+    },
+    {
+        "title": "Real-Time Hospital Bed-Allocation Dashboard",
+        "abstract": "A web dashboard that aggregates bed-occupancy data across hospital wards and visualises "
+                    "live availability. Originally a third-year project — extended for graduation with "
+                    "predictive analytics that forecast peak demand based on admissions history.",
+        "keywords": "hospital, dashboard, healthcare, real-time, analytics",
+        "year": 2020, "status": "approved",
+        "categories": ["Web Development", "Databases", "Other"],
+        "github": "https://github.com/aou-kuwait/hospital-beds",
+        "slides": False,
+    },
+    {
+        "title": "Quranic Recitation Training App with Tajweed Feedback",
+        "abstract": "A mobile application that records a user's recitation, compares it against a reference "
+                    "qari, and gives real-time tajweed feedback using DSP and a small acoustic-model classifier "
+                    "trained on labelled samples. Cross-discipline project blending audio engineering and ML.",
+        "keywords": "Quran, audio, mobile, classifier, tajweed",
+        "year": 2019, "status": "approved",
+        "categories": ["Mobile Apps", "AI / Machine Learning", "Other"],
+        "github": "https://github.com/aou-kuwait/tajweed-coach",
+        "slides": True,
+    },
+    {
+        "title": "Course-Selection Recommender for Distance-Learning Students",
+        "abstract": "A collaborative-filtering recommender that suggests electives to AOU students based on "
+                    "the patterns of past graduates with similar majors and grade profiles. Built as one of "
+                    "the very first GPAS archive submissions.",
+        "keywords": "recommender, collaborative filtering, education, AOU",
+        "year": 2018, "status": "approved",
+        "categories": ["AI / Machine Learning", "Databases"],
+        "github": "https://github.com/aou-kuwait/course-recommender",
         "slides": False,
     },
     # Pending submissions (so admin queue isn't empty for the demo)
@@ -149,7 +185,7 @@ PROJECTS = [
                     "to classrooms, offices, and facilities across the AOU Kuwait campus. Integrates with "
                     "the existing campus map service for indoor positioning.",
         "keywords": "AR, navigation, mobile, indoor positioning",
-        "year": 2025, "department": DEPARTMENTS[0], "status": "pending",
+        "year": 2025, "status": "pending",
         "categories": ["Mobile Apps"],
     },
     {
@@ -158,7 +194,7 @@ PROJECTS = [
                     "Modern Standard Arabic and Gulf dialect commands for controlling lights, climate, and "
                     "media playback through Zigbee and Z-Wave devices.",
         "keywords": "smart home, voice, Arabic, IoT, Zigbee",
-        "year": 2025, "department": DEPARTMENTS[1], "status": "pending",
+        "year": 2025, "status": "pending",
         "categories": ["AI / Machine Learning", "Networks"],
     },
 ]
@@ -234,7 +270,7 @@ def write_thumbnail(title: str, project_id: int, upload_folder: str) -> str:
 
 def upsert_projects(app):
     student = db.session.query(User).filter_by(email="student@aou.edu.kw").one()
-    doc = db.session.query(User).filter_by(email="doc@aou.edu.kw").one()
+    faculty = db.session.query(User).filter_by(email="faculty@aou.edu.kw").one()
     cat_by_name = {c.name_en: c for c in db.session.query(Category).all()}
     upload_folder = app.config["UPLOAD_FOLDER"]
     created = 0
@@ -245,13 +281,13 @@ def upsert_projects(app):
 
         project = Project(
             title=p["title"], abstract=p["abstract"], keywords=p["keywords"],
-            year=p["year"], department=p["department"], status=p["status"],
+            year=p["year"], department=DEPARTMENT, status=p["status"],
             github_url=p.get("github"),
             uploader_id=student.id,
             created_at=datetime.utcnow() - timedelta(days=180 - i * 14),
         )
         if p["status"] == "approved":
-            project.approver_id = doc.id
+            project.approver_id = faculty.id
             project.approved_at = project.created_at + timedelta(days=2)
         project.categories = [cat_by_name[name] for name in p["categories"] if name in cat_by_name]
 

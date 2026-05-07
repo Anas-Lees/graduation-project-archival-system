@@ -2,7 +2,7 @@
 {% block title %}{{ _('Reports') }}{% endblock %}
 {% block content %}
 <div class="container my-4">
-  <div class="section-eyebrow">{{ _('Doctor panel') }}</div>
+  <div class="section-eyebrow">{{ _('Admin') }}</div>
   <h1 class="h2 mb-4">{{ _('Usage reports') }}</h1>
 
   <section class="row g-3 mb-4">
@@ -40,11 +40,11 @@
       </div>
     </section>
     <section class="col-md-6">
-      <h2 class="h5 mb-3">{{ _('Approved projects by department') }}</h2>
+      <h2 class="h5 mb-3">{{ _('Approved projects by category') }}</h2>
       <div class="card p-0">
         <table class="table mb-0">
-          <thead><tr style="background:var(--gpas-bg-soft)"><th class="ps-3">{{ _('Department') }}</th><th class="pe-3 text-end">{{ _('Count') }}</th></tr></thead>
-          <tbody>{% for d, c in by_dept %}<tr><td class="ps-3">{{ d }}</td><td class="pe-3 text-end fw-semibold">{{ c }}</td></tr>{% endfor %}</tbody>
+          <thead><tr style="background:var(--gpas-bg-soft)"><th class="ps-3">{{ _('Category') }}</th><th class="pe-3 text-end">{{ _('Count') }}</th></tr></thead>
+          <tbody>{% for cat, c in by_category %}<tr><td class="ps-3">{{ cat.localized(lang) }}</td><td class="pe-3 text-end fw-semibold">{{ c }}</td></tr>{% endfor %}</tbody>
         </table>
       </div>
     </section>

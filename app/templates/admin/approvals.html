@@ -2,7 +2,7 @@
 {% block title %}{{ _('Approvals') }}{% endblock %}
 {% block content %}
 <div class="container my-4">
-  <div class="section-eyebrow">{{ _('Doctor panel') }}</div>
+  <div class="section-eyebrow">{{ _('Admin') }}</div>
   <h1 class="h2 mb-4">{{ _('Pending approvals') }} {% if pending %}<span class="badge rounded-pill ms-2" style="background:var(--gpas-warn);font-size:.85rem">{{ pending|length }}</span>{% endif %}</h1>
 
   {% if pending %}
@@ -13,7 +13,6 @@
           <div class="flex-grow-1">
             <div class="card-meta mb-1">
               <span>{{ p.year }}</span><span class="dot"></span>
-              <span>{{ p.department }}</span><span class="dot"></span>
               <span>{{ _('by') }} {{ p.uploader.full_name }}</span>
             </div>
             <h2 class="h5 mb-2"><a href="{{ url_for('projects.view', pid=p.id) }}">{{ p.title }}</a></h2>

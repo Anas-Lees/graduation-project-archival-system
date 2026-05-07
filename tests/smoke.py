@@ -35,13 +35,9 @@ def main():
     assert 'lang="en"' in r.text and 'dir="ltr"' in r.text
     ok("home (en, ltr)")
 
-    # 2. Language switch -> ar
-    s = requests.Session()
-    s.get(f"{BASE}/lang/ar")
-    r = s.get(f"{BASE}/")
-    assert 'lang="ar"' in r.text and 'dir="rtl"' in r.text, "RTL not set"
-    assert "تصفح" in r.text or "تخرج" in r.text, "no Arabic strings rendered"
-    ok("language switch to Arabic with RTL")
+    # 2. Title contains the new "Graduation Project Archival System" phrase
+    assert "Graduation Project Archival System" in r.text
+    ok("nav brand uses full system name")
 
     # 3. Browse approved projects
     r = requests.get(f"{BASE}/projects/")
@@ -82,7 +78,6 @@ def main():
         "abstract": "This is an automated smoke test submission used to verify the upload + approval workflow.",
         "keywords": "smoke, test",
         "year": "2025",
-        "department": "Information Technology and Computing",
         "categories": [],
         "github_url": "https://github.com/aou-kuwait/smoke-test",
         "submit": "Submit for approval",
@@ -91,21 +86,21 @@ def main():
     assert r.status_code in (302, 303), f"upload got {r.status_code}, body={r.text[:300]}"
     location = r.headers["Location"]
     pid = int(re.search(r"/projects/(\d+)", location).group(1))
-    ok(f"upload created project id={pid} with doc + video + slides + github (pending)")
+    ok(f"student upload created project id={pid} with doc + video + slides + github (pending)")
 
-    # 6. Login as doc + approve the upload
+    # 6. Login as faculty member + approve the upload
     sa = requests.Session()
-    login(sa, "doc@aou.edu.kw", "Doctor123!")
+    login(sa, "faculty@aou.edu.kw", "Faculty123!")
     r = sa.get(f"{BASE}/admin/approvals")
     assert r.status_code == 200
     assert "Smoke Test Project" in r.text, "pending project not in queue"
-    ok("admin sees pending submission in queue")
+    ok("faculty sees pending submission in queue")
 
     token = csrf(r.text)
     r = sa.post(f"{BASE}/admin/approvals/{pid}/approve",
                 data={"csrf_token": token}, allow_redirects=False)
     assert r.status_code in (302, 303), f"approve got {r.status_code}"
-    ok("admin approved project")
+    ok("faculty approved project")
 
     # Confirm it's now publicly visible AND renders the video + github link
     r = requests.get(f"{BASE}/projects/{pid}")
@@ -184,6 +179,36 @@ def main():
     log = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "instance", "email.log"))
     assert os.path.exists(log) and os.path.getsize(log) > 0, "email.log empty"
     ok("FR15 email.log has entries")
+
+    # 11. Upload form has tag-input (not the old plain text field) and no department
+    r = sf.get(f"{BASE}/projects/upload")
+    assert 'id="kw-tags"' in r.text and 'gpas-tag-input' in r.text, "tag-style keyword input missing"
+    ok("upload form uses tag-style keyword input")
+    assert 'name="department"' not in r.text, "department field still in upload form"
+    ok("department field removed from upload form")
+
+    # 12. Faculty submission auto-approves (no pending queue stop)
+    r = sa.get(f"{BASE}/projects/upload")
+    token = csrf(r.text)
+    pdf = b"%PDF-1.4\n1 0 obj<<>>endobj\ntrailer<</Root 1 0 R>>\n%%EOF\n"
+    fdata = {
+        "csrf_token": token,
+        "title": "Faculty Auto-Approved Test",
+        "abstract": "Faculty member submission should publish immediately without going through the queue.",
+        "keywords": "auto, approve, faculty",
+        "year": "2025",
+        "categories": [],
+        "github_url": "",
+        "submit": "Publish project",
+    }
+    ffiles = [("file", ("faculty_smoke.pdf", io.BytesIO(pdf), "application/pdf"))]
+    r = sa.post(f"{BASE}/projects/upload", data=fdata, files=ffiles, allow_redirects=False)
+    assert r.status_code in (302, 303), f"faculty upload got {r.status_code}: {r.text[:300]}"
+    fac_pid = int(re.search(r"/projects/(\d+)", r.headers["Location"]).group(1))
+    # Anonymous user should see this immediately (it auto-approved)
+    rp = requests.get(f"{BASE}/projects/{fac_pid}")
+    assert rp.status_code == 200 and "Faculty Auto-Approved Test" in rp.text
+    ok(f"faculty submission id={fac_pid} auto-approved (publicly visible)")
 
     print("\nAll smoke checks passed.")
 

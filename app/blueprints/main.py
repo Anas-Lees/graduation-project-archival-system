@@ -17,7 +17,7 @@ def index():
     )
     counts = {
         "total": db.session.query(func.count(Project.id)).filter(Project.status == "approved").scalar() or 0,
-        "departments": db.session.query(func.count(func.distinct(Project.department))).filter(Project.status == "approved").scalar() or 0,
+        "categories": db.session.query(func.count(Category.id)).scalar() or 0,
         "years": db.session.query(func.count(func.distinct(Project.year))).filter(Project.status == "approved").scalar() or 0,
     }
     # Popular categories — count approved projects per category, top 8
